@@ -1,0 +1,12 @@
+# ninja log v5
+1	41	1696246352784932700	CMakeFiles/untitled1.dir/big_int/big_int.c.o	329b5fc11fb20db9
+0	31	1696256077059416526	build.ninja	e0ef582f5bbb248b
+0	27	1696234339671923333	CMakeFiles/untitled.dir/main.c.o	78abdb507903aa54
+1	31	1696246352772932641	CMakeFiles/untitled1.dir/main.c.o	4d568fc982a3124
+0	42	1696241637148646042	CMakeFiles/untitled1.dir/lib/lib.c.o	d1e13bf96aeb38ce
+1	36	1696232157309254305	CMakeFiles/untitled.dir/big_int.c.o	c8c502b79cc16ce
+0	31	1696256077059416526	build.ninja	e0ef582f5bbb248b
+1	29	1696256430197142929	CMakeFiles/untitled1.dir/main.c.o	4d568fc982a3124
+1	46	1696256430213143007	CMakeFiles/untitled1.dir/big_int/big_int.c.o	329b5fc11fb20db9
+0	69	1696258511475317780	CMakeFiles/untitled1.dir/main.c.o	4d568fc982a3124
+1	74	1696258511483317819	CMakeFiles/untitled1.dir/big_int/big_int.c.o	329b5fc11fb20db9
