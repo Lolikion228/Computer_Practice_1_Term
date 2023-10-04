@@ -114,7 +114,7 @@ big_int *big_int_add(big_int *n1, big_int *n2, int rdr) {
 }
 
 
-//n1+=n2
+//ok
 void big_int_add2(big_int *n1, big_int *n2) {
     if (n1->sign != n2->sign) {
         if (n1->sign == '+'){
