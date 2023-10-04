@@ -134,12 +134,12 @@ big_int *big_int_add(big_int *n1, big_int *n2, int rdr) {
 }
 
 
-//ok MEMORY!!!!!!!!!!!!
+//ok
 void big_int_add2(big_int *n1, big_int *n2) {
     if (n1->sign != n2->sign) {
         if (n1->sign == '+') {
             big_int *n3 = big_int_sub(n1, n2, 1);
-            free(n1);
+            big_int_free(n1);
             *n1=*n3;
             free(n3);
         }
