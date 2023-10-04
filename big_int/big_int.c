@@ -7,6 +7,8 @@
 #include "stdio.h"
 #include <math.h>
 
+
+//ok
 big_int *big_int_get(const char *bin_number) {//'-'=45 '+'=43
     big_int *n1 = (big_int *) malloc(sizeof(big_int));
     int len1 = strlen(bin_number);
@@ -15,10 +17,12 @@ big_int *big_int_get(const char *bin_number) {//'-'=45 '+'=43
     n1->sign = bin_number[0];
     for (int i = 0; i < len1 - 1; i++)
         n1->number[i >> 3] += (bin_number[len1 - i - 1] - '0') << (i & 7);
-
+    big_int_dlz(n1);
     return n1;
 }
 
+
+//ok
 void big_int_print(const big_int *n) {
     putchar(n->sign);
     for (int i = n->length - 1; i > -1; i--) {
@@ -35,16 +39,28 @@ void big_int_print(const big_int *n) {
 }
 
 
+//ok
+void big_int_bin_shft(big_int *n) {
+    for (int i = 0; i < n->length; i++) {
+        n->number[i] >>= 1;
+        if (i != ((n->length) - 1)) n->number[i] += (((n->number[i + 1])) & 1) << 7;
+    }
+}
+
+
+//ok
 void big_int_dlz(big_int *n) {
     int i = n->length - 1;
     while ((i > 0) * (n->number[i] == 0)) {
         //printf("i=%d\n",i);
         i--;
     }
-    n->number=(unsigned int *)realloc(n->number,(n->length-i)*sizeof(n->number));
+    n->number = (unsigned int *) realloc(n->number, (n->length - i) * sizeof(n->number));
     n->length = i + 1;
 }
 
+
+//ok
 void big_int_free(big_int *n) {
     free(n->number);
     n->number = NULL;
@@ -52,12 +68,16 @@ void big_int_free(big_int *n) {
     n = NULL;
 }
 
+
+//ok
 void big_int_swap(big_int *n1, big_int *n2) {
     big_int k = *n2;
     *n2 = *n1;
     *n1 = k;
 }
 
+
+//ok
 int big_int_geq(big_int *n1, big_int *n2)//n1<=n2
 {
     if (n1->sign != n2->sign) return (n1->sign == '+') ? 0 : 1;
@@ -73,12 +93,11 @@ int big_int_geq(big_int *n1, big_int *n2)//n1<=n2
 }
 
 
+//ok
 big_int *big_int_add(big_int *n1, big_int *n2, int rdr) {
     if (rdr == 1) n2->sign = '+';
     if (n1->sign != n2->sign) return (n1->sign == '+') ? (big_int_sub(n1, n2, 1)) : (big_int_sub(n2, n1, 1));
     int mx = (int) fmax(n1->length, n2->length), carry = 0;
-    for (int i = 0; i < mx; i++)printf("--------");
-    printf("\n");
     big_int *n3 = (big_int *) malloc(sizeof(big_int));
     n3->length = mx + 1;
     n3->number = (unsigned int *) calloc(n3->length, sizeof(n3->number));
@@ -94,6 +113,28 @@ big_int *big_int_add(big_int *n1, big_int *n2, int rdr) {
     return n3;
 }
 
+
+//n1+=n2
+void big_int_add2(big_int *n1, big_int *n2) {
+    if (n1->sign != n2->sign) {
+        if (n1->sign == '+'){
+            *n1=*big_int_sub(n1, n2, 1);
+        }
+        else *n1 = *big_int_sub(n2, n1, 1);
+    }
+    else {
+        int mx = (int) fmax(n1->length, n2->length), carry = 0;
+        for (int i = 0; i < mx; i++) {
+            int x = n1->number[i] + n2->number[i] + carry;
+            n1->number[i] = x % 256;
+            carry = x >> 8;
+        }
+        n1->number[mx] += carry;
+    }
+}
+
+
+//ok
 int big_int_leq(big_int *n1, big_int *n2) //n1<=n2
 {
     if (n1->length < n2->length) return 1;
@@ -115,6 +156,7 @@ big_int *big_int_sub(big_int *n1, big_int *n2, int rdr) {
     n3->number = (unsigned int *) calloc(n3->length, sizeof(n3->number));
     int t = big_int_leq(n1, n2);//n1<=n2
     if (t)big_int_swap(n1, n2);
+
     for (int i = 0; i < mx; i++) {//n2<=n1
         if (carry) if ((n1->number[i] == 0) || (n1->number[i] == n2->number[i])) n3->number[i] += 255;
         if (i < n2->length) {

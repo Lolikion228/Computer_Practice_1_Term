@@ -23,6 +23,31 @@ int euclid_recursive(int a, int b) {
 
 
 //ok
+int euclid_binary(int x, int y) {
+    int a, n = 0;
+    a = x | y;
+    while ((a & 1) != 1) {
+        a >>= 1;
+        x >>= 1;
+        y >>= 1;
+        n++;
+    }
+
+    while (x * y) {
+        if ((x & 1) == 1) {
+            while ((y & 1) == 0) y >>= 1;
+        } else {
+            while ((x & 1) == 0) x >>= 1;
+        }
+        if (x >= y) x = x - y;
+        else y = y - x;
+
+    }
+    return (x + y) >> n;
+}
+
+
+//ok
 int euclid_extended(int a, int b, int *x, int *y) {
     int q, r = b, a11 = 1, a12 = 0, a21 = 0, a22 = 1, b11, b21, n = 0;
     while (r) {
@@ -101,31 +126,6 @@ int lr_mod_pow(int x, long long y, int m) {
         if (y & bit) y2 *= x % m;
     }
     return y2 % m;
-}
-
-
-//ok
-int euclid_binary(int x, int y) {
-    int a, n = 0;
-    a = x | y;
-    while ((a & 1) != 1) {
-        a >>= 1;
-        x >>= 1;
-        y >>= 1;
-        n++;
-    }
-
-    while (x * y) {
-        if ((x & 1) == 1) {
-            while ((y & 1) == 0) y >>= 1;
-        } else {
-            while ((x & 1) == 0) x >>= 1;
-        }
-        if (x >= y) x = x - y;
-        else y = y - x;
-
-    }
-    return (x + y) >> n;
 }
 
 
