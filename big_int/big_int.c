@@ -107,8 +107,8 @@ big_int *big_int_add(big_int *n1, big_int *n2, int rdr) {
         carry = x >> 8;
     }
     n3->number[mx] += carry;
-    n3->sign = n1->sign;
-    if (rdr == 1) n2->sign = '-';
+    if (rdr) {int t=big_int_leq(n1,n2);n2->sign = '-'; if(t)n3->sign=n2->sign; else n3->sign=n1->sign;}
+    else n3->sign = n1->sign;
     big_int_dlz(n3);
     return n3;
 }
@@ -173,13 +173,16 @@ big_int *big_int_sub(big_int *n1, big_int *n2, int rdr) {
             carry = 0;
         }
     }
-
-    if ((n1->sign == '-') && t) n3->sign = '+';
-    if (n1->sign == '-')if (!t) n3->sign = '-';
-    n3->sign = '+';
     if (t) {
         big_int_swap(n1, n2);
-        n3->sign = '-';
+    }
+    if(n1->sign=='+'){
+        if(t)n3->sign='-';
+        else n3->sign='+';
+    }
+    else{
+        if(t)n3->sign='+';
+        else n3->sign='-';
     }
     if (rdr == 1)n2->sign = '-';
     big_int_dlz(n3);
