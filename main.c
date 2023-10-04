@@ -12,9 +12,9 @@ void swap(int *x, int *y) {
 int main() {
 
     printf("\n");
-    big_int *n1 = big_int_get("+1011");
+    big_int *n1 = big_int_get("-1011");
     big_int_print(n1);
-    big_int *n2 = big_int_get("-10");
+    big_int *n2 = big_int_get("+10");
     big_int_print(n2);
     big_int_add2(n1,n2);
     big_int_print(n1);

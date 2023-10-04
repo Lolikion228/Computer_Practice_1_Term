@@ -139,13 +139,15 @@ void big_int_add2(big_int *n1, big_int *n2) {
     if (n1->sign != n2->sign) {
         if (n1->sign == '+') {
             big_int *n3 = big_int_sub(n1, n2, 1);
-            big_int_free(n1);
-            n1 = n3;
+            free(n1);
+            *n1=*n3;
+            free(n3);
         }
         else {
             big_int *n3 = big_int_sub(n2, n1, 1);
             big_int_free(n1);
             *n1 = *n3;
+            free(n3);
         }
     } else {
         int mx = (int) fmax(n1->length, n2->length), carry = 0;
