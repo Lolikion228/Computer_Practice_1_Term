@@ -30,7 +30,9 @@ void big_int_free(big_int *n);
 
 void big_int_print(const big_int *n);
 
-void big_int_bin_shft(big_int *n);
+void big_int_bin_shft_lr(big_int *n);
+
+void big_int_bin_shft_rl(big_int *n);
 
 big_int *big_int_get(const char *bin_number);
 
