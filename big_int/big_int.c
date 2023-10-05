@@ -140,13 +140,14 @@ void big_int_add2(big_int *n1, big_int *n2) {
         if (n1->sign == '+') {
             big_int *n3 = big_int_sub(n1, n2, 1);
             big_int_free(n1);
-            *n1=*n3;
+            *n1 = *n3;
+            n1=n3;
             free(n3);
-        }
-        else {
+        } else {
             big_int *n3 = big_int_sub(n2, n1, 1);
             big_int_free(n1);
             *n1 = *n3;
+            n1=n3;
             free(n3);
         }
     } else {
@@ -173,6 +174,8 @@ int big_int_leq(big_int *n1, big_int *n2) //n1<=n2
     return 1;
 }
 
+
+//ok
 big_int *big_int_sub(big_int *n1, big_int *n2, int rdr) {
 
     if (rdr == 1) n2->sign = '+';
@@ -213,4 +216,9 @@ big_int *big_int_sub(big_int *n1, big_int *n2, int rdr) {
     if (rdr == 1)n2->sign = '-';
     big_int_dlz(n3);
     return n3;
+}
+
+void big_int_sub2(big_int *n1, big_int *n2){
+
+    1;
 }
