@@ -36,7 +36,13 @@ void big_int_print(const big_int *n);
 
 void big_int_bin_shft_lr(big_int *n);
 
-void big_int_bin_shft_rl(big_int *n);
+void big_int_bin_shft_r(big_int *n);
+
+void big_int_bin_shft_r2(big_int *n,int cnt);
+
+void big_int_bin_shft_l(big_int *n);
+
+void big_int_bin_shft_l2(big_int *n,int cnt);
 
 big_int *big_int_get(const char *bin_number);
 
