@@ -14,11 +14,13 @@ typedef struct big_int {
 
 void big_int_swap(big_int *n1, big_int *n2);
 
-big_int *big_int_sub(big_int *n1, big_int *n2, int rdr);
+big_int *big_int_sub(big_int *n1, big_int *n2);
+
+big_int* big_int_disj(big_int *n1,big_int *n2);
 
 void big_int_sub2(big_int *n1, big_int *n2);
 
-big_int *big_int_add(big_int *n1, big_int *n2, int rdr);
+big_int *big_int_add(big_int *n1, big_int *n2);
 
 void big_int_add2(big_int *n1, big_int *n2);
 
