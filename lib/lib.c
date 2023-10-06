@@ -43,7 +43,7 @@ int euclid_binary(int x, int y) {
         else y = y - x;
 
     }
-    return (x + y) >> n;
+    return (x + y) << n;
 }
 
 
