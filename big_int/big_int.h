@@ -46,4 +46,6 @@ void big_int_bin_shft_l2(big_int *n,int cnt);
 
 big_int *big_int_get(const char *bin_number);
 
+big_int *big_int_euclid_binary(big_int *x, big_int *y);
+
 #endif //UNTITLED_BIG_INT_H
