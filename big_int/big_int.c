@@ -22,7 +22,7 @@ big_int *big_int_get(const char *bin_number) {//'-'=45 '+'=43
     for (i = 0; i < len1 - t; i++) {
         n1->number[i / 8] += (bin_number[len1 - i - 1] - '0') << (i % 8);
     }
-    //big_int_dlz(n1);
+    big_int_dlz(n1);
     return n1;
 }
 
@@ -50,6 +50,7 @@ void big_int_bin_shft_r(big_int *n) {
         n->number[i] >>= 1;
         if (i != ((n->length) - 1)) n->number[i] += (((n->number[i + 1])) & 1) << 7;
     }
+    //big_int_dlz(n);
 }
 
 
@@ -69,7 +70,7 @@ void big_int_bin_shft_l(big_int *n) {
 
 
 ////??? shift n bits to the right, e.g. n = 27 00000000 00000000 00000000 000
-//ok
+//ok?????
 void big_int_bin_shft_l2(big_int *n, int cnt) {
     for (int i = 0; i < cnt % 8; i++) big_int_bin_shft_l(n);
     unsigned int x = cnt / 8;
@@ -77,7 +78,6 @@ void big_int_bin_shft_l2(big_int *n, int cnt) {
     n->number = (unsigned int *) realloc(n->number, (n->length) * sizeof(n->number));
     memmove(n->number + x, n->number, sizeof(n->number) * x);
     for (int i = 0; i < x; i++) n->number[i] = 0;
-    //big_int_dlz(n);
 }
 
 
@@ -92,7 +92,7 @@ void big_int_bin_shft_r2(big_int *n, int cnt) {
             memmove(n->number, n->number + x, sizeof(n->number) * (n->length - x));
         }
     }
-    //big_int_dlz(n);
+    big_int_dlz(n);
 }
 
 //ok
@@ -103,7 +103,7 @@ big_int *big_int_disj(big_int *n1, big_int *n2) {
     n3->number = (unsigned int *) calloc(n3->length, sizeof(n3->number));
     for (int i = 0; i < mx; i++) { n3->number[i] = (n2->number[i]) | (n1->number[i]); }
     n3->sign = '+';
-    //big_int_dlz(n3);
+    big_int_dlz(n3);
     return n3;
 }
 
@@ -114,8 +114,9 @@ void big_int_dlz(big_int *n) {
     while ((i > 0) * (n->number[i] == 0)) {
         i--;
     }
-    n->number = (unsigned int *) realloc(n->number, (n->length - i) * sizeof(n->number));
-    n->length = i + 1;
+    n->length=i+1;
+
+    n->number = (unsigned int *) realloc(n->number, (n->length) * sizeof(n->number));
 }
 
 
@@ -160,13 +161,13 @@ big_int *big_int_add(big_int *n1, big_int *n2) {
             n2->sign = '+';
             big_int *n4 = (big_int_sub(n1, n2));
             n2->sign = '-';
-            //big_int_dlz(n4);
+            big_int_dlz(n4);
             return n4;
         } else {
             n1->sign = '+';
             big_int *n4 = (big_int_sub(n2, n1));
             n1->sign = '-';
-            //big_int_dlz(n4);
+            big_int_dlz(n4);
             return n4;
         }
     }
@@ -181,7 +182,7 @@ big_int *big_int_add(big_int *n1, big_int *n2) {
     }
     n3->number[mx] = carry;
     n3->sign = n1->sign;
-    //big_int_dlz(n3);
+    big_int_dlz(n3);
     return n3;
 }
 
@@ -205,11 +206,13 @@ big_int *big_int_sub(big_int *n1, big_int *n2) {
         if (n1->sign == '+') {
             n2->sign = '+';
             big_int *n4 = (big_int_add(n1, n2));
+            big_int_dlz(n4);
             n2->sign = '-';
             return n4;
         } else {
             n2->sign = '-';
             big_int *n4 = (big_int_add(n2, n1));
+            big_int_dlz(n4);
             n2->sign = '+';
             return n4;
         }
@@ -245,7 +248,7 @@ big_int *big_int_sub(big_int *n1, big_int *n2) {
         if (t)n3->sign = '+';
         else n3->sign = '-';
     }
-    //big_int_dlz(n3);
+    big_int_dlz(n3);
     return n3;
 }
 
@@ -259,13 +262,13 @@ void big_int_add2(big_int *n1, big_int *n2) {
             big_int *n4 = (big_int_sub(n1, n2));
             n2->sign = '-';
             *n1 = *n4;
-            //big_int_dlz(n1);
+            big_int_dlz(n1);
         } else {
             n1->sign = '+';
             big_int *n4 = (big_int_sub(n2, n1));
             n1->sign = '-';
             *n1 = *n4;
-            //big_int_dlz(n1);
+            big_int_dlz(n1);
         }
     } else {
         int mx = (int) fmax(n1->length, n2->length), carry = 0;
@@ -281,7 +284,7 @@ void big_int_add2(big_int *n1, big_int *n2) {
         n3->sign = n1->sign;
         //big_int_dlz(n3);
         *n1 = *n3;
-        //big_int_dlz(n1);
+        big_int_dlz(n1);
     }
 }
 
@@ -294,13 +297,13 @@ void big_int_sub2(big_int *n1, big_int *n2) {
             big_int *n4 = (big_int_add(n1, n2));
             n2->sign = '-';
             *n1 = *n4;
-            //big_int_dlz(n1);
+            big_int_dlz(n1);
         } else {
             n2->sign = '-';
             big_int *n4 = (big_int_add(n2, n1));
             n2->sign = '+';
             *n1 = *n4;
-            //big_int_dlz(n1);
+            big_int_dlz(n1);
         }
     } else {
 
@@ -340,7 +343,7 @@ void big_int_sub2(big_int *n1, big_int *n2) {
             if (t)n3->sign = '+';
             else n3->sign = '-';
         }
-        //big_int_dlz(n3);
+        big_int_dlz(n3);
         *n1 = *n3;
 
     }
@@ -348,6 +351,7 @@ void big_int_sub2(big_int *n1, big_int *n2) {
 
 
 big_int* big_int_euclid_binary(big_int *x, big_int *y) {
+
     big_int* zero = big_int_get("0");
     big_int* one = big_int_get("1");
 //    if( (*x->number==*zero->number) || (*y->number==*zero->number)) return one;
@@ -355,6 +359,7 @@ big_int* big_int_euclid_binary(big_int *x, big_int *y) {
     char c1=x->sign, c2=y->sign;
     x->sign='+';
     y->sign='+';
+//
     big_int* a= big_int_disj(x,y);//a = x | y;
     while ((a->number[0] & 1) != 1) {
         big_int_bin_shft_r(a);
@@ -362,46 +367,52 @@ big_int* big_int_euclid_binary(big_int *x, big_int *y) {
         big_int_bin_shft_r(y);
         n++;
     }
-
-//    printf("n=%d\n",n);
+//
+    printf("n=%d\n",n);
 //    printf("x0=");
 //    big_int_print(x);
 //    printf("y0=");
 //    big_int_print(y);
 //    printf("---------\n");
-
+//
+    big_int_dlz(x);
+    big_int_dlz(y);
     while ((!big_int_leq(x,zero)) && (!big_int_leq(y,zero))) {
         if ((x->number[0] & 1) == 1) {
-            while ((y->number[0] & 1) == 0) {printf("y=");big_int_print(y);big_int_bin_shft_r(y);}
+            while ((y->number[0] & 1) == 0) big_int_bin_shft_r(y);
         } else {
-            while ((x->number[0] & 1) == 0) {printf("x=");big_int_print(x);big_int_bin_shft_r(x);}
+            while ((x->number[0] & 1) == 0) big_int_bin_shft_r(x);
         }
-        printf("x1=");big_int_print(x);
-        printf("y1=");big_int_print(y);
-        printf("sub:\n");
-//        scanf("%d",&k);
-        printf("x2=");big_int_print(x);
-        printf("y2=");big_int_print(y);
+////        printf("x1=");big_int_print(x);
+////        printf("y1=");big_int_print(y);
+////        printf("sub:\n");
+//////        scanf("%d",&k);
+////        printf("x2=");big_int_print(x);
+////        printf("y2=");big_int_print(y);
+        big_int_dlz(x);
+        big_int_dlz(y);
         if (big_int_leq(y, x)){
-            printf("case y<=x\n");
+            //printf("case y<=x\n");
             big_int_sub2(x, y);
         }
         else{
-            printf("case x<y\n");
+            //printf("case x<y\n");
             big_int_sub2(y, x);
         }
-        printf("x3=");big_int_print(x);
-        printf("y3=");big_int_print(y);
-        printf("---------\n");
-        scanf("%d",&k);
+////        printf("x3=");big_int_print(x);
+////        printf("y3=");big_int_print(y);
+////        printf("---------\n");
+////        scanf("%d",&k);
     }
     x->sign='+';
     y->sign='+';
     //printf("x=");big_int_print(x);
     //printf("y=");big_int_print(y);
     //printf("x+y=");
+    big_int_dlz(x);
+    big_int_dlz(y);
     big_int* n3=big_int_add(x, y);
-    //big_int_print(n3);
+    big_int_print(n3);
     big_int_bin_shft_l2(n3,n);
     //printf("after shft=");big_int_print(n3);
     x->sign=c1;
