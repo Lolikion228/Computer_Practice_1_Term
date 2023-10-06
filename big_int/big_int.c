@@ -367,14 +367,12 @@ big_int* big_int_euclid_binary(big_int *x, big_int *y) {
         big_int_bin_shft_r(y);
         n++;
     }
-//
-    printf("n=%d\n",n);
+    //printf("n=%d\n",n);
 //    printf("x0=");
 //    big_int_print(x);
 //    printf("y0=");
 //    big_int_print(y);
 //    printf("---------\n");
-//
     big_int_dlz(x);
     big_int_dlz(y);
     while ((!big_int_leq(x,zero)) && (!big_int_leq(y,zero))) {
@@ -412,7 +410,7 @@ big_int* big_int_euclid_binary(big_int *x, big_int *y) {
     big_int_dlz(x);
     big_int_dlz(y);
     big_int* n3=big_int_add(x, y);
-    big_int_print(n3);
+    //big_int_print(n3);
     big_int_bin_shft_l2(n3,n);
     //printf("after shft=");big_int_print(n3);
     x->sign=c1;
