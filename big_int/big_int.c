@@ -48,7 +48,7 @@ void big_int_bin_shft_r(big_int *n) {
         n->number[i] >>= 1;
         if (i != ((n->length) - 1)) n->number[i] += (((n->number[i + 1])) & 1) << 7;
     }
-    big_int_dlz(n);
+    //big_int_dlz(n);
 }
 
 
@@ -350,7 +350,7 @@ void big_int_sub2(big_int *n1, big_int *n2) {
             else n3->sign = '-';
         }
         big_int_dlz(n3);
-        big_int_free(n1);
+        //big_int_free(n1);ВОТ ЭТА ЕБУЧАЯ ХУЕТА ПОЧЕМУ ТО ЛОМАЛА ВСЁ
         *n1 = *n3;
         //big_int_dlz(n1);
     }
@@ -359,11 +359,11 @@ void big_int_sub2(big_int *n1, big_int *n2) {
 
 big_int* big_int_euclid_binary(big_int *x, big_int *y) {
     int n = 0;
-    char c1=x->sign, c2=y->sign;
-    x->sign='+';
-    y->sign='+';
+//    char c1=x->sign, c2=y->sign;
+//    x->sign='+';
+//    y->sign='+';
     big_int* a= big_int_disj(x,y);//a = x | y;
-    big_int* one = big_int_get("1");
+    //big_int* one = big_int_get("1");
     big_int* zero = big_int_get("0");
     while ((a->number[0] & 1) != 1) {
         big_int_bin_shft_r(a);
