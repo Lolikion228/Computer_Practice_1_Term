@@ -278,7 +278,7 @@ void big_int_add2(big_int *n1, big_int *n2) {
     } else {
 //        printf("//////////////start of add2//////////////////\n");
 //        printf("n3_0=");
-        big_int_print(n1);
+       // big_int_print(n1);
         int mx = (int) fmax(n1->length, n2->length), carry = 0,x;
         big_int *n3 = (big_int *) malloc(sizeof(big_int));
         n3->length = mx + 1;
@@ -300,7 +300,7 @@ void big_int_add2(big_int *n1, big_int *n2) {
             if(i<n2->length) x = n1->number[i] + n2->number[i] + carry;//sizeof(unsigned char)=1 sizeof(int)=4
             else x = n1->number[i] + carry;
 //            printf("n3_1[%d]=",i);
-            big_int_print(n3);
+            //big_int_print(n3);
             n3->number[i] = x & 0xFF; // 0xFF 1111 1111
 //            printf("byte[%d] = %d = %d\n",i,x&0xFF,n3->number[i]);
             carry = x >> 8;
