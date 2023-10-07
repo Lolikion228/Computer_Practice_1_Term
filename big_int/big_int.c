@@ -308,11 +308,12 @@ void big_int_add2(big_int *n1, big_int *n2) {
 //            big_int_print(n3);
         }
         if(t) big_int_swap(n1,n2);
-        big_int_dlz(n3);
+
 //        printf("n3_1=");
-//        big_int_print(n3);
+        //big_int_print(n3);
         n3->number[mx] = carry;
         n3->sign = n1->sign;
+        big_int_dlz(n3);
 //        printf("n3_2=");
 //        big_int_print(n3);
         *n1 = *n3;
