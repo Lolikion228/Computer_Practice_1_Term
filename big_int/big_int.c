@@ -276,48 +276,49 @@ void big_int_add2(big_int *n1, big_int *n2) {
             big_int_dlz(n1);
         }
     } else {
-        printf("//////////////start of add2//////////////////\n");
-        printf("n3_0=");
+//        printf("//////////////start of add2//////////////////\n");
+//        printf("n3_0=");
         big_int_print(n1);
         int mx = (int) fmax(n1->length, n2->length), carry = 0,x;
         big_int *n3 = (big_int *) malloc(sizeof(big_int));
         n3->length = mx + 1;
-        printf("len n1=%d\n",n1->length);
-        printf("len n2=%d\n",n2->length);
-        printf("n1=");
-        big_int_print(n1);
-        printf("n2=");
-        big_int_print(n2);
+//        printf("len n1=%d\n",n1->length);
+//        printf("len n2=%d\n",n2->length);
+//        printf("n1=");
+//        big_int_print(n1);
+//        printf("n2=");
+//        big_int_print(n2);
         n3->number = (unsigned char *) calloc(n3->length, sizeof(n3->number));
-        printf("cycle for\n");
+//        printf("cycle for\n");
         int t=n1->length<=n2->length;
         if(t) big_int_swap(n1,n2);
         for (int i = 0; i < mx; i++) {
-            printf("n3_0[%d]=",i);
-            big_int_print(n3);
-            printf("n1[%d]=%d\n",i,n1->number[i]);
-            printf("n2[%d]=%d\n",i,n2->number[i]);
+//            printf("n3_0[%d]=",i);
+//            big_int_print(n3);
+//            printf("n1[%d]=%d\n",i,n1->number[i]);
+//            printf("n2[%d]=%d\n",i,n2->number[i]);
             if(i<n2->length) x = n1->number[i] + n2->number[i] + carry;//sizeof(unsigned char)=1 sizeof(int)=4
             else x = n1->number[i] + carry;
-            printf("n3_1[%d]=",i);
+//            printf("n3_1[%d]=",i);
             big_int_print(n3);
             n3->number[i] = x & 0xFF; // 0xFF 1111 1111
-            printf("byte[%d] = %d = %d\n",i,x&0xFF,n3->number[i]);
+//            printf("byte[%d] = %d = %d\n",i,x&0xFF,n3->number[i]);
             carry = x >> 8;
-            printf("n3_2[%d]=",i);
-            big_int_print(n3);
+//            printf("n3_2[%d]=",i);
+//            big_int_print(n3);
         }
+        if(t) big_int_swap(n1,n2);
         big_int_dlz(n3);
-        printf("n3_1=");
-        big_int_print(n3);
+//        printf("n3_1=");
+//        big_int_print(n3);
         n3->number[mx] = carry;
         n3->sign = n1->sign;
-        printf("n3_2=");
-        big_int_print(n3);
+//        printf("n3_2=");
+//        big_int_print(n3);
         *n1 = *n3;
-        printf("n3_3=");
+//        printf("n3_3=");
 
-        big_int_print(n1);
+//        big_int_print(n1);
 //        printf("//////////////end of add2//////////////////\n");
     }
 }
@@ -453,31 +454,31 @@ big_int *big_int_mult(big_int *x, big_int *y) {
     if (x->length >= y->length) {
         while (!big_int_leq(y, zero)) {
             big_int_dlz(n3);
-            printf("len=%d ",n3->length);printf("n3_0=");big_int_print(n3);
-            printf("len=%d ",x->length);printf("x0="); big_int_print(x);
-            printf("len=%d ",y->length);printf("y0="); big_int_print(y);
+//            printf("len=%d ",n3->length);printf("n3_0=");big_int_print(n3);
+//            printf("len=%d ",x->length);printf("x0="); big_int_print(x);
+//            printf("len=%d ",y->length);printf("y0="); big_int_print(y);
             if (y->number[0] & 1) big_int_add2(n3, x);
             big_int_bin_shft_r(y);
             big_int_bin_shft_l(x);
-            printf("len=%d ",n3->length);printf("n3=");big_int_print(n3);
-            printf("len=%d ",x->length);printf("x="); big_int_print(x);
-            printf("len=%d ",y->length);printf("y="); big_int_print(y);
-            printf("-----------------\n");
+//            printf("len=%d ",n3->length);printf("n3=");big_int_print(n3);
+//            printf("len=%d ",x->length);printf("x="); big_int_print(x);
+//            printf("len=%d ",y->length);printf("y="); big_int_print(y);
+//            printf("-----------------\n");
 
         }
     } else {
         while (!big_int_leq(x, zero)) {
             big_int_dlz(n3);
-            printf("len=%d ",n3->length);printf("n3_0=");big_int_print(n3);
-            printf("len=%d ",x->length);printf("x0="); big_int_print(x);
-            printf("len=%d ",y->length);printf("y0="); big_int_print(y);
+//            printf("len=%d ",n3->length);printf("n3_0=");big_int_print(n3);
+//            printf("len=%d ",x->length);printf("x0="); big_int_print(x);
+//            printf("len=%d ",y->length);printf("y0="); big_int_print(y);
             if (x->number[0] & 1) big_int_add2(n3, y);
             big_int_bin_shft_r(x);
             big_int_bin_shft_l(y);
-            printf("len=%d ",n3->length);printf("n3=");big_int_print(n3);
-            printf("len=%d ",x->length);printf("x="); big_int_print(x);
-            printf("len=%d ",y->length);printf("y="); big_int_print(y);
-            printf("-----------------\n");
+//            printf("len=%d ",n3->length);printf("n3=");big_int_print(n3);
+//            printf("len=%d ",x->length);printf("x="); big_int_print(x);
+//            printf("len=%d ",y->length);printf("y="); big_int_print(y);
+//            printf("-----------------\n");
 
         }
     }
