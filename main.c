@@ -20,33 +20,17 @@ int dec2bin(int num)
     return bin;
 }
 
-/*
- //////////////////start of add2/////////////
-n0= +00000000
-x0= +00011111 11111100
-n1= +00000000 00100010 11111100
-x1= +00011111 11111100
-//////////////////end of add2//////////////
- */
 int main() {
 
     printf("\n");
-
-    big_int*n1=big_int_get("111111111");
-    big_int*n2=big_int_get("10000000000000000");
+    printf("n1=");big_int *n1=big_int_get("11110000");
+    big_int *n2=big_int_get("1000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001");
     big_int_print(n1);
+    printf("n2=");
     big_int_print(n2);
-    big_int*n3=big_int_mult(n1,n2);
-
-    printf("res=\n");
-    big_int_print(n3);
-////    big_int_print(n1);
-////    big_int_print(n2);
-//
-//    big_int_free(n1);
-//    big_int_free(n2);
-////    big_int_free(n3);
-
+    printf("-----------------\n");
+    big_int *n3= big_int_mult(n1,n2);
+    printf("res=");big_int_print(n3);
     return 0;
 }
 
