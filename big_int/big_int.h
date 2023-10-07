@@ -48,4 +48,8 @@ big_int *big_int_get(const char *bin_number);
 
 big_int *big_int_euclid_binary(big_int *x, big_int *y);
 
+big_int *big_int_mult(big_int *x, big_int *y);
+
+big_int *big_int_copy(big_int*x);
+
 #endif //UNTITLED_BIG_INT_H
