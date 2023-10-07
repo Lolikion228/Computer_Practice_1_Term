@@ -33,11 +33,7 @@ int main() {
     printf("\n");
 
     big_int*n1=big_int_get("111111111");
-
-
-
-
-    big_int*n2=big_int_get("100");
+    big_int*n2=big_int_get("10000000000000000");
     big_int_print(n1);
     big_int_print(n2);
     big_int*n3=big_int_mult(n1,n2);
