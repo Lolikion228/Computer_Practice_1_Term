@@ -7,7 +7,7 @@
 #ifndef UNTITLED_BIG_INT_H
 #define UNTITLED_BIG_INT_H
 typedef struct big_int {
-    unsigned int *number;
+    unsigned char *number;
     unsigned int length;
     char sign;
 } big_int;
