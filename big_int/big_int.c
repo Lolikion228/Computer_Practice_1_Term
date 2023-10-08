@@ -499,6 +499,8 @@ big_int *big_int_euclid_binary(big_int *x, big_int *y) {
     big_int_bin_shft_l2(n3, n);
     x->sign = c1;
     y->sign = c2;
+    big_int_free(a);
+    big_int_free(zero);
     return n3;
 }
 
@@ -633,7 +635,7 @@ int tst_add(){
     char* buffer = malloc(MAX_BINARY_LENGTH + 1); // Буфер для чтения строк из файла
 
 
-    for(long i=0;i<2000*2000;i++){
+    for(long i=0;i<3000*3000;i++){
 
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
