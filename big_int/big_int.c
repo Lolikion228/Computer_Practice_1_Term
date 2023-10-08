@@ -633,7 +633,7 @@ int tst_add(){
     char* buffer = malloc(MAX_BINARY_LENGTH + 1); // Буфер для чтения строк из файла
 
 
-    for(long i=0;i<8000*500;i++){
+    for(long i=0;i<2000*2000;i++){
 
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
@@ -659,41 +659,41 @@ int tst_add(){
         big_int *n3=big_int_get(binary);
 //        big_int_print(n3);
 
-        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
-        if (buffer[strlen(buffer) - 1] == '\n')
-            buffer[strlen(buffer) - 1] = '\0';
-        strcpy(binary, buffer);
-        big_int *rm_ans=big_int_get(binary);
+//        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+//        if (buffer[strlen(buffer) - 1] == '\n')
+//            buffer[strlen(buffer) - 1] = '\0';
+//        strcpy(binary, buffer);
+//        big_int *rm_ans=big_int_get(binary);
 
 //        printf("my func n1+n2=");
-        big_int *n4=big_int_get("0");
-        big_int *my_rm=big_int_get("0");
-        big_int_div(n1,n2,n4,my_rm);
+        big_int *n4= big_int_euclid_binary(n1,n2);
+//        big_int *my_rm=big_int_get("0");
+//        big_int_div(n1,n2,n4,my_rm);
 //        big_int_print(n4);
 
 //        if(i%10000==0)printf("i=%li",i);
-        if((!big_int_equal(n3,n4))||(!big_int_equal(my_rm,rm_ans))){//||(!big_int_equal(my_rm,rm_ans))
+        if((!big_int_equal(n3,n4))){//||(!big_int_equal(my_rm,rm_ans))
             printf("IMPOSTER i=%li\n",i);
             printf("n1=");
             big_int_print(n1);
             printf("n2=");
             big_int_print(n2);
-            printf("ans n1/n2=");
+            printf("ans (n1,n2)=");
             big_int_print(n3);
-            printf("rm_ans n1/n2=");
-            big_int_print(rm_ans);
-            printf("my func n1/n2=");
+//            printf("rm_ans n1/n2=");
+//            big_int_print(rm_ans);
+            printf("my ans (n1,n2)=");
             big_int_print(n4);
-            printf("my rm n1/n2=");
-            big_int_print(my_rm);
+//            printf("my rm n1/n2=");
+//            big_int_print(my_rm);
             break;
         }
         big_int_free(n1);
         big_int_free(n2);
         big_int_free(n3);
         big_int_free(n4);
-        big_int_free(rm_ans);
-        big_int_free(my_rm);
+//        big_int_free(rm_ans);
+//        big_int_free(my_rm);
 //        printf("---------------\n");
     }
 
