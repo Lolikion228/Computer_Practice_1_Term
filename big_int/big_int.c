@@ -208,7 +208,7 @@ int big_int_leq(big_int *n1, big_int *n2) //n1<=n2
 {
     if (n1->length < n2->length) return 1;
     if (n1->length > n2->length) return 0;
-    for (int i = n1->length; i > -1; i--) {
+    for (int i = n1->length-1; i > -1; i--) {
         if (n1->number[i] < n2->number[i]) return 1;
         if (n1->number[i] > n2->number[i]) return 0;
     }
@@ -431,6 +431,10 @@ void big_int_sub2(big_int *n1, big_int *n2) {
 //        printf("n2_2=");
 //        big_int_print(n2);
         if (t) big_int_swap(n1, n2);
+//        printf("n1_3=");
+//        big_int_print(n1);
+//        printf("n2_3=");
+//        big_int_print(n2);
         if (n1->sign == '+') {
             if (t)n3->sign = '-';
             else n3->sign = '+';
@@ -438,9 +442,9 @@ void big_int_sub2(big_int *n1, big_int *n2) {
             if (t)n3->sign = '+';
             else n3->sign = '-';
         }
-//        printf("n1_3=");
+//        printf("n1_4=");
 //        big_int_print(n1);
-//        printf("n2_3=");
+//        printf("n2_4=");
 //        big_int_print(n2);
         big_int_dlz(n3);
         n1->sign=n3->sign;
@@ -448,9 +452,9 @@ void big_int_sub2(big_int *n1, big_int *n2) {
         memcpy(n1->number,n3->number,n3->length);
         big_int_free(n3);
 
-//        printf("n1_4=");
+//        printf("n1_5=");
 //        big_int_print(n1);
-//        printf("n2_4=");
+//        printf("n2_5=");
 //        big_int_print(n2);
 //        printf("//////////end of sub2/////////////////\n");
     }
@@ -504,7 +508,7 @@ big_int *big_int_copy(big_int *x) {
     n3->sign = x->sign;
     n3->length = x->length;
     n3->number = (unsigned char *) calloc(n3->length, sizeof(x->number));
-    memccpy(n3->number, x->number, 'z', (sizeof(unsigned char)) * (x->length));
+    memcpy(n3->number, x->number, (x->length));
     return n3;
 }
 
@@ -571,33 +575,48 @@ void big_int_div(big_int *n1, big_int *n2,big_int *res1,big_int *rmdr){
     big_int *n3 = (big_int *) malloc(sizeof(big_int));
     n3->length = mx + 1;
     n3->sign = '+';
+//    printf("len=%d n1=",n1->length);big_int_print(n1);
+//    printf("len=%d n2=",n2->length);big_int_print(n2);
     big_int *x0 = big_int_copy(n1);
     big_int *y0 = big_int_copy(n2);
+//    printf("len=%d x0=",x0->length);big_int_print(x0);
+//    printf("len=%d y0=",y0->length);big_int_print(y0);
     x0->sign='+';
     y0->sign='+';
     n3->number = (unsigned char *) calloc(n3->length, sizeof(n3->number));
-    printf("1\n");
+    //printf("1\n");
     while(big_int_leq(y0,x0)){
-//        printf("x0=");big_int_print(x0);
-//        printf("y0=");big_int_print(y0);
+//        printf("comp=%d\n",big_int_leq(y0,x0));
+//        printf("len=%d x0=",x0->length);big_int_print(x0);
+//        printf("len=%d y0=",y0->length);big_int_print(y0);
 //        printf("n3_0=");big_int_print(n3);
         big_int_sub2(x0,y0);
         big_int_add2(n3,one);
-//        printf("x1=");big_int_print(x0);
-//        printf("y1=");big_int_print(y0);
+//        printf("len=%d x1=",x0->length);big_int_print(x0);
+//        printf("len=%d y1=",y0->length);big_int_print(y0);
 //        printf("n3=");big_int_print(n3);
-        //scanf("%d",&k);
+//        scanf("%d",&k);
 //        printf("------------------\n");
     }
+    big_int_free(one);
     big_int_free(x0);
     big_int_free(y0);
     n3->sign = (n1->sign == n2->sign) ? '+' : '-';
     big_int_dlz(n3);
 
-    *res1=*n3;
-    memcpy(res1,n3,n3->length);
-    //big_int *n4= big_int_sub(n1,big_int_mult(n2, res1));
-    //return big_int_sub(n1,big_int_mult(n2, big_int_div(n1,n2)));
+    res1->sign=n3->sign;
+    res1->length=n3->length;
+    memcpy(res1->number,n3->number,n3->length);
+    big_int_free(n3);
+
+    big_int *n5=big_int_mult(n2, res1);
+    big_int *n4 =big_int_sub(n1,n5);
+    big_int_free(n5);
+    rmdr->sign='+';
+    rmdr->length=n4->length;
+    memcpy(rmdr->number,n4->number,n4->length);
+    big_int_free(n4);
+
 }
 
 int big_int_equal(big_int *n1,big_int *n2){
@@ -614,7 +633,8 @@ int tst_add(){
     char* buffer = malloc(MAX_BINARY_LENGTH + 1); // Буфер для чтения строк из файла
 
 
-    for(long i=0;i<1000000;i++){
+    for(long i=0;i<8000*500;i++){
+
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
             buffer[strlen(buffer) - 1] = '\0';
@@ -622,6 +642,7 @@ int tst_add(){
 //        printf("n1=");
         big_int *n1=big_int_get(binary);
 //        big_int_print(n1);
+
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
             buffer[strlen(buffer) - 1] = '\0';
@@ -638,18 +659,41 @@ int tst_add(){
         big_int *n3=big_int_get(binary);
 //        big_int_print(n3);
 
+        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+        big_int *rm_ans=big_int_get(binary);
+
 //        printf("my func n1+n2=");
-        big_int *n4=big_int_mult(n1,n2);
+        big_int *n4=big_int_get("0");
+        big_int *my_rm=big_int_get("0");
+        big_int_div(n1,n2,n4,my_rm);
 //        big_int_print(n4);
 
-        if(!big_int_equal(n3,n4)){
+//        if(i%10000==0)printf("i=%li",i);
+        if((!big_int_equal(n3,n4))||(!big_int_equal(my_rm,rm_ans))){//||(!big_int_equal(my_rm,rm_ans))
             printf("IMPOSTER i=%li\n",i);
+            printf("n1=");
+            big_int_print(n1);
+            printf("n2=");
+            big_int_print(n2);
+            printf("ans n1/n2=");
+            big_int_print(n3);
+            printf("rm_ans n1/n2=");
+            big_int_print(rm_ans);
+            printf("my func n1/n2=");
+            big_int_print(n4);
+            printf("my rm n1/n2=");
+            big_int_print(my_rm);
             break;
         }
         big_int_free(n1);
         big_int_free(n2);
         big_int_free(n3);
         big_int_free(n4);
+        big_int_free(rm_ans);
+        big_int_free(my_rm);
 //        printf("---------------\n");
     }
 
