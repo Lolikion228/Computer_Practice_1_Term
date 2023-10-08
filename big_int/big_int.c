@@ -8,6 +8,8 @@
 #include <math.h>
 
 
+#define MAX_BINARY_LENGTH 32
+
 //ok
 big_int *big_int_get(const char *bin_number) {//'-'=45 '+'=43
     big_int *n1 = (big_int *) malloc(sizeof(big_int));
@@ -133,9 +135,18 @@ void big_int_free(big_int *n) {
 
 //ok
 void big_int_swap(big_int *n1, big_int *n2) {
-    big_int k = *n2;
-    *n2 = *n1;
-    *n1 = k;
+    char sgn=n1->sign;
+    unsigned int len=n1->length;
+    unsigned char *num=(unsigned char *) calloc(n1->length, sizeof(n1->number));
+    memcpy(num,n1->number,n1->length);
+    n1->sign=n2->sign;
+    n1->length=n2->length;
+    memcpy(n1->number,n2->number,n2->length);
+    n2->sign=sgn;
+    n2->length=len;
+    memcpy(n2->number,num,len);
+    //*(n2->number)=*num;
+    free(num);
 }
 
 
@@ -242,7 +253,7 @@ big_int *big_int_sub(big_int *n1, big_int *n2) {
             }
         } else {
             n3->number[i] = n1->number[i] - carry;
-            carry = 0;
+            if(n1->number[i]) carry = 0;
         }
     }
     if (t) big_int_swap(n1, n2);
@@ -266,19 +277,24 @@ void big_int_add2(big_int *n1, big_int *n2) {
             n2->sign = '+';
             big_int *n4 = (big_int_sub(n1, n2));
             n2->sign = '-';
-            *n1 = *n4;
+            n1->sign=n4->sign;
+            n1->length=n4->length;
+            memcpy(n1->number,n4->number,n4->length);
+            big_int_free(n4);
             big_int_dlz(n1);
         } else {
             n1->sign = '+';
             big_int *n4 = (big_int_sub(n2, n1));
             n1->sign = '-';
-            *n1 = *n4;
+            n1->sign=n4->sign;
+            n1->length=n4->length;
+            memcpy(n1->number,n4->number,n4->length);
+            big_int_free(n4);
             big_int_dlz(n1);
         }
     } else {
 //        printf("//////////////start of add2//////////////////\n");
-//        printf("n3_0=");
-       // big_int_print(n1);
+
         int mx = (int) fmax(n1->length, n2->length), carry = 0,x;
         big_int *n3 = (big_int *) malloc(sizeof(big_int));
         n3->length = mx + 1;
@@ -291,8 +307,22 @@ void big_int_add2(big_int *n1, big_int *n2) {
         n3->number = (unsigned char *) calloc(n3->length, sizeof(n3->number));
 //        printf("cycle for\n");
         int t=n1->length<=n2->length;
+//        printf("n1=");
+//        big_int_print(n1);
+//        printf("n2=");
+//        big_int_print(n2);
         if(t) big_int_swap(n1,n2);
+//        printf("n1=");
+//        big_int_print(n1);
+//        printf("n2=");
+//        big_int_print(n2);
+//        printf("----------------\n");
         for (int i = 0; i < mx; i++) {
+//            printf("carry0[%d]=%d\n",i,carry);
+//            printf("n1=");
+//            big_int_print(n1);
+//            printf("n2=");
+//            big_int_print(n2);
 //            printf("n3_0[%d]=",i);
 //            big_int_print(n3);
 //            printf("n1[%d]=%d\n",i,n1->number[i]);
@@ -300,23 +330,27 @@ void big_int_add2(big_int *n1, big_int *n2) {
             if(i<n2->length) x = n1->number[i] + n2->number[i] + carry;//sizeof(unsigned char)=1 sizeof(int)=4
             else x = n1->number[i] + carry;
 //            printf("n3_1[%d]=",i);
-            //big_int_print(n3);
+//            big_int_print(n3);
             n3->number[i] = x & 0xFF; // 0xFF 1111 1111
 //            printf("byte[%d] = %d = %d\n",i,x&0xFF,n3->number[i]);
             carry = x >> 8;
 //            printf("n3_2[%d]=",i);
 //            big_int_print(n3);
+//            printf("carry1[%d]=%d\n",i,carry);
+//            printf("----------------\n");
         }
         if(t) big_int_swap(n1,n2);
 
 //        printf("n3_1=");
-        //big_int_print(n3);
+//        big_int_print(n3);
         n3->number[mx] = carry;
         n3->sign = n1->sign;
         big_int_dlz(n3);
 //        printf("n3_2=");
 //        big_int_print(n3);
-        *n1 = *n3;
+        n1->length=n3->length;
+        memcpy(n1->number,n3->number,n3->length);
+        big_int_free(n3);
 //        printf("n3_3=");
 
 //        big_int_print(n1);
@@ -332,45 +366,70 @@ void big_int_sub2(big_int *n1, big_int *n2) {
             n2->sign = '+';
             big_int *n4 = (big_int_add(n1, n2));
             n2->sign = '-';
-            *n1 = *n4;
+            n1->sign=n4->sign;
+            n1->length=n4->length;
+            memcpy(n1->number,n4->number,n4->length);
+            big_int_free(n4);
             big_int_dlz(n1);
         } else {
             n2->sign = '-';
             big_int *n4 = (big_int_add(n2, n1));
             n2->sign = '+';
-            *n1 = *n4;
+            n1->sign=n4->sign;
+            n1->length=n4->length;
+            memcpy(n1->number,n4->number,n4->length);
+            big_int_free(n4);
             big_int_dlz(n1);
         }
     } else {
-
+//        printf("//////////start of sub2/////////////////\n");
         int mx = (int) fmax(n1->length, n2->length), carry = 0;
-
+//        printf("n1_0=");
+//        big_int_print(n1);
+//        printf("n2_0=");
+//        big_int_print(n2);
         big_int *n3 = (big_int *) malloc(sizeof(big_int));
 
         n3->length = mx;
         n3->number = (unsigned char *) calloc(n3->length, sizeof(n3->number));
         int t = big_int_leq(n1, n2);//n1<=n2
 
-
         if (t)big_int_swap(n1, n2);
-
-
+//        printf("n1_1=");
+//        big_int_print(n1);
+//        printf("n2_1=");
+//        big_int_print(n2);
+//        printf("res0=");
+//        big_int_print(n3);
         for (int i = 0; i < mx; i++) {//n2<=n1
+//            printf("carry0[%d]=%d\n",i,carry);
             if (carry) if ((n1->number[i] == 0) || (n1->number[i] == n2->number[i])) n3->number[i] += 0xFF;
             if (i < n2->length) {
                 if (n1->number[i] > n2->number[i]) {
                     n3->number[i] += n1->number[i] - n2->number[i] - carry;
+//                    printf("res0[%d]=",i);big_int_print(n3);
                     carry = 0;
                 }
                 if (n1->number[i] < n2->number[i]) {
                     n3->number[i] = 0x100 + n1->number[i] - n2->number[i];
+//                    printf("res1[%d]=",i);big_int_print(n3);
                     carry = 1;
                 }
             } else {
                 n3->number[i] = n1->number[i] - carry;
-                carry = 0;
+//                printf("res2[%d]=",i);big_int_print(n3);
+                if(n1->number[i]) carry = 0;
             }
+//            printf("carry1[%d]=%d\n",i,carry);
+//            printf("res[%d]=",i);big_int_print(n3);
+//            printf("----------------\n");
         }
+//        printf("res1=");
+//        big_int_print(n3);
+//        printf("n1_2=");
+//        big_int_print(n1);
+//        printf("n2_2=");
+//        big_int_print(n2);
         if (t) big_int_swap(n1, n2);
         if (n1->sign == '+') {
             if (t)n3->sign = '-';
@@ -379,9 +438,21 @@ void big_int_sub2(big_int *n1, big_int *n2) {
             if (t)n3->sign = '+';
             else n3->sign = '-';
         }
+//        printf("n1_3=");
+//        big_int_print(n1);
+//        printf("n2_3=");
+//        big_int_print(n2);
         big_int_dlz(n3);
-        *n1 = *n3;
+        n1->sign=n3->sign;
+        n1->length=n3->length;
+        memcpy(n1->number,n3->number,n3->length);
+        big_int_free(n3);
 
+//        printf("n1_4=");
+//        big_int_print(n1);
+//        printf("n2_4=");
+//        big_int_print(n2);
+//        printf("//////////end of sub2/////////////////\n");
     }
 }
 
@@ -489,6 +560,100 @@ big_int *big_int_mult(big_int *x, big_int *y) {
     big_int_free(x0);
     big_int_free(y0);
     n3->sign = (x->sign == y->sign) ? '+' : '-';
+    big_int_dlz(n3);
     return n3;
 }
 
+void big_int_div(big_int *n1, big_int *n2,big_int *res1,big_int *rmdr){
+    big_int *one=big_int_get("1");
+    int mx = (int) fmax(n1->length, n2->length),k;
+    big_int *n3 = (big_int *) malloc(sizeof(big_int));
+    n3->length = mx + 1;
+    n3->sign = '+';
+    big_int *x0 = big_int_copy(n1);
+    big_int *y0 = big_int_copy(n2);
+    x0->sign='+';
+    y0->sign='+';
+    n3->number = (unsigned char *) calloc(n3->length, sizeof(n3->number));
+    printf("1\n");
+    while(big_int_leq(y0,x0)){
+//        printf("x0=");big_int_print(x0);
+//        printf("y0=");big_int_print(y0);
+//        printf("n3_0=");big_int_print(n3);
+        big_int_sub2(x0,y0);
+        big_int_add2(n3,one);
+//        printf("x1=");big_int_print(x0);
+//        printf("y1=");big_int_print(y0);
+//        printf("n3=");big_int_print(n3);
+        //scanf("%d",&k);
+//        printf("------------------\n");
+    }
+    big_int_free(x0);
+    big_int_free(y0);
+    n3->sign = (n1->sign == n2->sign) ? '+' : '-';
+    big_int_dlz(n3);
+
+    *res1=*n3;
+    memcpy(res1,n3,n3->length);
+    //big_int *n4= big_int_sub(n1,big_int_mult(n2, res1));
+    //return big_int_sub(n1,big_int_mult(n2, big_int_div(n1,n2)));
+}
+
+int big_int_equal(big_int *n1,big_int *n2){
+    if(n1->length!=n2->length){printf("len\n");return 0;}
+    for(int i=0;i<n1->length;i++)
+        if((n1->number[i])!=(n2->number[i])) return 0;
+    return 1;
+}
+
+int tst_add(){
+    FILE* file = fopen("numbers.txt", "r"); // Открываем файл для чтения
+
+    char* binary = malloc(MAX_BINARY_LENGTH + 1); // Выделяем память для хранения строк двоичных чисел
+    char* buffer = malloc(MAX_BINARY_LENGTH + 1); // Буфер для чтения строк из файла
+
+
+    for(long i=0;i<1000000;i++){
+        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+//        printf("n1=");
+        big_int *n1=big_int_get(binary);
+//        big_int_print(n1);
+        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+//        printf("n2=");
+        big_int *n2=big_int_get(binary);
+//        big_int_print(n2);
+
+        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+//        printf("ans n1+n2=");
+        big_int *n3=big_int_get(binary);
+//        big_int_print(n3);
+
+//        printf("my func n1+n2=");
+        big_int *n4=big_int_mult(n1,n2);
+//        big_int_print(n4);
+
+        if(!big_int_equal(n3,n4)){
+            printf("IMPOSTER i=%li\n",i);
+            break;
+        }
+//        big_int_free(n1);
+//        big_int_free(n2);
+//        big_int_free(n3);
+//        big_int_free(n4);
+//        printf("---------------\n");
+    }
+
+    free(binary); // Освобождаем память
+    free(buffer);
+    fclose(file); // Закрываем файл
+    return 0;
+}

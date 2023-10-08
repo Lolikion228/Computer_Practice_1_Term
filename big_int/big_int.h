@@ -52,4 +52,9 @@ big_int *big_int_mult(big_int *x, big_int *y);
 
 big_int *big_int_copy(big_int*x);
 
+void big_int_div(big_int *n1, big_int *n2,big_int *res1,big_int*rmdr);
+
+int tst_add();
+
+int big_int_equal(big_int *n1,big_int *n2);
 #endif //UNTITLED_BIG_INT_H
