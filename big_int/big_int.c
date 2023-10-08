@@ -559,6 +559,7 @@ big_int *big_int_mult(big_int *x, big_int *y) {
     big_int_swap(x, y);
     big_int_free(x0);
     big_int_free(y0);
+    big_int_free(zero);
     n3->sign = (x->sign == y->sign) ? '+' : '-';
     big_int_dlz(n3);
     return n3;
@@ -618,38 +619,38 @@ int tst_add(){
         if (buffer[strlen(buffer) - 1] == '\n')
             buffer[strlen(buffer) - 1] = '\0';
         strcpy(binary, buffer);
-//        printf("n1=");
+        printf("n1=");
         big_int *n1=big_int_get(binary);
-//        big_int_print(n1);
+        big_int_print(n1);
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
             buffer[strlen(buffer) - 1] = '\0';
         strcpy(binary, buffer);
-//        printf("n2=");
+        printf("n2=");
         big_int *n2=big_int_get(binary);
-//        big_int_print(n2);
+        big_int_print(n2);
 
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
             buffer[strlen(buffer) - 1] = '\0';
         strcpy(binary, buffer);
-//        printf("ans n1+n2=");
+        printf("ans n1+n2=");
         big_int *n3=big_int_get(binary);
-//        big_int_print(n3);
+        big_int_print(n3);
 
-//        printf("my func n1+n2=");
+        printf("my func n1+n2=");
         big_int *n4=big_int_mult(n1,n2);
-//        big_int_print(n4);
+        big_int_print(n4);
 
         if(!big_int_equal(n3,n4)){
             printf("IMPOSTER i=%li\n",i);
             break;
         }
-//        big_int_free(n1);
-//        big_int_free(n2);
-//        big_int_free(n3);
-//        big_int_free(n4);
-//        printf("---------------\n");
+        big_int_free(n1);
+        big_int_free(n2);
+        big_int_free(n3);
+        big_int_free(n4);
+        printf("---------------\n");
     }
 
     free(binary); // Освобождаем память
