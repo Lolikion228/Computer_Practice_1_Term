@@ -744,7 +744,7 @@ int tst_add() {
         big_int_free(n4);
         big_int_free(ans);
 //        big_int_free(my_rm);
-        if(i%10==0)printf("i=%li\n",i);
+//        if(i%10==0)printf("i=%li\n",i);
 //        printf("---------------\n");
     }
 
