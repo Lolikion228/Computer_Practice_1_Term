@@ -12,6 +12,8 @@ typedef struct big_int {
     char sign;
 } big_int;
 
+big_int *big_int_rl_mod_pow(big_int *x, big_int *n, big_int *m);
+
 void big_int_swap(big_int *n1, big_int *n2);
 
 big_int *big_int_sub(big_int *n1, big_int *n2);
