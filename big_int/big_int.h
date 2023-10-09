@@ -12,6 +12,8 @@ typedef struct big_int {
     char sign;
 } big_int;
 
+void big_int_set_bit(big_int *n,long long num,int x);
+
 big_int *big_int_rl_mod_pow(big_int *x, big_int *n, big_int *m);
 
 void big_int_swap(big_int *n1, big_int *n2);
@@ -55,6 +57,8 @@ big_int *big_int_mult(big_int *x, big_int *y);
 big_int *big_int_copy(big_int*x);
 
 void big_int_div(big_int *n1, big_int *n2,big_int *res1,big_int*rmdr);
+
+void big_int_div2(big_int *n1, big_int *n2, big_int *res1, big_int *rmdr);
 
 int tst_add();
 

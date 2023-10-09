@@ -592,6 +592,43 @@ void big_int_div(big_int *n1, big_int *n2, big_int *res1, big_int *rmdr) {
     big_int_free(n4);
 }
 
+void big_int_set_bit(big_int *n,long long num,int x){
+    if((num/8)>=(n->length)){
+        n->number = (unsigned char *) realloc(n->number, (num/8+1) * sizeof(n->number));
+        memset((n->number)+(n->length),0,(num/8)-(n->length));
+        n->length=num/8+1;
+    }
+    if( (((n->number[num/8])&(1<<num%8))!=0)!=x ){
+        if(x){n->number[num/8]+=1<<num%8;}
+        else {n->number[num/8]-=1<<num%8;}
+    }
+}
+
+void big_int_div2(big_int *n1, big_int *n2, big_int *res1, big_int *rmdr){
+    big_int *r=big_int_get("0");
+    big_int *q=big_int_get("0");
+    for(int i=(n1->length)-1;i>=0;i--) {
+        for (int bit = 7; bit >= 0; bit--) {
+            big_int_bin_shft_l(r);
+            big_int_set_bit(r, 0, ((n1->number[i]) & (1 << bit)) != 0);
+            if (big_int_leq(n2, r)) {
+                r->sign='+';
+                big_int_sub2(r, n2);
+                big_int_set_bit(q, i * 8 + bit, 1);
+            }
+        }
+    }
+    res1->sign = (n1->sign == n2->sign) ? '+' : '-';
+    res1->length=q->length;
+    memcpy(res1->number,q->number,q->length);
+    big_int_free(q);
+    rmdr->sign = '+';
+    rmdr->length=r->length;
+    memcpy(rmdr->number,r->number,r->length);
+    big_int_free(r);
+}
+
+
 big_int *big_int_rl_mod_pow(big_int *x, big_int *n, big_int *m) {
     big_int *ans=big_int_get("1");//int ans=1
     big_int *zero=big_int_get("0");
@@ -602,7 +639,7 @@ big_int *big_int_rl_mod_pow(big_int *x, big_int *n, big_int *m) {
         if((n0->number[0])&1){//if n&1
             big_int *xmodm=big_int_get("0");
             big_int *trash=big_int_get("0");
-            big_int_div(x0,m0,trash,xmodm);
+            big_int_div2(x0,m0,trash,xmodm);
             big_int *n4=big_int_mult(ans,xmodm);
             big_int_swap(ans,n4);
             big_int_free(n4);
@@ -613,7 +650,7 @@ big_int *big_int_rl_mod_pow(big_int *x, big_int *n, big_int *m) {
         big_int *sq=big_int_mult(x0,cp_x0);
         big_int *sqmodm1=big_int_get("0");
         big_int *trash1=big_int_get("0");
-        big_int_div(sq,m0,trash1,sqmodm1);
+        big_int_div2(sq,m0,trash1,sqmodm1);
         big_int_swap(x0,sqmodm1);
         big_int_bin_shft_r(n0);//n>>=1
         big_int_free(cp_x0);
@@ -622,7 +659,7 @@ big_int *big_int_rl_mod_pow(big_int *x, big_int *n, big_int *m) {
         big_int_free(trash1);
     }
     big_int *fin=big_int_get("0");
-    big_int_div(ans,m0,zero,fin);
+    big_int_div2(ans,m0,zero,fin);
     big_int_free(zero);
     big_int_free(x0);
     big_int_free(m0);
