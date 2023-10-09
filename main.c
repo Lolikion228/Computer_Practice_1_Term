@@ -13,27 +13,30 @@ my func n1+n2=-00010101 10110111
  */
 
 /*
-ans=+00000001 00000000 00001110
-m=+00101011
-ans1=+00000001 00010010
-right=00010010
+000000010000000000001110-1111111111111100=0000000100010010
+ 65550-65532=274????
  */
 
 int main() {
-//65550/43=1524
-//    printf("n1=");
-//    big_int *n1= big_int_get("000000010000000000001110");
-//    big_int_print(n1);
-//    big_int *n2= big_int_get("00101011");
-//    printf("n2=");
-//    big_int_print(n2);
-//    big_int *n3= big_int_get("101011");
+// (3**29)%43
+    printf("n1=");
+    big_int *n1= big_int_get("111");
+    big_int_print(n1);
+    big_int *n2= big_int_get("1111111111111111111111111");
+    printf("n2=");
+    big_int_print(n2);
+//    //65550/43=1524
+//    //65550%43=274
+//    //43*1524=65532
+    big_int *n3= big_int_get("11101");
+    printf("n3=");
+    big_int_print(n3);
 ////    big_int *n4= big_int_get("0");
 //    big_int_div(n1,n2,n3,n3);
 //    printf("n1%%n2=");big_int_print(n3);
 //47**2%11=9
-    tst_add();
-//    big_int_print(big_int_rl_mod_pow(n1,n2,n3));
+//    tst_add();
+    big_int_print(big_int_rl_mod_pow(n1,n2,n3));
 //    big_int_div(n1,n3,n2,n4);
 //    big_int_print(n2);
 //    big_int_print(n4);
