@@ -468,7 +468,6 @@ void big_int_sub2(big_int *n1, big_int *n2) {
 
 big_int *big_int_euclid_binary(big_int *x, big_int *y) {
     big_int *zero = big_int_get("0");
-//    if( (*x->number==*zero->number) || (*y->number==*zero->number)) return one;
     int k, n = 0;
     char c1 = x->sign, c2 = y->sign;
     x->sign = '+';
@@ -526,7 +525,6 @@ int check(big_int *n) {
 }
 
 big_int *big_int_mult(big_int *x, big_int *y) {
-//    printf("mult1");
     int mx = (int) fmax(x->length, y->length);
     big_int *zero = big_int_get("0");
     big_int *n3 = (big_int *) malloc(sizeof(big_int));
@@ -535,38 +533,19 @@ big_int *big_int_mult(big_int *x, big_int *y) {
     big_int *x0 = big_int_copy(x);
     big_int *y0 = big_int_copy(y);
     n3->number = (unsigned char *) calloc(n3->length, sizeof(n3->number));
-//
-//  printf("mult2");
     if (x->length >= y->length) {
         while (!big_int_leq(y, zero)) {
-//            printf("mult3");
             big_int_dlz(n3);
-//            printf("len=%d ",n3->length);printf("n3_0=");big_int_print(n3);
-//            printf("len=%d ",x->length);printf("x0="); big_int_print(x);
-//            printf("len=%d ",y->length);printf("y0="); big_int_print(y);
             if (y->number[0] & 1) big_int_add2(n3, x);
             big_int_bin_shft_r(y);
             big_int_bin_shft_l(x);
-//            printf("len=%d ",n3->length);printf("n3=");big_int_print(n3);
-//            printf("len=%d ",x->length);printf("x="); big_int_print(x);
-//            printf("len=%d ",y->length);printf("y="); big_int_print(y);
-//            printf("-----------------\n");
-
         }
     } else {
         while (!big_int_leq(x, zero)) {
             big_int_dlz(n3);
-//            printf("len=%d ",n3->length);printf("n3_0=");big_int_print(n3);
-//            printf("len=%d ",x->length);printf("x0="); big_int_print(x);
-//            printf("len=%d ",y->length);printf("y0="); big_int_print(y);
             if (x->number[0] & 1) big_int_add2(n3, y);
             big_int_bin_shft_r(x);
             big_int_bin_shft_l(y);
-//            printf("len=%d ",n3->length);printf("n3=");big_int_print(n3);
-//            printf("len=%d ",x->length);printf("x="); big_int_print(x);
-//            printf("len=%d ",y->length);printf("y="); big_int_print(y);
-//            printf("-----------------\n");
-
         }
     }
     big_int_swap(y, x0);
@@ -580,67 +559,37 @@ big_int *big_int_mult(big_int *x, big_int *y) {
     return n3;
 }
 
-void big_int_div(big_int *n1, big_int *n2, big_int *res1, big_int *rmdr,int deb) {
-//    printf("//////////big_int_div start/////////////\n");
+void big_int_div(big_int *n1, big_int *n2, big_int *res1, big_int *rmdr) {
     big_int *one = big_int_get("1");
     int mx = (int) fmax(n1->length, n2->length), k;
     big_int *n3 = (big_int *) malloc(sizeof(big_int));
     n3->length = mx + 1;
     n3->sign = '+';
-//    printf("len=%d n1=",n1->length);big_int_print(n1);
-//    printf("len=%d n2=",n2->length);big_int_print(n2);
     big_int *x0 = big_int_copy(n1);
     big_int *y0 = big_int_copy(n2);
-//    printf("len=%d x0=",x0->length);big_int_print(x0);
-//    printf("len=%d y0=",y0->length);big_int_print(y0);
     x0->sign = '+';
     y0->sign = '+';
     n3->number = (unsigned char *) calloc(n3->length, sizeof(n3->number));
-    //printf("1\n");
     while (big_int_leq(y0, x0)) {
-//        printf("comp=%d\n",big_int_leq(y0,x0));
-//        printf("len=%d x0=",x0->length);big_int_print(x0);
-//        printf("len=%d y0=",y0->length);big_int_print(y0);
-//        printf("n3_0=");big_int_print(n3);
         big_int_sub2(x0, y0);
         big_int_add2(n3, one);
-//        printf("len=%d x1=",x0->length);big_int_print(x0);
-//        printf("len=%d y1=",y0->length);big_int_print(y0);
-//        printf("n3=");big_int_print(n3);
-//        scanf("%d",&k);
-        if(deb) {
-//            printf("x=");big_int_print(x0);
-//            printf("y=");big_int_print(y0);
-        }
-//        printf("------------------\n");
     }
     big_int_free(one);
     big_int_free(x0);
     big_int_free(y0);
     n3->sign = (n1->sign == n2->sign) ? '+' : '-';
     big_int_dlz(n3);
-
     res1->sign = n3->sign;
     res1->length = n3->length;
     memcpy(res1->number, n3->number, n3->length);
     big_int_free(n3);
-//    printf("div=");
-//    big_int_print(res1);
     big_int *n5 = big_int_mult(n2, res1);
-//    printf("n2*div=");
-//    big_int_print(n5);
     big_int *n4 = big_int_sub(n1, n5);
-//    printf("n1-n2*div=");
-//    big_int_print(n4);
     big_int_free(n5);
     rmdr->sign = '+';
     rmdr->length = n4->length;
-//    big_int_print(n4);
     memcpy(rmdr->number, n4->number, n4->length);
-//    printf("mod=");
-//    big_int_print(rmdr);
     big_int_free(n4);
-//    printf("//////////big_int_div end/////////////\n");
 }
 
 big_int *big_int_rl_mod_pow(big_int *x, big_int *n, big_int *m) {
@@ -651,30 +600,20 @@ big_int *big_int_rl_mod_pow(big_int *x, big_int *n, big_int *m) {
     big_int *m0=big_int_copy(m);
     while(!big_int_leq(n0,zero)){//while(n)
         if((n0->number[0])&1){//if n&1
-            //ans*=x%m
             big_int *xmodm=big_int_get("0");
             big_int *trash=big_int_get("0");
-//            printf("before div\n");
-            big_int_div(x0,m0,trash,xmodm,0);
-//            printf("after div\n");
-//            printf("before mult\n");
+            big_int_div(x0,m0,trash,xmodm);
             big_int *n4=big_int_mult(ans,xmodm);
-//            printf("after mult\n");
             big_int_swap(ans,n4);
             big_int_free(n4);
             big_int_free(xmodm);
             big_int_free(trash);
         }
-        //x=(x*x)%m
         big_int *cp_x0= big_int_copy(x0);
-//        printf("before mult2\n");
         big_int *sq=big_int_mult(x0,cp_x0);
-//        printf("after mult2\n");
         big_int *sqmodm1=big_int_get("0");
         big_int *trash1=big_int_get("0");
-        printf("before div2\n");
-        big_int_div(sq,m0,trash1,sqmodm1,0);
-        printf("after div2\n");
+        big_int_div(sq,m0,trash1,sqmodm1);
         big_int_swap(x0,sqmodm1);
         big_int_bin_shft_r(n0);//n>>=1
         big_int_free(cp_x0);
@@ -683,10 +622,7 @@ big_int *big_int_rl_mod_pow(big_int *x, big_int *n, big_int *m) {
         big_int_free(trash1);
     }
     big_int *fin=big_int_get("0");
-    printf("before div3\n");
-    big_int_div(ans,m0,zero,fin,1);
-    printf("after div3\n");
-//    big_int_print(fin);
+    big_int_div(ans,m0,zero,fin);
     big_int_free(zero);
     big_int_free(x0);
     big_int_free(m0);
@@ -697,7 +633,6 @@ big_int *big_int_rl_mod_pow(big_int *x, big_int *n, big_int *m) {
 
 int big_int_equal(big_int *n1, big_int *n2) {
     if (n1->length != n2->length) {
-        printf("len\n");
         return 0;
     }
     for (int i = 0; i < n1->length; i++)
