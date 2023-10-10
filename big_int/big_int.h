@@ -33,9 +33,9 @@ void big_int_swap(big_int *n1, big_int *n2);//ok???
 
 big_int *big_int_copy(big_int*x);//ok
 
-int big_int_leq(big_int *n1, big_int *n2);
+int big_int_leq(big_int *n1, big_int *n2);//ok
 
-int big_int_geq(big_int *n1, big_int *n2);
+int big_int_geq(big_int *n1, big_int *n2);//ok
 
 big_int* big_int_disj(big_int *n1,big_int *n2);
 
