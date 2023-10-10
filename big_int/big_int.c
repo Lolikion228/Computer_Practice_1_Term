@@ -11,7 +11,7 @@
 #define MAX_BINARY_LENGTH 8000
 
 
-big_int *big_int_get(const char *bin_number) {//'-'=45 '+'=43
+big_int *big_int_get(const char *bin_number) {
     big_int *n1 = (big_int *) malloc(sizeof(big_int));
     int len1 = strlen(bin_number), t = 0;
     if (bin_number[0] == '-') {
@@ -116,7 +116,6 @@ void big_int_swap(big_int *n1, big_int *n2) {
     n2->sign = sgn;
     n2->length = len;
     memmove(n2->number, num, len);
-    //*(n2->number)=*num;
     free(num);
 }
 
@@ -163,7 +162,6 @@ int big_int_geq(big_int *n1, big_int *n2)//n1<=n2
 
 
 big_int *big_int_disj(big_int *n1, big_int *n2) {
-//    printf("/////disj func start///////\n");
     int min = (int) fmin(n1->length, n2->length);
     big_int *n3 = (big_int *) malloc(sizeof(big_int));
     n3->length = min;
@@ -173,15 +171,10 @@ big_int *big_int_disj(big_int *n1, big_int *n2) {
         return NULL;
     }
     for (int i = 0; i < min; i++) {
-//        printf("n1[%d]=%d\n",i,n1->number[i]);
-//        printf("n2[%d]=%d\n",i,n2->number[i]);
         n3->number[i] = (n2->number[i]) & (n1->number[i]);
-//        printf("n3[%d]=%d\n",i,n3->number[i]);
-//        printf("------\n");
     }
     n3->sign = '+';
     big_int_dlz(n3);
-//    printf("/////disj func end///////\n");
     return n3;
 }
 
@@ -828,7 +821,7 @@ int tst_add() {
         big_int_free(ans);
         big_int_free(my);
 //        big_int_free(my_rm);
-        if (i % 10000 == 0)printf("i=%li\n", i);
+        if (i % 100000 == 0)printf("i=%li\n", i);
 //        printf("---------------\n");
     }
 

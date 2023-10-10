@@ -35,7 +35,7 @@ int big_int_leq(big_int *n1, big_int *n2);//ok
 
 int big_int_geq(big_int *n1, big_int *n2);//ok
 
-big_int* big_int_disj(big_int *n1,big_int *n2);
+big_int* big_int_disj(big_int *n1,big_int *n2);//ok
 
 void big_int_set_bit(big_int *n,long long num,int x);
 
