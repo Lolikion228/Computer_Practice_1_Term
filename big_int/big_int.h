@@ -41,11 +41,11 @@ void big_int_bin_shft_r(big_int *n);//ok
 
 void big_int_bin_shft_l(big_int *n);//ok
 
-void big_int_bin_shft_r2(big_int *n,int cnt);
+void big_int_bin_shft_r2(big_int *n,int cnt);//ok
 
-void big_int_bin_shft_l2(big_int *n,int cnt);
+void big_int_bin_shft_l2(big_int *n,int cnt);//ok
 
-void big_int_set_bit(big_int *n,long long num,int x);
+void big_int_set_bit(big_int *n,long long num,int x);//ok
 
 big_int *big_int_add(big_int *n1, big_int *n2);
 

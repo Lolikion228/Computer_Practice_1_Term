@@ -209,9 +209,10 @@ void big_int_bin_shft_r2(big_int *n, int cnt) {
         n = big_int_get("0");
     } else {
         if (x) {
+            n->length-=x;
+            memmove(n->number, n->number+x , sizeof(n->number[0]) * (n->length));
             n->number = (unsigned char *) realloc(n->number, (n->length) * sizeof(n->number[0]));
-            if (n->number == NULL) printf("memory error in big_int_bin_shft_l\n");
-            memmove(n->number, n->number + x, sizeof(n->number[0]) * (n->length - x));
+            if (n->number == NULL) printf("memory error in big_int_bin_shft_r2\n");
         }
     }
     big_int_dlz(n);
@@ -223,11 +224,44 @@ void big_int_bin_shft_l2(big_int *n, int cnt) {
     unsigned int x = cnt / 8;
     n->length += x;
     n->number = (unsigned char *) realloc(n->number, (n->length) * sizeof(n->number[0]));
-    if (n->number == NULL) printf("memory error in big_int_bin_shft_l\n");
+    if (n->number == NULL) printf("memory error in big_int_bin_shft_l2\n");
     memmove(n->number+x, n->number, n->length-x);
     for (int i = 0; i < x; i++) n->number[i] = 0;
 }
 
+
+void big_int_set_bit(big_int *n, long long num, int x) {
+    if ((num / 8) >= (n->length)) {
+        n->number = (unsigned char *) realloc(n->number, (num / 8 + 1) * sizeof(n->number[0]));
+        if (n->number == NULL) printf("memory error in big_int_set_bit\n");
+        memset((n->number) + (n->length), 0, (num / 8) - (n->length)+1);
+        n->length = num / 8 + 1;
+    }
+    if (x) { // set bit
+        n->number[num / 8] |= 1 << (num % 8);
+    } else { // clear bit
+        n->number[num / 8] &= ~(1 << (num % 8));
+    }
+    big_int_dlz(n);
+}
+
+void big_int_set_bit2(big_int *n, long long num, int x) {
+    if ((num / 8) >= (n->length)) {
+        n->number = (unsigned char *) realloc(n->number, (num / 8 + 1) * sizeof(n->number[0]));
+        if (n->number == NULL) {
+            printf("memory error in big_int_set_bit\n");
+            return;
+        }
+        memset((n->number) + (n->length), 0, (num / 8) - (n->length) + 1);
+        n->length = num / 8 + 1;
+    }
+    if (x) { // set bit
+        n->number[num / 8] |= 1 << (num % 8);
+    } else { // clear bit
+        n->number[num / 8] &= ~(1 << (num % 8));
+    }
+    big_int_dlz(n);
+}
 
 big_int *big_int_add(big_int *n1, big_int *n2) {
     if (n1->sign != n2->sign) {
@@ -659,17 +693,7 @@ void big_int_div(big_int *n1, big_int *n2, big_int *res1, big_int *rmdr) {
     big_int_free(n4);
 }
 
-void big_int_set_bit(big_int *n, long long num, int x) {
-    if ((num / 8) >= (n->length)) {
-        n->number = (unsigned char *) realloc(n->number, (num / 8 + 1) * sizeof(n->number[0]));
-        memset((n->number) + (n->length), 0, (num / 8) - (n->length));
-        n->length = num / 8 + 1;
-    }
-    if ((((n->number[num / 8]) & (1 << num % 8)) != 0) != x) {
-        if (x) { n->number[num / 8] += 1 << num % 8; }
-        else { n->number[num / 8] -= 1 << num % 8; }
-    }
-}
+
 
 void big_int_div2(big_int *n1, big_int *n2, big_int *res1, big_int *rmdr) {
     big_int *r = big_int_get("0");
@@ -759,7 +783,7 @@ int tst_add() {
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
 
-    for (long i = 0; i < 200000; i++) {
+    for (long i = 0; i < 2000000; i++) {
 
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
@@ -770,20 +794,20 @@ int tst_add() {
         big_int *n2 = big_int_copy(n1);
 //        big_int_print(n1);
 
-//        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
-//        if (buffer[strlen(buffer) - 1] == '\n')
-//            buffer[strlen(buffer) - 1] = '\0';
-//        strcpy(binary, buffer);
-////        printf("n2=");
-//        big_int *n2 = big_int_get(binary);
-////        big_int_print(n2);
+        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+//        printf("n2=");
+        big_int *cnt = big_int_get(binary);
+//        big_int_print(n2);
 
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
             buffer[strlen(buffer) - 1] = '\0';
         strcpy(binary, buffer);
 //        printf("ans=");
-        big_int *pow = big_int_get(binary);
+        big_int *bit = big_int_get(binary);
 //        big_int_print(ans);
 
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
@@ -798,19 +822,20 @@ int tst_add() {
 //        printf("my ans=");
 //        big_int_print(n1);
 
-        big_int_bin_shft_l2(n1,pow->number[0]);
+        big_int_set_bit(n1,cnt->number[0],bit->number[0]);
 //        printf("my=");
 //        big_int_print(my);
 //        printf("------------------------------\n");
         if (!big_int_equal(ans,n1 )) {
             printf("////////////////////////IMPOSTER i=%li//////////////\n", i);
-            printf("n1=");
-            big_int_print(n2);
-            printf("cnt=%d\n",pow->number[0]);
-            printf("ans=");
-            big_int_print(ans);
-            printf("my=");
-            big_int_print(n1);
+//            printf("n1=");
+//            big_int_print(n2);
+//            printf("cnt=%d\n",cnt->number[0]);
+//            printf("bit=%d\n",bit->number[0]);
+//            printf("ans=");
+//            big_int_print(ans);
+//            printf("my=");
+//            big_int_print(n1);
 //            printf("n2=");
 //            big_int_print(n2);
 //            printf("n3=");
@@ -821,18 +846,19 @@ int tst_add() {
 //            big_int_print(n4);
             break;
         }
-//        big_int_free(n1);
+        big_int_free(n1);
+        big_int_free(n2);
 //        printf("end1\n");
-//        big_int_free(n2);
+        big_int_free(bit);
 //        printf("end2\n");
 ////        big_int_free(n3);
-//        big_int_free(pow);
+        big_int_free(cnt);
 //        printf("end3\n");
-//        big_int_free(ans);
+        big_int_free(ans);
 //        printf("end4\n");
 //        big_int_free(my);
 //        big_int_free(my_rm);
-        if (i % 1 == 0)printf("i=%li\n", i);
+        if (i % 10000 == 0)printf("i=%li\n", i);
 //        printf("---------------\n");
     }
 
