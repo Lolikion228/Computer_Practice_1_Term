@@ -105,7 +105,7 @@ void big_int_swap(big_int *n1, big_int *n2) {
     char sgn = n1->sign;
     unsigned int len = n1->length;
     unsigned char *num = (unsigned char *) calloc(n1->length, sizeof(n1->number[0]));
-    if (num->number == NULL) {
+    if (num == NULL) {
         printf("memory error in big_int_swap\n");
         return NULL;
     }
@@ -163,6 +163,7 @@ int big_int_geq(big_int *n1, big_int *n2)//n1<=n2
 
 
 big_int *big_int_disj(big_int *n1, big_int *n2) {
+//    printf("/////disj func start///////\n");
     int min = (int) fmin(n1->length, n2->length);
     big_int *n3 = (big_int *) malloc(sizeof(big_int));
     n3->length = min;
@@ -172,10 +173,15 @@ big_int *big_int_disj(big_int *n1, big_int *n2) {
         return NULL;
     }
     for (int i = 0; i < min; i++) {
-        n3->number[i] = (n2->number[i]) | (n1->number[i]);
+//        printf("n1[%d]=%d\n",i,n1->number[i]);
+//        printf("n2[%d]=%d\n",i,n2->number[i]);
+        n3->number[i] = (n2->number[i]) & (n1->number[i]);
+//        printf("n3[%d]=%d\n",i,n3->number[i]);
+//        printf("------\n");
     }
     n3->sign = '+';
     big_int_dlz(n3);
+//    printf("/////disj func end///////\n");
     return n3;
 }
 
@@ -759,7 +765,7 @@ int tst_add() {
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
 
-    for (long i = 0; i < 10000000; i++) {
+    for (long i = 0; i < 1000000; i++) {
 
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
@@ -773,17 +779,17 @@ int tst_add() {
         if (buffer[strlen(buffer) - 1] == '\n')
             buffer[strlen(buffer) - 1] = '\0';
         strcpy(binary, buffer);
-//        printf("n1=");
+//        printf("n2=");
         big_int *n2 = big_int_get(binary);
-//        big_int_print(n1);
+//        big_int_print(n2);
 
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
             buffer[strlen(buffer) - 1] = '\0';
         strcpy(binary, buffer);
-//        printf("n2=");
+//        printf("ans=");
         big_int *ans = big_int_get(binary);
-//        big_int_print(n2);
+//        big_int_print(ans);
 
 //        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
 //        if (buffer[strlen(buffer) - 1] == '\n')
@@ -796,9 +802,12 @@ int tst_add() {
 //        big_int_dlz(n1);
 //        printf("my ans=%d\n", big_int_equal(n1,n2));
 //        big_int_print(n1);
+
+        big_int *my=big_int_disj(n1,n2);
+//        printf("my=");
+//        big_int_print(my);
 //        printf("------------------------------\n");
-//
-        if ((big_int_geq(n1, n2) != ans->number[0])) {
+        if (!big_int_equal(ans,my )) {
             printf("////////////////////////IMPOSTER i=%li//////////////\n", i);
 //            printf("n1=");
 //            big_int_print(n1);
@@ -817,6 +826,7 @@ int tst_add() {
 //        big_int_free(n3);
 //        big_int_free(n4);
         big_int_free(ans);
+        big_int_free(my);
 //        big_int_free(my_rm);
         if (i % 10000 == 0)printf("i=%li\n", i);
 //        printf("---------------\n");

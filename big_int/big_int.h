@@ -13,8 +13,6 @@ typedef struct big_int {
     char sign;
 } big_int;
 
-
-
 big_int *big_int_get(const char *bin_number);//ok
 
 int big_int_equal(big_int *n1,big_int *n2);//ok
