@@ -39,7 +39,7 @@ big_int* big_int_disj(big_int *n1,big_int *n2);//ok
 
 void big_int_bin_shft_r(big_int *n);//ok
 
-void big_int_bin_shft_l(big_int *n);
+void big_int_bin_shft_l(big_int *n);//ok
 
 void big_int_bin_shft_r2(big_int *n,int cnt);
 
