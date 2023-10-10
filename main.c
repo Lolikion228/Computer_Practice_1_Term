@@ -19,7 +19,6 @@ my func n1+n2=-00010101 10110111
 
 int main() {
     tst_add();
-
     return 0;
 
 

@@ -37,17 +37,15 @@ int big_int_geq(big_int *n1, big_int *n2);//ok
 
 big_int* big_int_disj(big_int *n1,big_int *n2);//ok
 
-void big_int_set_bit(big_int *n,long long num,int x);
-
-void big_int_bin_shft_r(big_int *n);
+void big_int_bin_shft_r(big_int *n);//ok
 
 void big_int_bin_shft_l(big_int *n);
-
-void big_int_bin_shft_lr(big_int *n);
 
 void big_int_bin_shft_r2(big_int *n,int cnt);
 
 void big_int_bin_shft_l2(big_int *n,int cnt);
+
+void big_int_set_bit(big_int *n,long long num,int x);
 
 big_int *big_int_add(big_int *n1, big_int *n2);
 
