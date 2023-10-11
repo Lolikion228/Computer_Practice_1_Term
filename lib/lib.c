@@ -26,6 +26,7 @@ int euclid_recursive(int a, int b) {
 int euclid_binary(int x, int y) {
     int a, n = 0;
     a = x | y;
+    printf("%d",a);
     while ((a & 1) != 1) {
         a >>= 1;
         x >>= 1;

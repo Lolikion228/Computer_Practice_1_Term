@@ -18,6 +18,7 @@ my func n1+n2=-00010101 10110111
  */
 
 int main() {
+//    printf("%d", 2|3);
     tst_add();
 //    big_int *n1= big_int_get("1");
 //    big_int *n2= big_int_get("10");

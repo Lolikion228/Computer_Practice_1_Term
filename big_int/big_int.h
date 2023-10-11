@@ -25,8 +25,6 @@ void big_int_print(const big_int *n);//ok
 
 void big_int_free(big_int *n);//ok
 
-void big_int_swap2(big_int **n1,big_int **n2);//ok
-
 void big_int_swap(big_int *n1, big_int *n2);//ok???
 
 big_int *big_int_copy(big_int*x);//ok
