@@ -53,7 +53,7 @@ big_int *big_int_sub(big_int *n1, big_int *n2);//ok
 
 void big_int_sub2(big_int *n1, big_int *n2);//ok
 
-big_int *big_int_euclid_binary(big_int *x, big_int *y);
+big_int *big_int_euclid_binary(big_int *x, big_int *y);//ok
 
 big_int *big_int_mult(big_int *x, big_int *y);
 
