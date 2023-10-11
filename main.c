@@ -19,13 +19,12 @@ my func n1+n2=-00010101 10110111
 
 int main() {
     tst_add();
-//    big_int *n= big_int_get("00000000100000001");
-//    big_int *n2= big_int_copy(n);
-//    big_int_print(n);
-//    big_int_bin_shft_l2(n,24);
-//    big_int_print(n);
-//    big_int_free(n);
+//    big_int *n1= big_int_get("1");
+//    big_int *n2= big_int_get("10");
+//    big_int_print(n1);
 //    big_int_print(n2);
+//    big_int *n3= big_int_euclid_binary(n1,n2);
+//    big_int_print(n3);
     return 0;
 
 
