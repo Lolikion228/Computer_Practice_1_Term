@@ -8,7 +8,7 @@
 #include <math.h>
 
 
-#define MAX_BINARY_LENGTH 18000
+#define MAX_BINARY_LENGTH 5000
 
 
 big_int *big_int_get(const char *bin_number) {
@@ -496,52 +496,43 @@ big_int *big_int_euclid_binary(big_int *x, big_int *y) {
     int k, n = 0;
     big_int *x0= big_int_copy(x);
     big_int *y0= big_int_copy(y);
-    char c1 = x->sign, c2 = y->sign;
-    x->sign = '+';
-    y->sign = '+';
-    big_int *a = big_int_disj(x, y);//a = x | y;
+    big_int *a = big_int_disj(x0, y0);//a = x | y;
     if (!big_int_equal(a, zero)) {
         while ((a->number[0] & 1) != 1) {
             big_int_bin_shft_r(a);
-            big_int_bin_shft_r(x);
-            big_int_bin_shft_r(y);
+            big_int_bin_shft_r(x0);
+            big_int_bin_shft_r(y0);
             n++;
         }
     }
-    big_int_dlz(x);
-    big_int_dlz(y);
-    while ((!big_int_leq(x, zero)) && (!big_int_leq(y, zero))) {
-        if ((x->number[0] & 1) == 1) {
-            while ((y->number[0] & 1) == 0) big_int_bin_shft_r(y);
+    big_int_dlz(x0);
+    big_int_dlz(y0);
+    while ((!big_int_leq(x0, zero)) && (!big_int_leq(y0, zero))) {
+        if ((x0->number[0] & 1) == 1) {
+            while ((y0->number[0] & 1) == 0) big_int_bin_shft_r(y0);
         } else {
-            while ((x->number[0] & 1) == 0) big_int_bin_shft_r(x);
+            while ((x0->number[0] & 1) == 0) big_int_bin_shft_r(x0);
         }
-        big_int_dlz(x);
-        big_int_dlz(y);
-        if (big_int_leq(y, x)) {
-            big_int_sub2(x, y);
+        big_int_dlz(x0);
+        big_int_dlz(y0);
+        if (big_int_leq(y0, x0)) {
+            big_int_sub2(x0, y0);
         } else {
-            big_int_sub2(y, x);
+            big_int_sub2(y0, x0);
         }
     }
-    x->sign = '+';
-    y->sign = '+';
-    big_int_dlz(x);
-    big_int_dlz(y);
-    big_int *n3;
-    if(!big_int_equal(x,zero)){
-        n3=big_int_copy(x);
-    }
-    else{
-        n3=big_int_copy(y);
-    }
+
+    big_int_dlz(x0);
+    big_int_dlz(y0);
+    big_int *n3= big_int_add(x0,y0);
+
     big_int_bin_shft_l2(n3, n);
-    big_int_swap(x,x0);
-    big_int_swap(y,y0);
+
     big_int_free(x0);
     big_int_free(y0);
     big_int_free(a);
     big_int_free(zero);
+
     return n3;
 }
 
@@ -702,7 +693,7 @@ int tst_add() {
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
 
-    for (long i = 0; i < 1000*1000; i++) {
+    for (long i = 0; i < 100*100; i++) {
 
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
@@ -710,7 +701,7 @@ int tst_add() {
         strcpy(binary, buffer);
 //        printf("n1=");
         big_int *n1 = big_int_get(binary);
-        big_int *n12 = big_int_copy(n1);
+//        big_int *n12 = big_int_copy(n1);
 //        big_int_print(n1);
 
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
@@ -738,26 +729,26 @@ int tst_add() {
 //        printf("ans=");
 //        printf("my ans=");
 //        big_int_print(ans);
-        big_int *n3 = big_int_sub(n1, n2);
-        big_int_sub2(n12,n2);
+        big_int *n3 = big_int_euclid_binary(n1, n2);
+//        big_int_sub2(n12,n2);
 //        big_int_add2(n12, n2);
 //        printf("my=");
 //        big_int_print(n3);
 //        printf("------------------------------\n");
-        if ((!big_int_equal(ans, n3))||(!big_int_equal(ans, n12))) {
+        if ((!big_int_equal(ans, n3))) {
             printf("////////////////////////IMPOSTER i=%li//////////////\n", i);
             printf("n1=");
             big_int_print(n1);
             printf("n2=");
             big_int_print(n2);
-//////            printf("cnt=%d\n",cnt->number[0]);
-//////            printf("bit=%d\n",bit->number[0]);
+////////            printf("cnt=%d\n",cnt->number[0]);
+////////            printf("bit=%d\n",bit->number[0]);
             printf("ans=");
             big_int_print(ans);
             printf("my=");
             big_int_print(n3);
-            printf("my2=");
-            big_int_print(n12);
+//            printf("my2=");
+//            big_int_print(n12);
 //            printf("n3=");
 //            big_int_print(n3);
 //            printf("ans(n1**n2)%%n3=");
@@ -767,7 +758,7 @@ int tst_add() {
             break;
         }
         big_int_free(n1);
-        big_int_free(n12);
+//        big_int_free(n12);
         big_int_free(n2);
         big_int_free(n3);
 //        big_int_free(bit);
@@ -776,7 +767,7 @@ int tst_add() {
 //        printf("end4\n");
 //        big_int_free(my);
 //        big_int_free(my_rm);
-        if (i % 100000 == 0)printf("i=%li\n", i);
+        if (i % 10000 == 0)printf("i=%li\n", i);
 //        printf("---------------\n");
     }
 
