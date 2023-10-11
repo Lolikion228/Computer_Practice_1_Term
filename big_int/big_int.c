@@ -367,6 +367,7 @@ big_int *big_int_sub(big_int *n1, big_int *n2) {
     big_int *n3 = (big_int *) malloc(sizeof(big_int));
     n3->length = mx;
     n3->number = (unsigned char *) calloc(n3->length, sizeof(n3->number[0]));
+    if(n3->number==NULL){printf("memory error in big_int_sub\n");}
     int t = big_int_leq(n1, n2);
     if (t)big_int_swap2(&n1, &n2);
     for (int i = 0; i < mx; i++) {
@@ -444,6 +445,7 @@ void big_int_sub2(big_int *n1, big_int *n2) {
         big_int *n3 = (big_int *) malloc(sizeof(big_int));
         n3->length = mx;
         n3->number = (unsigned char *) calloc(n3->length, sizeof(n3->number[0]));
+        if(n3->number==NULL){printf("memory error in big_int_sub2\n");}
         int t = big_int_leq(n1, n2);
         if (t)big_int_swap2(&n1, &n2);
         for (int i = 0; i < mx; i++) {
