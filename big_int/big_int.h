@@ -47,13 +47,13 @@ void big_int_bin_shft_l2(big_int *n,int cnt);//ok
 
 void big_int_set_bit(big_int *n,long long num,int x);//ok
 
-big_int *big_int_add(big_int *n1, big_int *n2);
+big_int *big_int_add(big_int *n1, big_int *n2);//
 
-void big_int_add2(big_int *n1, big_int *n2);
+void big_int_add2(big_int *n1, big_int *n2);//
 
-big_int *big_int_sub(big_int *n1, big_int *n2);
+big_int *big_int_sub(big_int *n1, big_int *n2);//
 
-void big_int_sub2(big_int *n1, big_int *n2);
+void big_int_sub2(big_int *n1, big_int *n2);//
 
 big_int *big_int_euclid_binary(big_int *x, big_int *y);
 
