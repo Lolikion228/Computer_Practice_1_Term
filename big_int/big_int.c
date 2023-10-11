@@ -367,9 +367,9 @@ big_int *big_int_sub(big_int *n1, big_int *n2) {
     big_int *n3 = (big_int *) malloc(sizeof(big_int));
     n3->length = mx;
     n3->number = (unsigned char *) calloc(n3->length, sizeof(n3->number[0]));
-    int t = big_int_leq(n1, n2);//n1<=n2
+    int t = big_int_leq(n1, n2);
     if (t)big_int_swap2(&n1, &n2);
-    for (int i = 0; i < mx; i++) {//|n2|<=|n1|
+    for (int i = 0; i < mx; i++) {
         if (i < n2->length) {
             if (n1->number[i] > n2->number[i]) {
                 n3->number[i] = n1->number[i] - n2->number[i] - carry;
@@ -418,9 +418,6 @@ big_int *big_int_sub(big_int *n1, big_int *n2) {
 }
 
 
-
-
-
 void big_int_sub2(big_int *n1, big_int *n2) {
     if (n1->sign != n2->sign) {
         if (n1->sign == '+') {
@@ -443,59 +440,49 @@ void big_int_sub2(big_int *n1, big_int *n2) {
             big_int_dlz(n1);
         }
     } else {
-//        printf("//////////start of sub2/////////////////\n");
         int mx = (int) fmax(n1->length, n2->length), carry = 0;
-//        printf("n1_0=");
-//        big_int_print(n1);
-//        printf("n2_0=");
-//        big_int_print(n2);
         big_int *n3 = (big_int *) malloc(sizeof(big_int));
-
         n3->length = mx;
         n3->number = (unsigned char *) calloc(n3->length, sizeof(n3->number[0]));
-        int t = big_int_leq(n1, n2);//n1<=n2
-
+        int t = big_int_leq(n1, n2);
         if (t)big_int_swap2(&n1, &n2);
-//        printf("n1_1=");
-//        big_int_print(n1);
-//        printf("n2_1=");
-//        big_int_print(n2);
-//        printf("res0=");
-//        big_int_print(n3);
-        for (int i = 0; i < mx; i++) {//n2<=n1
-//            printf("carry0[%d]=%d\n",i,carry);
-            if (carry) if ((n1->number[i] == 0) || (n1->number[i] == n2->number[i])) n3->number[i] += 0xFF;
+        for (int i = 0; i < mx; i++) {
             if (i < n2->length) {
                 if (n1->number[i] > n2->number[i]) {
-                    n3->number[i] += n1->number[i] - n2->number[i] - carry;
-//                    printf("res0[%d]=",i);big_int_print(n3);
+                    n3->number[i] = n1->number[i] - n2->number[i] - carry;
                     carry = 0;
                 }
+                if (n1->number[i] == n2->number[i]) {
+                    if (carry) {
+                        n3->number[i] = 0xFF;
+                    } else {
+                        n3->number[i] = 0;
+                    }
+                }
                 if (n1->number[i] < n2->number[i]) {
-                    n3->number[i] = 0x100 + n1->number[i] - n2->number[i];
-//                    printf("res1[%d]=",i);big_int_print(n3);
-                    carry = 1;
+                    if (carry) {
+                        n3->number[i] = 0xFF + n1->number[i] - n2->number[i];
+                    } else {
+                        n3->number[i] = 0x100 + n1->number[i] - n2->number[i];
+                        carry = 1;
+                    }
                 }
             } else {
-                n3->number[i] = n1->number[i] - carry;
-//                printf("res2[%d]=",i);big_int_print(n3);
-                if (n1->number[i]) carry = 0;
+                if(carry){
+                    if(n1->number[i]){
+                        n3->number[i]=n1->number[i]-1;
+                        carry=0;
+                    }
+                    else{
+                        n3->number[i]=0xFF;
+                    }
+                }
+                else{
+                    n3->number[i]=n1->number[i];
+                }
             }
-//            printf("carry1[%d]=%d\n",i,carry);
-//            printf("res[%d]=",i);big_int_print(n3);
-//            printf("----------------\n");
         }
-//        printf("res1=");
-//        big_int_print(n3);
-//        printf("n1_2=");
-//        big_int_print(n1);
-//        printf("n2_2=");
-//        big_int_print(n2);
         if (t) big_int_swap2(&n1, &n2);
-//        printf("n1_3=");
-//        big_int_print(n1);
-//        printf("n2_3=");
-//        big_int_print(n2);
         if (n1->sign == '+') {
             if (t)n3->sign = '-';
             else n3->sign = '+';
@@ -503,21 +490,11 @@ void big_int_sub2(big_int *n1, big_int *n2) {
             if (t)n3->sign = '+';
             else n3->sign = '-';
         }
-//        printf("n1_4=");
-//        big_int_print(n1);
-//        printf("n2_4=");
-//        big_int_print(n2);
         big_int_dlz(n3);
         n1->sign = n3->sign;
         n1->length = n3->length;
         memmove(n1->number, n3->number, n3->length);
         big_int_free(n3);
-
-//        printf("n1_5=");
-//        big_int_print(n1);
-//        printf("n2_5=");
-//        big_int_print(n2);
-//        printf("//////////end of sub2/////////////////\n");
     }
 }
 
