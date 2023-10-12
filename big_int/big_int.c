@@ -8,7 +8,7 @@
 #include <math.h>
 
 
-#define MAX_BINARY_LENGTH 3000
+#define MAX_BINARY_LENGTH 11000
 
 
 big_int *big_int_get(const char *bin_number) {
@@ -1463,7 +1463,7 @@ int tst_mult() {
         big_int_free(n2);
         big_int_free(n3);
         big_int_free(ans);
-        if(i%1000==0){printf("i=%li\n",i);}
+        if(i%100==0){printf("i=%li\n",i);}
     }
     free(binary); // Освобождаем память
     free(buffer);
