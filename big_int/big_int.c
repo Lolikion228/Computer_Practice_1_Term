@@ -1301,6 +1301,14 @@ int tst_set_bit() {
 
         big_int_set_bit(n1,num->number[0],bit->number[0]);
 
+        big_int_dlz(n1);
+        big_int_swap2(n1,ans);
+        big_int_swap2(n1,ans);
+        big_int_dlz(ans);
+        big_int_swap2(n1,ans);
+        big_int_swap2(n1,ans);
+        big_int_dlz(n1);
+        big_int_dlz(ans);
         if ((!big_int_equal(ans, n1))) {
             printf("////////////////////////IMPOSTER IN set_bit i=%li//////////////\n", i);
             printf("n1=");
