@@ -8,30 +8,22 @@
 /*
 
 ////////////////////////IMPOSTER IN shft2 i=8//////////////
-n1=+00000001
-n2=+00001000
-ans1=+00000001 00000000
-ans2=+00000000
-my ans1=+00000001 00000000
-my ans2=
+n1=+00000010
+n2=+00000011 10000101
+mod=+00000010
+ans=+00000000
+my=+00000001
 
  */
 
 
 int main() {
     tst();
-//    big_int *n1= big_int_get("1000000000000000000000000000000000000000010");
-//    big_int *n2= big_int_get("1110000000000000000000000000000000000000111");
-//    big_int_print(n1);
-//    big_int_print(n2);
-//    big_int_swap2(n1,n2);
-//    big_int_print(n1);
-//    big_int_print(n2);
-//    unsigned char *num = (unsigned char *) calloc(2, 1);
-//    printf("%d %d\n",num[0],num[1]);
-//    num= realloc(num,100);
-//    for(int i=0;i<100;i++)
-//        printf("%d\n",num[i]);
+//    big_int *n1= big_int_get("10");
+//    big_int *n2= big_int_get("111111111111111111110");
+//    big_int *n3=big_int_get("10");
+//    big_int *n4= big_int_lr_mod_pow(n1,n2,n3);
+//    big_int_print(n4);
     return 0;
 
 

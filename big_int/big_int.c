@@ -679,14 +679,12 @@ big_int *big_int_rl_mod_pow(big_int *x, big_int *n, big_int *m) {
             big_int_free(xmodm);
             big_int_free(trash);
         }
-        big_int *cp_x0 = big_int_copy(x0);
-        big_int *sq = big_int_mult(x0, cp_x0);
+        big_int *sq = big_int_mult(x0, x0);
         big_int *sqmodm1 = big_int_get("0");
         big_int *trash1 = big_int_get("0");
         big_int_div2(sq, m0, trash1, sqmodm1);
         big_int_swap2(x0, sqmodm1);
         big_int_bin_shft_r(n0);//n>>=1
-        big_int_free(cp_x0);
         big_int_free(sq);
         big_int_free(sqmodm1);
         big_int_free(trash1);
@@ -701,9 +699,33 @@ big_int *big_int_rl_mod_pow(big_int *x, big_int *n, big_int *m) {
     return fin;
 }
 
-big_int *big_int_lr_mod_pow(big_int *x, big_int *n, big_int *m);{
 
-
+big_int *big_int_lr_mod_pow(big_int *x, big_int *n, big_int *m){
+    big_int *n3= big_int_get("1");
+    for (int i = n->length - 1; i > -1; i--){
+        for(int j=7;j>-1;j--){
+            big_int *sq=big_int_mult(n3,n3);
+            big_int *xmodm = big_int_get("0");
+            big_int *trash = big_int_get("0");
+            big_int_div2(sq, m, trash, xmodm);
+            big_int_swap2(xmodm,n3);
+            big_int_free(sq);
+            big_int_free(xmodm);
+            big_int_free(trash);
+            if((n->number[i])&(1<<j)){
+                big_int *mul=big_int_get("0");
+                big_int *trash=big_int_get("0");
+                big_int_div2(x,m,trash,mul);
+                big_int *mul2= big_int_mult(n3,mul);
+                big_int_swap2(mul2,n3);
+                big_int_free(mul);
+                big_int_free(trash);
+                big_int_free(mul2);
+            }
+        }
+    }
+    big_int_div2(n3, m, n3, n3);
+    return n3;
 }
 
 
@@ -904,7 +926,7 @@ int tst_pow() {
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
     int err=0;
-    for (long i = 0; i <100*10*100+10*10*10+10*10*10; i++) {
+    for (long i = 0; i <100*10*100+100*10*10+10000; i++) {
 
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
@@ -929,12 +951,23 @@ int tst_pow() {
             buffer[strlen(buffer) - 1] = '\0';
         strcpy(binary, buffer);
         big_int *ans = big_int_get(binary);
+//        printf("bf\n");
+        big_int *n3=big_int_lr_mod_pow(n1, n2,mod);
+        big_int *n4=big_int_rl_mod_pow(n1, n2,mod);
+//        printf("af\n");
 
-        big_int *n3=big_int_rl_mod_pow(n1, n2,mod);
-
-
-        if ((!big_int_equal(ans, n3))) {
+        if ((!big_int_equal(ans, n3))||(!big_int_equal(ans, n4))) {
             printf("////////////////////////IMPOSTER IN POWi=%li//////////////\n", i);
+            printf("n1=");
+            big_int_print(n1);
+            printf("n2=");
+            big_int_print(n2);
+            printf("mod=");
+            big_int_print(mod);
+            printf("ans=");
+            big_int_print(ans);
+            printf("my=");
+            big_int_print(n3);
             err=1;
             break;
         }
@@ -943,7 +976,7 @@ int tst_pow() {
         big_int_free(mod);
         big_int_free(ans);
         big_int_free(n3);
-        if(i%10000==0){printf("i=%li\n",i);}
+        if(i%1000==0){printf("i=%li\n",i);}
     }
     free(binary); // Освобождаем память
     free(buffer);
