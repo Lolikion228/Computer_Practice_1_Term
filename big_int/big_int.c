@@ -1340,6 +1340,60 @@ int tst_set_bit() {
     return err;
 }
 
+int tst_copy() {
+    FILE *file = fopen("copy.txt", "r");
+    char *binary = malloc(MAX_BINARY_LENGTH + 1);
+    char *buffer = malloc(MAX_BINARY_LENGTH + 1);
+    int err=0;
+    for (long i = 0; i < 2000000; i++) {
+        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+
+        big_int *src = big_int_get(binary);
+        big_int *n1= big_int_copy(src);
+        big_int *n2= big_int_copy(n1);
+        big_int *n3= big_int_copy(n2);
+        big_int *n4= big_int_copy(src);
+
+
+        if ( (big_int_equal(src, n1)*big_int_equal(src, n2)*big_int_equal(src, n3)*big_int_equal(src, n4))!=1 ) {
+            printf("////////////////////////IMPOSTER IN set_bit i=%li//////////////\n", i);
+            printf("src=");
+            big_int_print(src);
+            printf("n1=");
+            big_int_print(n1);
+            printf("n2=");
+            big_int_print(n2);
+            printf("n3=");
+            big_int_print(n3);
+            printf("n4=");
+            big_int_print(n4);
+//            printf("cnt=%d\n",n2->number[0]);
+//            printf("bit=");
+//            big_int_print(bit);
+//            printf("ans=");
+//            big_int_print(ans);
+//            printf("my ans=");
+//            big_int_print(n1);
+//            printf("my ans2=");
+//            big_int_print(my2);
+            err=1;
+            break;
+        }
+        big_int_free(n1);
+        big_int_free(n2);
+        big_int_free(n3);
+        big_int_free(n4);
+        big_int_free(src);
+        if(i%100000==0){printf("i=%li\n",i);}
+    }
+    free(binary); // Освобождаем память
+    free(buffer);
+    fclose(file); // Закрываем файл
+    return err;
+}
 
 void tst(){
 //    printf("start of the test\n");
@@ -1357,8 +1411,10 @@ void tst(){
 //    else{printf("shft2 is ok\n");}
 //    if(tst_div()){return;}
 //    else{printf("div is ok\n");}
-    if(tst_set_bit()){return;}
-    else{printf("set_bit is ok\n");}
+//    if(tst_set_bit()){return;}
+//    else{printf("set_bit is ok\n");}
+    if(tst_copy()){return;}
+    else{printf("copy is ok\n");}
 
 //    if(tst_pow()){return;}
 //    else{printf("pow is ok\n");}
