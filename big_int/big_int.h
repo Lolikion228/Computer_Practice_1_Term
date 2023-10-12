@@ -59,18 +59,10 @@ void big_int_set_bit(big_int *n,long long num,int x);//ok
 
 big_int *big_int_copy(big_int*x);//ok
 
-big_int *big_int_mult(big_int *x, big_int *y);
+big_int *big_int_mult(big_int *x, big_int *y);//ok
 
 big_int *big_int_rl_mod_pow(big_int *x, big_int *n, big_int *m);
 
-int tst_add();
-int tst_sub();
-int tst_div();
-int tst_eu();
-int tst_pow();
-int tst_shft1();
-int tst_shft2();
-int tst_swap();
 void tst();
 
 #endif //UNTITLED_BIG_INT_H
