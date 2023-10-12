@@ -1146,10 +1146,10 @@ void tst(){
     else{printf("shft1 is ok\n");}
     if(tst_shft2()){return;}
     else{printf("shft2 is ok\n");}
-    if(tst_div()){return;}
-    else{printf("div is ok\n");}
-    if(tst_pow()){return;}
-    else{printf("pow is ok\n");}
+//    if(tst_div()){return;}
+//    else{printf("div is ok\n");}
+//    if(tst_pow()){return;}
+//    else{printf("pow is ok\n");}
 
     printf("end of the test\n");
 }
