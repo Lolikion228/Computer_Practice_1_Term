@@ -20,20 +20,13 @@ my ans2=
 
 int main() {
     tst();
-//    big_int *n1= big_int_get("0000001");
+//    big_int *n1= big_int_get("1000000000000000000000000000000000000000010");
+//    big_int *n2= big_int_get("1110000000000000000000000000000000000000111");
 //    big_int_print(n1);
-//    big_int_bin_shft_r2(n1,8000);
-//    printf("len=%d\n",n1->length);
+//    big_int_print(n2);
+//    big_int_swap2(n1,n2);
 //    big_int_print(n1);
-//    big_int_free(n1);
-//    big_int_print(n1);
-//    printf("%d",n1->length);
-//    big_int_print(n1);
-//    big_int *n2= big_int_get("01011011");
-//    big_int *mod= big_int_get("01011011");
-//    big_int *n3= big_int_rl_mod_pow(n1,n2,mod);
-//    big_int_print(n3);
-//    free(NULL)///!!!!!!!!!
+//    big_int_print(n2);
     return 0;
 
 

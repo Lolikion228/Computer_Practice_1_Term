@@ -23,11 +23,13 @@ void big_int_print(const big_int *n);//ok
 
 void big_int_free(big_int *n);//ok
 
-void big_int_dlz(big_int *n);//
+void big_int_dlz(big_int *n);//ok
 
 void big_int_swap(big_int *n1, big_int *n2);
 
-big_int *big_int_copy(big_int*x);//
+void big_int_swap2(big_int *n1, big_int *n2);
+
+big_int *big_int_copy(big_int*x);
 
 int big_int_leq(big_int *n1, big_int *n2);//ok
 
@@ -69,6 +71,8 @@ int tst_div();
 int tst_eu();
 int tst_pow();
 int tst_shft1();
+int tst_shft2();
+int tst_swap();
 void tst();
 
 #endif //UNTITLED_BIG_INT_H
