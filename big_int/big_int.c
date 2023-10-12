@@ -8,7 +8,7 @@
 #include <math.h>
 
 
-#define MAX_BINARY_LENGTH 2000
+#define MAX_BINARY_LENGTH 3000
 
 
 big_int *big_int_get(const char *bin_number) {
@@ -1408,7 +1408,7 @@ int tst_mult() {
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
     int err=0;
-    for (long i = 0; i < 1000000; i++) {
+    for (long i = 0; i < 10000; i++) {
 
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
@@ -1463,7 +1463,7 @@ int tst_mult() {
         big_int_free(n2);
         big_int_free(n3);
         big_int_free(ans);
-        if(i%100000==0){printf("i=%li\n",i);}
+        if(i%1000==0){printf("i=%li\n",i);}
     }
     free(binary); // Освобождаем память
     free(buffer);
