@@ -27,6 +27,11 @@ int main() {
 //    big_int_swap2(n1,n2);
 //    big_int_print(n1);
 //    big_int_print(n2);
+//    unsigned char *num = (unsigned char *) calloc(2, 1);
+//    printf("%d %d\n",num[0],num[1]);
+//    num= realloc(num,100);
+//    for(int i=0;i<100;i++)
+//        printf("%d\n",num[i]);
     return 0;
 
 

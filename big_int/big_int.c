@@ -111,11 +111,11 @@ void big_int_swap(big_int *n1, big_int *n2) {
     memmove(num, n1->number, n1->length);//ok
     n1->sign = n2->sign;
     n1->length = n2->length;
-    n1->number= realloc(n1->number,n2->length);
+    n1->number= (unsigned char *)realloc(n1->number,n2->length);
     memmove(n1->number, n2->number, n2->length);
     n2->sign = sgn;
     n2->length = len;
-    n2->number= realloc(n2->number,len);
+    n2->number=(unsigned char *) realloc(n2->number,len);
     memmove(n2->number, num, len);
     free(num);
 }
@@ -311,14 +311,14 @@ big_int *big_int_add(big_int *n1, big_int *n2) {
     n3->number = (unsigned char *) calloc(n3->length, sizeof(n3->number[0]));
     if (n3->number == NULL) { printf("memory error in big_int_add\n"); }
     int t = n1->length <= n2->length;
-    if (t) big_int_swap(n1, n2);
+    if (t) big_int_swap2(n1, n2);
     for (int i = 0; i < mx; i++) {
         if (i < n2->length) x = n1->number[i] + n2->number[i] + carry;
         else x = n1->number[i] + carry;
         n3->number[i] = x & 0xFF;
         carry = x >> 8;
     }
-    if (t) big_int_swap(n1, n2);
+    if (t) big_int_swap2(n1, n2);
     n3->number[mx] = carry;
     n3->sign = n1->sign;
     big_int_dlz(n3);
@@ -355,14 +355,14 @@ void big_int_add2(big_int *n1, big_int *n2) {
         n3->number = (unsigned char *) calloc(n3->length, sizeof(n3->number[0]));
         if (n3->number == NULL) { printf("memory error in big_int_add2\n"); }
         int t = n1->length <= n2->length;
-        if (t) big_int_swap(n1, n2);
+        if (t) big_int_swap2(n1, n2);
         for (int i = 0; i < mx; i++) {
             if (i < n2->length) x = n1->number[i] + n2->number[i] + carry;
             else x = n1->number[i] + carry;
             n3->number[i] = x & 0xFF;
             carry = x >> 8;
         }
-        if (t) big_int_swap(n1,n2);
+        if (t) big_int_swap2(n1,n2);
         n3->number[mx] = carry;
         n3->sign = n1->sign;
         big_int_dlz(n3);
@@ -395,7 +395,7 @@ big_int *big_int_sub(big_int *n1, big_int *n2) {
     n3->number = (unsigned char *) calloc(n3->length, sizeof(n3->number[0]));
     if (n3->number == NULL) { printf("memory error in big_int_sub\n"); }
     int t = big_int_leq(n1, n2);
-    if (t)big_int_swap(n1, n2);
+    if (t)big_int_swap2(n1, n2);
     for (int i = 0; i < mx; i++) {
         if (i < n2->length) {
             if (n1->number[i] > n2->number[i]) {
@@ -430,7 +430,7 @@ big_int *big_int_sub(big_int *n1, big_int *n2) {
             }
         }
     }
-    if (t) big_int_swap(n1, n2);
+    if (t) big_int_swap2(n1, n2);
     if (n1->sign == '+') {
         if (t)n3->sign = '-';
         else n3->sign = '+';
@@ -471,7 +471,7 @@ void big_int_sub2(big_int *n1, big_int *n2) {
         n3->number = (unsigned char *) calloc(n3->length, sizeof(n3->number[0]));
         if (n3->number == NULL) { printf("memory error in big_int_sub2\n"); }
         int t = big_int_leq(n1, n2);
-        if (t)big_int_swap(n1, n2);
+        if (t)big_int_swap2(n1, n2);
         for (int i = 0; i < mx; i++) {
             if (i < n2->length) {
                 if (n1->number[i] > n2->number[i]) {
@@ -506,7 +506,7 @@ void big_int_sub2(big_int *n1, big_int *n2) {
                 }
             }
         }
-        if (t) big_int_swap(n1, n2);
+        if (t) big_int_swap2(n1, n2);
         if (n1->sign == '+') {
             if (t)n3->sign = '-';
             else n3->sign = '+';
@@ -623,6 +623,7 @@ void big_int_div(big_int *n1, big_int *n2, big_int *res1, big_int *rmdr) {
     big_int_dlz(n3);
     res1->sign = n3->sign;
     res1->length = n3->length;
+    res1->number=(unsigned char *)realloc(res1->number,res1->length);
     memmove(res1->number, n3->number, n3->length);
     big_int_free(n3);
     big_int *n5 = big_int_mult(n2, res1);
@@ -630,6 +631,7 @@ void big_int_div(big_int *n1, big_int *n2, big_int *res1, big_int *rmdr) {
     big_int_free(n5);
     rmdr->sign = '+';
     rmdr->length = n4->length;
+    rmdr->number=(unsigned char *)realloc(rmdr->number,rmdr->length);
     memmove(rmdr->number, n4->number, n4->length);
     big_int_free(n4);
 }
@@ -651,10 +653,12 @@ void big_int_div2(big_int *n1, big_int *n2, big_int *res1, big_int *rmdr) {
     }
     res1->sign = (n1->sign == n2->sign) ? '+' : '-';
     res1->length = q->length;
+    res1->number=(unsigned char *)realloc(res1->number,res1->length);
     memmove(res1->number, q->number, q->length);
     big_int_free(q);
     rmdr->sign = '+';
     rmdr->length = r->length;
+    rmdr->number=(unsigned char *)realloc(rmdr->number,rmdr->length);
     memmove(rmdr->number, r->number, r->length);
     big_int_free(r);
 }
@@ -672,7 +676,7 @@ big_int *big_int_rl_mod_pow(big_int *x, big_int *n, big_int *m) {
             big_int *trash = big_int_get("0");
             big_int_div2(x0, m0, trash, xmodm);
             big_int *n4 = big_int_mult(ans, xmodm);
-            big_int_swap(ans, n4);
+            big_int_swap2(ans, n4);
             big_int_free(n4);
             big_int_free(xmodm);
             big_int_free(trash);
@@ -682,7 +686,7 @@ big_int *big_int_rl_mod_pow(big_int *x, big_int *n, big_int *m) {
         big_int *sqmodm1 = big_int_get("0");
         big_int *trash1 = big_int_get("0");
         big_int_div2(sq, m0, trash1, sqmodm1);
-        big_int_swap(x0, sqmodm1);
+        big_int_swap2(x0, sqmodm1);
         big_int_bin_shft_r(n0);//n>>=1
         big_int_free(cp_x0);
         big_int_free(sq);
@@ -1023,7 +1027,7 @@ int tst_div() {
         big_int_free(ans2);
         big_int_free(my1);
         big_int_free(my2);
-        if(i%10000==0){printf("i=%li\n",i);}
+        if(i%1000==0){printf("i=%li\n",i);}
     }
     free(binary); // Освобождаем память
     free(buffer);
@@ -1264,21 +1268,21 @@ int tst_swap() {
 }
 
 void tst(){
-    printf("start of the test\n");
-    if(tst_swap()){return;}
-    else{printf("swap is ok\n");}
-    if(tst_add()){return;}
-    else{printf("add is ok\n");}
-    if(tst_sub()){return;}
-    else{printf("sub is ok\n");}
-    if(tst_eu()){return;}
-    else{printf("eu is ok\n");}
-    if(tst_shft1()){return;}
-    else{printf("shft1 is ok\n");}
-    if(tst_shft2()){return;}
-    else{printf("shft2 is ok\n");}
-//    if(tst_div()){return;}
-//    else{printf("div is ok\n");}
+//    printf("start of the test\n");
+//    if(tst_swap()){return;}
+//    else{printf("swap is ok\n");}
+//    if(tst_add()){return;}
+//    else{printf("add is ok\n");}
+//    if(tst_sub()){return;}
+//    else{printf("sub is ok\n");}
+//    if(tst_eu()){return;}
+//    else{printf("eu is ok\n");}
+//    if(tst_shft1()){return;}
+//    else{printf("shft1 is ok\n");}
+//    if(tst_shft2()){return;}
+//    else{printf("shft2 is ok\n");}
+    if(tst_div()){return;}
+    else{printf("div is ok\n");}
 //    if(tst_pow()){return;}
 //    else{printf("pow is ok\n");}
 
