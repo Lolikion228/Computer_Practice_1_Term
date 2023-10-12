@@ -976,7 +976,7 @@ int tst_pow() {
         big_int_free(mod);
         big_int_free(ans);
         big_int_free(n3);
-        if(i%1000==0){printf("i=%li\n",i);}
+//        if(i%1000==0){printf("i=%li\n",i);}
     }
     free(binary); // Освобождаем память
     free(buffer);
@@ -1495,26 +1495,26 @@ int tst_mult() {
 
 void tst(){
     printf("start of the test\n");
-//    if(tst_swap()){return;}
-//    else{printf("swap is ok\n");}
-//    if(tst_add()){return;}
-//    else{printf("add is ok\n");}
-//    if(tst_sub()){return;}
-//    else{printf("sub is ok\n");}
-//    if(tst_eu()){return;}
-//    else{printf("eu is ok\n");}
-//    if(tst_shft1()){return;}
-//    else{printf("shft1 is ok\n");}
-//    if(tst_shft2()){return;}
-//    else{printf("shft2 is ok\n");}
-//    if(tst_div()){return;}
-//    else{printf("div is ok\n");}
-//    if(tst_set_bit()){return;}
-//    else{printf("set_bit is ok\n");}
-//    if(tst_copy()){return;}
-//    else{printf("copy is ok\n");}
-//    if(tst_mult()){return;}
-//    else{printf("mult is ok\n");}
+    if(tst_swap()){return;}
+    else{printf("swap is ok\n");}
+    if(tst_add()){return;}
+    else{printf("add is ok\n");}
+    if(tst_sub()){return;}
+    else{printf("sub is ok\n");}
+    if(tst_eu()){return;}
+    else{printf("eu is ok\n");}
+    if(tst_shft1()){return;}
+    else{printf("shft1 is ok\n");}
+    if(tst_shft2()){return;}
+    else{printf("shft2 is ok\n");}
+    if(tst_div()){return;}
+    else{printf("div is ok\n");}
+    if(tst_set_bit()){return;}
+    else{printf("set_bit is ok\n");}
+    if(tst_copy()){return;}
+    else{printf("copy is ok\n");}
+    if(tst_mult()){return;}
+    else{printf("mult is ok\n");}
     if(tst_pow()){return;}
     else{printf("pow is ok\n");}
 
