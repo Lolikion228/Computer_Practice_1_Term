@@ -1025,7 +1025,7 @@ int tst_div() {
         big_int_free(ans2);
         big_int_free(my1);
         big_int_free(my2);
-        if(i%1000==0){printf("i=%li\n",i);}
+//        if(i%1000==0){printf("i=%li\n",i);}
     }
     free(binary); // Освобождаем память
     free(buffer);
