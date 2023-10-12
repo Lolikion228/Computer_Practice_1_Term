@@ -1238,7 +1238,7 @@ int tst_swap() {
 
 
         if ((!big_int_equal(ans1, n2))||(!big_int_equal(ans2, n1))) {
-            printf("////////////////////////IMPOSTER IN shft2 i=%li//////////////\n", i);
+            printf("////////////////////////IMPOSTER IN swap i=%li//////////////\n", i);
             printf("n1=");
             big_int_print(n1);
             printf("n2=");
@@ -1267,6 +1267,72 @@ int tst_swap() {
     return err;
 }
 
+
+int tst_set_bit() {
+    FILE *file = fopen("set_bit.txt", "r");
+    char *binary = malloc(MAX_BINARY_LENGTH + 1);
+    char *buffer = malloc(MAX_BINARY_LENGTH + 1);
+    int err=0;
+    for (long i = 0; i < 255*2*1000; i++) {
+        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+        big_int *n1 = big_int_get(binary);
+        big_int *n0= big_int_copy(n1);
+
+        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+        big_int *num = big_int_get(binary);
+
+        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+        big_int *bit = big_int_get(binary);
+
+        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+        big_int *ans = big_int_get(binary);
+
+        big_int_set_bit(n1,num->number[0],bit->number[0]);
+
+        if ((!big_int_equal(ans, n1))) {
+            printf("////////////////////////IMPOSTER IN set_bit i=%li//////////////\n", i);
+            printf("n1=");
+            big_int_print(n0);
+            printf("num=");
+            big_int_print(num);
+//            printf("cnt=%d\n",n2->number[0]);
+            printf("bit=");
+            big_int_print(bit);
+            printf("ans=");
+            big_int_print(ans);
+            printf("my ans=");
+            big_int_print(n1);
+//            printf("my ans2=");
+//            big_int_print(my2);
+            err=1;
+            break;
+        }
+        big_int_free(n1);
+        big_int_free(n0);
+        big_int_free(num);
+        big_int_free(bit);
+        big_int_free(ans);
+        if(i%100000==0){printf("i=%li\n",i);}
+    }
+    free(binary); // Освобождаем память
+    free(buffer);
+    fclose(file); // Закрываем файл
+    return err;
+}
+
+
 void tst(){
 //    printf("start of the test\n");
 //    if(tst_swap()){return;}
@@ -1281,8 +1347,11 @@ void tst(){
 //    else{printf("shft1 is ok\n");}
 //    if(tst_shft2()){return;}
 //    else{printf("shft2 is ok\n");}
-    if(tst_div()){return;}
-    else{printf("div is ok\n");}
+//    if(tst_div()){return;}
+//    else{printf("div is ok\n");}
+    if(tst_set_bit()){return;}
+    else{printf("set_bit is ok\n");}
+
 //    if(tst_pow()){return;}
 //    else{printf("pow is ok\n");}
 

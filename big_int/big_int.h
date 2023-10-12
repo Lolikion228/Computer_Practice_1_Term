@@ -29,8 +29,6 @@ void big_int_swap(big_int *n1, big_int *n2);//ok
 
 void big_int_swap2(big_int *n1, big_int *n2);//ok
 
-big_int *big_int_copy(big_int*x);
-
 int big_int_leq(big_int *n1, big_int *n2);//ok
 
 int big_int_geq(big_int *n1, big_int *n2);//ok
@@ -45,8 +43,6 @@ void big_int_bin_shft_r2(big_int *n,int cnt);//ok
 
 void big_int_bin_shft_l2(big_int *n,int cnt);//ok
 
-void big_int_set_bit(big_int *n,long long num,int x);
-
 big_int *big_int_add(big_int *n1, big_int *n2);//ok
 
 void big_int_add2(big_int *n1, big_int *n2);//ok
@@ -57,11 +53,11 @@ void big_int_sub2(big_int *n1, big_int *n2);//ok
 
 big_int *big_int_euclid_binary(big_int *x, big_int *y);//ok
 
-
-
-void big_int_div(big_int *n1, big_int *n2,big_int *res1,big_int*rmdr);
-
 void big_int_div2(big_int *n1, big_int *n2, big_int *res1, big_int *rmdr);//ok
+
+big_int *big_int_copy(big_int*x);
+
+void big_int_set_bit(big_int *n,long long num,int x);
 
 big_int *big_int_mult(big_int *x, big_int *y);
 
