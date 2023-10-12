@@ -61,7 +61,11 @@ big_int *big_int_copy(big_int*x);//ok
 
 big_int *big_int_mult(big_int *x, big_int *y);//ok
 
-big_int *big_int_rl_mod_pow(big_int *x, big_int *n, big_int *m);
+big_int *big_int_mult2(big_int *x, big_int *y);//ok
+
+big_int *big_int_rl_mod_pow(big_int *x, big_int *n, big_int *m);//ok
+
+big_int *big_int_lr_mod_pow(big_int *x, big_int *n, big_int *m);
 
 void tst();
 
