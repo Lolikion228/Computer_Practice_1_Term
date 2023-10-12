@@ -862,15 +862,15 @@ int tst_eu() {
         big_int *n3=big_int_euclid_binary(n1, n2);
 //        big_int_dlz(n3);
 
-        big_int_print(n1);
-        big_int_print(n3);
-        big_int_swap(n1,n3);
 //        big_int_print(n1);
 //        big_int_print(n3);
         big_int_swap(n1,n3);
 //        big_int_print(n1);
 //        big_int_print(n3);
-        printf("-----------\n");
+        big_int_swap(n1,n3);
+//        big_int_print(n1);
+//        big_int_print(n3);
+//        printf("-----------\n");
 //        big_int_dlz(n3);
 //        big_int_swap(n1,n3);
 //        big_int_swap(n1,n3);
