@@ -723,7 +723,8 @@ int tst_add() {
 
         big_int *n3=big_int_add(n1, n2);
         big_int_add2(n12,n2);
-
+        big_int_dlz(n3);
+        big_int_dlz(n12);
         if ((!big_int_equal(ans, n3))||(!big_int_equal(ans, n12))) {
             printf("////////////////////////IMPOSTER IN ADD i=%li//////////////\n", i);
             printf("n1=");
@@ -780,7 +781,8 @@ int tst_sub() {
 
         big_int *n3=big_int_sub(n1, n2);
         big_int_sub2(n12,n2);
-
+        big_int_dlz(n3);
+        big_int_dlz(n12);
         if ((!big_int_equal(ans, n3))||(!big_int_equal(ans, n12))) {
             printf("////////////////////////IMPOSTER IN SUBi=%li//////////////\n", i);
             printf("n1=");
@@ -835,6 +837,7 @@ int tst_eu() {
         big_int *ans = big_int_get(binary);
 
         big_int *n3=big_int_euclid_binary(n1, n2);
+        big_int_dlz(n3);
 
         if ((!big_int_equal(ans, n3))) {
             printf("////////////////////////IMPOSTER IN EU i=%li//////////////\n", i);
@@ -957,6 +960,7 @@ int tst_div() {
         big_int *my1= big_int_get("0");
         big_int *my2= big_int_get("0");
 //        printf("bf div\n");
+
         big_int_div2(n1, n2,my1,my2);
 //        printf("af div\n");
         if ((!big_int_equal(ans1, my1))||(!big_int_equal(ans2, my2))) {
@@ -982,7 +986,7 @@ int tst_div() {
         big_int_free(ans2);
         big_int_free(my1);
         big_int_free(my2);
-//        if(i%10==0){printf("i=%li\n",i);}
+        if(i%10000==0){printf("i=%li\n",i);}
     }
     free(binary); // Освобождаем память
     free(buffer);
@@ -1026,7 +1030,8 @@ int tst_shft1() {
 
         big_int_bin_shft_l(my1);
         big_int_bin_shft_r(my2);
-
+        big_int_dlz(my1);
+        big_int_dlz(my2);
 //        printf("af div\n");
         if ((!big_int_equal(ans1, my1))||(!big_int_equal(ans2, my2))) {
             printf("////////////////////////IMPOSTER IN shft1 i=%li//////////////\n", i);
@@ -1102,6 +1107,8 @@ int tst_shft2() {
 //        printf("len my2=%d\n",my2->length);
 //        big_int_print(n1);
 //        printf("---------------------\n");
+        big_int_dlz(my1);
+        big_int_dlz(my2);
         if ((!big_int_equal(ans1, my1))||(!big_int_equal(ans2, my2))) {
             printf("////////////////////////IMPOSTER IN shft2 i=%li//////////////\n", i);
             printf("n1=");

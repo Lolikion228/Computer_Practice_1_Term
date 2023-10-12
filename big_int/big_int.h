@@ -19,15 +19,15 @@ int big_int_equal(big_int *n1,big_int *n2);//ok
 
 int big_int_equal_sgn(big_int *n1, big_int *n2);//ok
 
-void big_int_dlz(big_int *n);//ok
-
 void big_int_print(const big_int *n);//ok
 
 void big_int_free(big_int *n);//ok
 
+void big_int_dlz(big_int *n);//
+
 void big_int_swap(big_int *n1, big_int *n2);
 
-big_int *big_int_copy(big_int*x);
+big_int *big_int_copy(big_int*x);//
 
 int big_int_leq(big_int *n1, big_int *n2);//ok
 
@@ -39,9 +39,9 @@ void big_int_bin_shft_r(big_int *n);//ok
 
 void big_int_bin_shft_l(big_int *n);//ok
 
-void big_int_bin_shft_r2(big_int *n,int cnt);
+void big_int_bin_shft_r2(big_int *n,int cnt);//ok
 
-void big_int_bin_shft_l2(big_int *n,int cnt);
+void big_int_bin_shft_l2(big_int *n,int cnt);//ok
 
 void big_int_set_bit(big_int *n,long long num,int x);
 
