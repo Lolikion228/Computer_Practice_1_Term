@@ -57,7 +57,7 @@ void big_int_div2(big_int *n1, big_int *n2, big_int *res1, big_int *rmdr);//ok
 
 void big_int_set_bit(big_int *n,long long num,int x);//ok
 
-big_int *big_int_copy(big_int*x);
+big_int *big_int_copy(big_int*x);//ok
 
 big_int *big_int_mult(big_int *x, big_int *y);
 

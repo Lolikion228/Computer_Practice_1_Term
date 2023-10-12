@@ -1358,6 +1358,16 @@ int tst_copy() {
         big_int *n4= big_int_copy(src);
 
 
+        big_int_dlz(n1);
+        big_int_swap2(n1,n3);
+        big_int_dlz(n2);
+        big_int_swap2(n1,n2);
+        big_int_dlz(n2);
+        big_int_swap2(n4,n3);
+        big_int_swap2(n2,src);
+        big_int_dlz(n1);
+        big_int_dlz(n3);
+
         if ( (big_int_equal(src, n1)*big_int_equal(src, n2)*big_int_equal(src, n3)*big_int_equal(src, n4))!=1 ) {
             printf("////////////////////////IMPOSTER IN set_bit i=%li//////////////\n", i);
             printf("src=");
@@ -1396,23 +1406,23 @@ int tst_copy() {
 }
 
 void tst(){
-//    printf("start of the test\n");
-//    if(tst_swap()){return;}
-//    else{printf("swap is ok\n");}
-//    if(tst_add()){return;}
-//    else{printf("add is ok\n");}
-//    if(tst_sub()){return;}
-//    else{printf("sub is ok\n");}
-//    if(tst_eu()){return;}
-//    else{printf("eu is ok\n");}
-//    if(tst_shft1()){return;}
-//    else{printf("shft1 is ok\n");}
-//    if(tst_shft2()){return;}
-//    else{printf("shft2 is ok\n");}
-//    if(tst_div()){return;}
-//    else{printf("div is ok\n");}
-//    if(tst_set_bit()){return;}
-//    else{printf("set_bit is ok\n");}
+    printf("start of the test\n");
+    if(tst_swap()){return;}
+    else{printf("swap is ok\n");}
+    if(tst_add()){return;}
+    else{printf("add is ok\n");}
+    if(tst_sub()){return;}
+    else{printf("sub is ok\n");}
+    if(tst_eu()){return;}
+    else{printf("eu is ok\n");}
+    if(tst_shft1()){return;}
+    else{printf("shft1 is ok\n");}
+    if(tst_shft2()){return;}
+    else{printf("shft2 is ok\n");}
+    if(tst_div()){return;}
+    else{printf("div is ok\n");}
+    if(tst_set_bit()){return;}
+    else{printf("set_bit is ok\n");}
     if(tst_copy()){return;}
     else{printf("copy is ok\n");}
 
