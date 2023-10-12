@@ -64,5 +64,10 @@ void big_int_div2(big_int *n1, big_int *n2, big_int *res1, big_int *rmdr);
 big_int *big_int_rl_mod_pow(big_int *x, big_int *n, big_int *m);
 
 int tst_add();
+int tst_sub();
+int tst_div();
+int tst_eu();
+int tst_pow();
+void tst();
 
 #endif //UNTITLED_BIG_INT_H

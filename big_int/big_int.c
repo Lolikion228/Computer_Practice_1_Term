@@ -8,7 +8,7 @@
 #include <math.h>
 
 
-#define MAX_BINARY_LENGTH 41000
+#define MAX_BINARY_LENGTH 6000
 
 
 big_int *big_int_get(const char *bin_number) {
@@ -678,105 +678,299 @@ big_int *big_int_rl_mod_pow(big_int *x, big_int *n, big_int *m) {
 
 
 
-
-
-
-
-
-
-
 int tst_add() {
-    FILE *file = fopen("numbers.txt", "r");
-
+    FILE *file = fopen("add.txt", "r");
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
-
-    for (long i = 0; i < 100*100*100; i++) {
+    int err=0;
+    for (long i = 0; i < 3000000; i++) {
 
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
             buffer[strlen(buffer) - 1] = '\0';
         strcpy(binary, buffer);
-//        printf("n1=");
         big_int *n1 = big_int_get(binary);
-//        big_int *n12 = big_int_copy(n1);
-//        big_int_print(n1);
+        big_int *n12 = big_int_copy(n1);
 
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
             buffer[strlen(buffer) - 1] = '\0';
         strcpy(binary, buffer);
-//        printf("n2=");
         big_int *n2 = big_int_get(binary);
-//        big_int_print(n2);
-
-        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
-        if (buffer[strlen(buffer) - 1] == '\n')
-            buffer[strlen(buffer) - 1] = '\0';
-        strcpy(binary, buffer);
-//        printf("ans1=");
-        big_int *mod = big_int_get(binary);
-//        big_int_print(ans1);
 
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
             buffer[strlen(buffer) - 1] = '\0';
         strcpy(binary, buffer);
         big_int *ans = big_int_get(binary);
-//        big_int_print(n1);
-//        printf("ans=");
-//        printf("ans2=");
-//        big_int_print(ans2);
-//        printf("before mult\n");
-//        printf("1");
-        big_int *n3=big_int_rl_mod_pow(n1, n2,mod);
-//        printf("2");
-//        printf("n3 addr=%d\n",*(n3->number));
-//        printf("after mult\n");
-//        big_int_sub2(n12,n2);
-//        big_int_add2(n12, n2);
-//        printf("my ans1=");
-//        big_int_print(my1);
-//        printf("my ans2=");
-//        big_int_print(my2);
-//        printf("------------------------------\n");
-        if ((!big_int_equal(ans, n3))) {
-            printf("////////////////////////IMPOSTER i=%li//////////////\n", i);
-//            printf("n1=");
-//            big_int_print(n1);
-//            printf("n2=");
-//            big_int_print(n2);
-////            printf("cnt=%d\n",cnt->number[0]);
-////            printf("bit=%d\n",bit->number[0]);
-//            printf("ans1=");
-//            big_int_print(ans1);
-//            printf("ans2=");
-//            big_int_print(ans2);
-//            printf("my1=");
-//            big_int_print(my1);
-//            printf("my2=");
-//            big_int_print(my2);
-//            printf("my2=");
-//            big_int_print(n12);
-//            printf("n3=");
-//            big_int_print(n3);
-//            printf("ans(n1**n2)%%n3=");
-//            big_int_print(ans);
-//            printf("my ans(n1**n2)%%n3=");
-//            big_int_print(n4);
+
+        big_int *n3=big_int_add(n1, n2);
+        big_int_add2(n12,n2);
+
+        if ((!big_int_equal(ans, n3))||(!big_int_equal(ans, n12))) {
+            printf("////////////////////////IMPOSTER IN ADD i=%li//////////////\n", i);
+            printf("n1=");
+            big_int_print(n1);
+            printf("n2=");
+            big_int_print(n2);
+            printf("ans=");
+            big_int_print(ans);
+            printf("my ans1=");
+            big_int_print(n3);
+            printf("my ans2=");
+            big_int_print(n12);
+            err=1;
             break;
         }
         big_int_free(n1);
         big_int_free(n2);
         big_int_free(ans);
-        big_int_free(mod);
+        big_int_free(n12);
         big_int_free(n3);
-        if(i%100000==0){printf("i=%li\n",i);}
-//        printf("---------------\n");
+//        if(i%100000==0){printf("i=%li\n",i);}
     }
-
     free(binary); // Освобождаем память
     free(buffer);
     fclose(file); // Закрываем файл
-    return 0;
+    return err;
+}
+
+int tst_sub() {
+    FILE *file = fopen("sub.txt", "r");
+    char *binary = malloc(MAX_BINARY_LENGTH + 1);
+    char *buffer = malloc(MAX_BINARY_LENGTH + 1);
+    int err=0;
+    for (long i = 0; i < 3000000; i++) {
+
+        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+        big_int *n1 = big_int_get(binary);
+        big_int *n12 = big_int_copy(n1);
+
+        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+        big_int *n2 = big_int_get(binary);
+
+        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+        big_int *ans = big_int_get(binary);
+
+        big_int *n3=big_int_sub(n1, n2);
+        big_int_sub2(n12,n2);
+
+        if ((!big_int_equal(ans, n3))||(!big_int_equal(ans, n12))) {
+            printf("////////////////////////IMPOSTER IN SUBi=%li//////////////\n", i);
+            printf("n1=");
+            big_int_print(n1);
+            printf("n2=");
+            big_int_print(n2);
+            printf("ans=");
+            big_int_print(ans);
+            printf("my ans1=");
+            big_int_print(n3);
+            printf("my ans2=");
+            big_int_print(n12);
+            err=1;
+            break;
+        }
+        big_int_free(n1);
+        big_int_free(n2);
+        big_int_free(ans);
+        big_int_free(n12);
+        big_int_free(n3);
+//        if(i%100000==0){printf("i=%li\n",i);}
+    }
+    free(binary); // Освобождаем память
+    free(buffer);
+    fclose(file); // Закрываем файл
+    return err;
+}
+
+int tst_eu() {
+    FILE *file = fopen("eu.txt", "r");
+    char *binary = malloc(MAX_BINARY_LENGTH + 1);
+    char *buffer = malloc(MAX_BINARY_LENGTH + 1);
+    int err=0;
+    for (long i = 0; i < 3*100*100; i++) {
+
+        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+        big_int *n1 = big_int_get(binary);
+
+        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+        big_int *n2 = big_int_get(binary);
+
+        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+        big_int *ans = big_int_get(binary);
+
+        big_int *n3=big_int_euclid_binary(n1, n2);
+
+        if ((!big_int_equal(ans, n3))) {
+            printf("////////////////////////IMPOSTER IN EU i=%li//////////////\n", i);
+            err=1;
+            break;
+        }
+        big_int_free(n1);
+        big_int_free(n2);
+        big_int_free(ans);
+        big_int_free(n3);
+//        if(i%100000==0){printf("i=%li\n",i);}
+    }
+    free(binary); // Освобождаем память
+    free(buffer);
+    fclose(file); // Закрываем файл
+    printf("eu is ok\n");
+    return err;
+}
+
+
+int tst_pow() {
+    FILE *file = fopen("pow.txt", "r");
+    char *binary = malloc(MAX_BINARY_LENGTH + 1);
+    char *buffer = malloc(MAX_BINARY_LENGTH + 1);
+    int err=0;
+    for (long i = 0; i < 2*100*100*100+1000; i++) {
+
+        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+        big_int *n1 = big_int_get(binary);
+
+        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+        big_int *n2 = big_int_get(binary);
+
+        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+        big_int *mod = big_int_get(binary);
+
+        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+        big_int *ans = big_int_get(binary);
+
+        big_int *n3=big_int_rl_mod_pow(n1, n2,mod);
+
+        if ((!big_int_equal(ans, n3))) {
+            printf("////////////////////////IMPOSTER IN POWi=%li//////////////\n", i);
+            err=1;
+            break;
+        }
+        big_int_free(n1);
+        big_int_free(n2);
+        big_int_free(mod);
+        big_int_free(ans);
+        big_int_free(n3);
+//        if(i%100000==0){printf("i=%li\n",i);}
+    }
+    free(binary); // Освобождаем память
+    free(buffer);
+    fclose(file); // Закрываем файл
+    return err;
+}
+
+
+int tst_div() {
+    FILE *file = fopen("div.txt", "r");
+    char *binary = malloc(MAX_BINARY_LENGTH + 1);
+    char *buffer = malloc(MAX_BINARY_LENGTH + 1);
+    int err=0;
+    for (long i = 0; i < 3*100*100; i++) {
+
+        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+        big_int *n1 = big_int_get(binary);
+
+        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+        big_int *n2 = big_int_get(binary);
+
+        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+        big_int *ans1 = big_int_get(binary);
+
+        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+        big_int *ans2 = big_int_get(binary);
+
+        big_int *my1= big_int_get("0");
+        big_int *my2= big_int_get("0");
+        printf("bf div\n");
+        big_int_div2(n1, n2,my1,my2);
+        printf("af div\n");
+        if ((!big_int_equal(ans1, my1))||(!big_int_equal(ans2, my2))) {
+            printf("////////////////////////IMPOSTER IN DIV i=%li//////////////\n", i);
+            printf("n1=");
+            big_int_print(n1);
+            printf("n2=");
+            big_int_print(n2);
+            printf("ans1=");
+            big_int_print(ans1);
+            printf("ans2=");
+            big_int_print(ans2);
+            printf("my ans1=");
+            big_int_print(my1);
+            printf("my ans2=");
+            big_int_print(my2);
+            err=1;
+            break;
+        }
+        big_int_free(n1);
+        big_int_free(n2);
+        big_int_free(ans1);
+        big_int_free(ans2);
+        big_int_free(my1);
+        big_int_free(my2);
+//        if(i%10==0){printf("i=%li\n",i);}
+    }
+    free(binary); // Освобождаем память
+    free(buffer);
+    fclose(file); // Закрываем файл
+    printf("div is ok\n");
+    return err;
+}
+
+void tst(){
+    printf("start of the test\n");
+
+    if(tst_add()){return;}
+    else{printf("add is ok\n");}
+    if(tst_sub()){return;}
+    else{printf("sub is ok\n");}
+    if(tst_eu()){return;}
+    else{printf("eu is ok\n");}
+    if(tst_div()){return;}
+    else{printf("div is ok\n");}
+    if(tst_pow()){return;}
+    else{printf("pow is ok\n");}
+
+    printf("end of the test\n");
 }
