@@ -25,9 +25,9 @@ void big_int_print(const big_int *n);//ok
 
 void big_int_free(big_int *n);//ok
 
-void big_int_swap(big_int *n1, big_int *n2);//ok???
+void big_int_swap(big_int *n1, big_int *n2);
 
-big_int *big_int_copy(big_int*x);//ok
+big_int *big_int_copy(big_int*x);
 
 int big_int_leq(big_int *n1, big_int *n2);//ok
 
@@ -39,11 +39,11 @@ void big_int_bin_shft_r(big_int *n);//ok
 
 void big_int_bin_shft_l(big_int *n);//ok
 
-void big_int_bin_shft_r2(big_int *n,int cnt);//ok
+void big_int_bin_shft_r2(big_int *n,int cnt);
 
-void big_int_bin_shft_l2(big_int *n,int cnt);//ok
+void big_int_bin_shft_l2(big_int *n,int cnt);
 
-void big_int_set_bit(big_int *n,long long num,int x);//ok
+void big_int_set_bit(big_int *n,long long num,int x);
 
 big_int *big_int_add(big_int *n1, big_int *n2);//ok
 
@@ -68,6 +68,7 @@ int tst_sub();
 int tst_div();
 int tst_eu();
 int tst_pow();
+int tst_shft1();
 void tst();
 
 #endif //UNTITLED_BIG_INT_H
