@@ -8,7 +8,7 @@
 #include <math.h>
 
 
-#define MAX_BINARY_LENGTH 6000
+#define MAX_BINARY_LENGTH 10000
 
 
 big_int *big_int_get(const char *bin_number) {
