@@ -737,10 +737,21 @@ big_int *big_int_lr_mod_pow(big_int *x, big_int *n, big_int *m) {
 
 big_int *big_int_slice(big_int *n1, long l1, long l2 ){
     big_int *n= (big_int *) malloc(sizeof(big_int));
+//    printf(" comp: n1 length=%d limits=[%li,%li]\n",n1->length,l1,l2);
     n->sign=n1->sign;
     n->length=(unsigned int)(l2-l1+1);
+
+    if(l2>=n1->length){
+        n->length=(unsigned int)(n1->length-l1);
+    }
+
+    if(l1>=n1->length){
+        n->length = 1;
+        n->number=calloc(1,sizeof(n1->number[0]));
+        return n;
+    };
+
     n->number=calloc(n->length,sizeof(n1->number[0]));
-    printf(" comp: n1 length=%d limits=[%li,%li]\n",n1->length,l1,l2);
     memcpy(n->number,n1->number+l1,n->length);//что если хотим прочитать за пределом,,,
 //    printf("before dlz\n");
 //    printf("n = ");
@@ -752,24 +763,24 @@ big_int *big_int_slice(big_int *n1, long l1, long l2 ){
 
 
 big_int *karatsuba_mult(big_int *n1, big_int *n2) {
-    printf("////karatsuba start//////\n");
-    printf("n10 len= %d\n",n1->length);
-    printf("n10 sgn = %c\n",n1->sign);
-    printf("n10 = ");
-    big_int_print(n1);
-    printf("n20 len = %d\n",n2->length);
-    printf("n20 sgn = %c\n",n2->sign);
-    printf("n20 = ");
+//    printf("////karatsuba start//////\n");
+//    printf("n10 len= %d\n",n1->length);
+//    printf("n10 sgn = %c\n",n1->sign);
+//    printf("n10 = ");
+//    big_int_print(n1);
+//    printf("n20 len = %d\n",n2->length);
+//    printf("n20 sgn = %c\n",n2->sign);
+//    printf("n20 = ");
 //
-    big_int_print(n2);
+//    big_int_print(n2);
     if (n1->length + n2->length <= const1) { return big_int_mult(n1, n2); }//printf("////karatsuba end based//////\n");
     else {
         unsigned int mx = (n1->length>=n2->length) ? n1->length : n2->length;
         mx+=mx%2!=0;
         n1->number=(unsigned char*)realloc(n1->number,mx);
         n2->number=(unsigned char*)realloc(n2->number,mx);
-        printf("before slices\n");
-        printf("limits: [%d,%d] and [%d,%d]\n",0,mx/2-1,mx/2,mx-1);
+//        printf("before slices\n");
+//        printf("limits: [%d,%d] and [%d,%d]\n",0,mx/2-1,mx/2,mx-1);
         big_int *q= big_int_slice(n1,0,mx/2-1);
 //        printf("after q\n");
         big_int *p= big_int_slice(n1,mx/2,mx-1);
@@ -778,18 +789,18 @@ big_int *karatsuba_mult(big_int *n1, big_int *n2) {
 //        printf("after s\n");
         big_int *r= big_int_slice(n2,mx/2,mx-1);
 //        printf("after r\n");
-        printf("len of q = %d\n",q->length);
-        printf("q = ");
-        big_int_print(q);
-        printf("len of p = %d\n",p->length);
-        printf("p = ");
-        big_int_print(p);
-        printf("len of s = %d\n",s->length);
-        printf("s = ");
-        big_int_print(s);
-        printf("len of r = %d\n",r->length);
-        printf("r = ");
-        big_int_print(r);
+//        printf("len of q = %d\n",q->length);
+//        printf("q = ");
+//        big_int_print(q);
+//        printf("len of p = %d\n",p->length);
+//        printf("p = ");
+//        big_int_print(p);
+//        printf("len of s = %d\n",s->length);
+//        printf("s = ");
+//        big_int_print(s);
+//        printf("len of r = %d\n",r->length);
+//        printf("r = ");
+//        big_int_print(r);
 //
 //        printf("after slices\n");
 //        printf("start of recursive calc p*r\n");
@@ -864,7 +875,7 @@ big_int *karatsuba_mult(big_int *n1, big_int *n2) {
         big_int_add2(res,a2);//A1<<n + (A3-(A1+A2))<<n/2 + A2
 //        printf("len of res = %d\n",a3->length);
 //        printf("res+=a2 = ");
-        big_int_print(res);
+//        big_int_print(res);
 //        printf("fin\n");
         big_int_free(q);
         big_int_free(p);
