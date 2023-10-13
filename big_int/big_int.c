@@ -8,7 +8,7 @@
 #include <math.h>
 #include <time.h>
 
-#define MAX_BINARY_LENGTH 12000
+#define MAX_BINARY_LENGTH 16000
 #define const1 5
 
 
@@ -1595,7 +1595,7 @@ int tst_mult() {
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
     int err = 0;
-    for (long i = 0; i < 10000; i++) {
+    for (long i = 0; i < 500*500*3; i++) {
 
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
@@ -1656,7 +1656,7 @@ int tst_mult() {
         big_int_free(n3);
 //        big_int_free(n4);
         big_int_free(ans);
-//        if(i%1000==0){printf("i=%li\n",i);}
+        if(i%1000==0){printf("i=%li\n",i);}
     }
     free(binary); // Освобождаем память
     free(buffer);
@@ -1676,7 +1676,7 @@ int tst_mult2() {
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
     int err = 0;
-    for (long i = 0; i < 10000; i++) {
+    for (long i = 0; i < 500*500*3; i++) {
 
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
@@ -1737,7 +1737,7 @@ int tst_mult2() {
         big_int_free(n3);
 //        big_int_free(n4);
         big_int_free(ans);
-//        if(i%1000==0){printf("i=%li\n",i);}
+        if(i%1000==0){printf("i=%li\n",i);}
     }
     free(binary); // Освобождаем память
     free(buffer);
