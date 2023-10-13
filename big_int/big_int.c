@@ -9,7 +9,7 @@
 #include <time.h>
 
 #define MAX_BINARY_LENGTH 16000
-#define const1 10
+#define const1 45
 
 
 big_int *big_int_get(const char *bin_number) {
@@ -706,6 +706,42 @@ big_int *big_int_rl_mod_pow(big_int *x, big_int *n, big_int *m) {
     return fin;
 }
 
+big_int *big_int_rl_mod_pow2(big_int *x, big_int *n, big_int *m) {
+    big_int *ans = big_int_get("1");
+    big_int *zero = big_int_get("0");
+    big_int *x0 = big_int_copy(x);
+    big_int *n0 = big_int_copy(n);
+    big_int *m0 = big_int_copy(m);
+    while (!big_int_leq(n0, zero)) {
+        if ((n0->number[0]) & 1) {
+            big_int *xmodm = big_int_get("0");
+            big_int *trash = big_int_get("0");
+            big_int_div2(x0, m0, trash, xmodm);
+            big_int *n4 = karatsuba_mult(ans, xmodm);
+            big_int_swap2(ans, n4);
+            big_int_free(n4);
+            big_int_free(xmodm);
+            big_int_free(trash);
+        }
+        big_int *sq = karatsuba_mult(x0, x0);
+        big_int *sqmodm1 = big_int_get("0");
+        big_int *trash1 = big_int_get("0");
+        big_int_div2(sq, m0, trash1, sqmodm1);
+        big_int_swap2(x0, sqmodm1);
+        big_int_bin_shft_r(n0);//n>>=1
+        big_int_free(sq);
+        big_int_free(sqmodm1);
+        big_int_free(trash1);
+    }
+    big_int *fin = big_int_get("0");
+    big_int_div2(ans, m0, zero, fin);
+    big_int_free(zero);
+    big_int_free(x0);
+    big_int_free(m0);
+    big_int_free(n0);
+    big_int_free(ans);
+    return fin;
+}
 
 big_int *big_int_lr_mod_pow(big_int *x, big_int *n, big_int *m) {
     big_int *n3 = big_int_get("1");
@@ -734,6 +770,36 @@ big_int *big_int_lr_mod_pow(big_int *x, big_int *n, big_int *m) {
     big_int_div2(n3, m, n3, n3);
     return n3;
 }
+
+
+big_int *big_int_lr_mod_pow2(big_int *x, big_int *n, big_int *m) {
+    big_int *n3 = big_int_get("1");
+    for (int i = n->length - 1; i > -1; i--) {
+        for (int j = 7; j > -1; j--) {
+            big_int *sq = karatsuba_mult(n3, n3);
+            big_int *xmodm = big_int_get("0");
+            big_int *trash = big_int_get("0");
+            big_int_div2(sq, m, trash, xmodm);
+            big_int_swap2(xmodm, n3);
+            big_int_free(sq);
+            big_int_free(xmodm);
+            big_int_free(trash);
+            if ((n->number[i]) & (1 << j)) {
+                big_int *mul = big_int_get("0");
+                big_int *trash = big_int_get("0");
+                big_int_div2(x, m, trash, mul);
+                big_int *mul2 = karatsuba_mult(n3, mul);
+                big_int_swap2(mul2, n3);
+                big_int_free(mul);
+                big_int_free(trash);
+                big_int_free(mul2);
+            }
+        }
+    }
+    big_int_div2(n3, m, n3, n3);
+    return n3;
+}
+
 
 big_int *big_int_slice(big_int *n1, long l1, long l2 ){
     big_int *n= (big_int *) malloc(sizeof(big_int));
@@ -1086,11 +1152,14 @@ int tst_eu() {
 
 
 int tst_pow() {
+    clock_t start_time, end_time;
+    double total_time;
+    start_time = clock();
     FILE *file = fopen("pow.txt", "r");
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
     int err = 0;
-    for (long i = 0; i < 100 * 10 * 100 + 100 * 10 * 10 + 10000; i++) {
+    for (long i = 0; i < 100*100*100*2+10*10*10; i++) {
 
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
@@ -1145,9 +1214,82 @@ int tst_pow() {
     free(binary); // Освобождаем память
     free(buffer);
     fclose(file); // Закрываем файл
+    end_time = clock();
+    total_time = ((double) (end_time - start_time)) / CLOCKS_PER_SEC;
+
+    printf("Время выполнения pow: %f секунд\n", total_time);
     return err;
 }
 
+int tst_pow2() {
+    clock_t start_time, end_time;
+    double total_time;
+    start_time = clock();
+    FILE *file = fopen("pow.txt", "r");
+    char *binary = malloc(MAX_BINARY_LENGTH + 1);
+    char *buffer = malloc(MAX_BINARY_LENGTH + 1);
+    int err = 0;
+    for (long i = 0; i < 100 * 10 * 100 + 100 * 10 * 10 + 10000; i++) {
+
+        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+        big_int *n1 = big_int_get(binary);
+
+        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+        big_int *n2 = big_int_get(binary);
+
+        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+        big_int *mod = big_int_get(binary);
+
+        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+        big_int *ans = big_int_get(binary);
+//        printf("bf\n");
+        big_int *n3 = big_int_lr_mod_pow2(n1, n2, mod);
+        big_int *n4 = big_int_rl_mod_pow2(n1, n2, mod);
+//        printf("af\n");
+
+        if ((!big_int_equal(ans, n3)) || (!big_int_equal(ans, n4))) {
+            printf("////////////////////////IMPOSTER IN POW2 i=%li//////////////\n", i);
+            printf("n1=");
+            big_int_print(n1);
+            printf("n2=");
+            big_int_print(n2);
+            printf("mod=");
+            big_int_print(mod);
+            printf("ans=");
+            big_int_print(ans);
+            printf("my=");
+            big_int_print(n3);
+            err = 1;
+            break;
+        }
+        big_int_free(n1);
+        big_int_free(n2);
+        big_int_free(mod);
+        big_int_free(ans);
+        big_int_free(n3);
+//        if(i%1000==0){printf("i=%li\n",i);}
+    }
+    free(binary); // Освобождаем память
+    free(buffer);
+    fclose(file); // Закрываем файл
+    end_time = clock();
+    total_time = ((double) (end_time - start_time)) / CLOCKS_PER_SEC;
+
+    printf("Время выполнения pow2: %f секунд\n", total_time);
+    return err;
+}
 
 int tst_div() {
     FILE *file = fopen("div.txt", "r");
@@ -1770,13 +1912,15 @@ void tst() {
 //    else{printf("set_bit is ok\n");}
 //    if(tst_copy()){return;}
 //    else{printf("copy is ok\n");}
-    if(tst_mult()){return;}
-    else{printf("mult is ok\n");}
+//    if(tst_mult()){return;}
+//    else{printf("mult is ok\n");}
+//    if(tst_mult2()){return;}
+//    else{printf("karatsuba_mult is ok\n");}
+    if(tst_pow()){return;}
+    else{printf("pow is ok\n");}
     printf("-----------------\n");
-    if(tst_mult2()){return;}
-    else{printf("karatsuba_mult is ok\n");}
-//    if(tst_pow()){return;}
-//    else{printf("pow is ok\n");}
+    if(tst_pow2()){return;}
+    else{printf("pow2 is ok\n");}
     printf("-----------------\n");
     printf("end of the test\n");
 }
