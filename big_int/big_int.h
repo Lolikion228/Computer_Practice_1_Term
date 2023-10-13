@@ -41,7 +41,7 @@ void big_int_bin_shft_l(big_int *n);//ok
 
 void big_int_bin_shft_r2(big_int *n,int cnt);//ok
 
-void big_int_bin_shft_l2(big_int *n,int cnt);//ok
+void big_int_bin_shft_l2(big_int *n,unsigned int cnt);//ok
 
 big_int *big_int_add(big_int *n1, big_int *n2);//ok
 
@@ -61,12 +61,16 @@ big_int *big_int_copy(big_int*x);//ok
 
 big_int *big_int_mult(big_int *x, big_int *y);//ok
 
-big_int *big_int_mult2(big_int *x, big_int *y);//ok
-
 big_int *big_int_rl_mod_pow(big_int *x, big_int *n, big_int *m);//ok
 
 big_int *big_int_lr_mod_pow(big_int *x, big_int *n, big_int *m);//ok
 
+big_int *big_int_slice(big_int *n1, long l1, long l2 );
+
+big_int *karatsuba_mult(big_int *n1,big_int *n2);
+/*
+ * VALGRIND ALL THE FUNCS!!!!!!!!!!!!!!!!!
+ */
 void tst();
 
 #endif //UNTITLED_BIG_INT_H

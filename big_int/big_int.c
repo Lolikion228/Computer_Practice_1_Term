@@ -6,9 +6,10 @@
 #include <stdlib.h>
 #include "stdio.h"
 #include <math.h>
-
+#include <time.h>
 
 #define MAX_BINARY_LENGTH 12000
+#define const1 5
 
 
 big_int *big_int_get(const char *bin_number) {
@@ -111,11 +112,11 @@ void big_int_swap(big_int *n1, big_int *n2) {
     memmove(num, n1->number, n1->length);//ok
     n1->sign = n2->sign;
     n1->length = n2->length;
-    n1->number= (unsigned char *)realloc(n1->number,n2->length);
+    n1->number = (unsigned char *) realloc(n1->number, n2->length);
     memmove(n1->number, n2->number, n2->length);
     n2->sign = sgn;
     n2->length = len;
-    n2->number=(unsigned char *) realloc(n2->number,len);
+    n2->number = (unsigned char *) realloc(n2->number, len);
     memmove(n2->number, num, len);
     free(num);
 }
@@ -220,9 +221,9 @@ void big_int_bin_shft_r2(big_int *n, int cnt) {
     unsigned int x = cnt / 8;
     if (x >= n->length) {
         free(n->number);
-        n->sign='+';
-        n->length=1;
-        n->number=calloc(1,1);
+        n->sign = '+';
+        n->length = 1;
+        n->number = calloc(1, 1);
 //        printf("HEREn2=");
 //        big_int_print(n);
     } else {
@@ -244,14 +245,20 @@ void big_int_bin_shft_r2(big_int *n, int cnt) {
 }
 
 
-void big_int_bin_shft_l2(big_int *n, int cnt) {
+void big_int_bin_shft_l2(big_int *n, unsigned int cnt) {
+//    printf("///////////bin_shftl2 start/////////////////\n");
+//    printf("old size in shftl2 = %li\n",(n->length) * sizeof(n->number[0]));
     for (int i = 0; i < cnt % 8; i++) big_int_bin_shft_l(n);
     unsigned int x = cnt / 8;
+//    printf("old size2 in shftl2 = %li\n",(n->length) * sizeof(n->number[0]));
     n->length += x;
+//    printf("new size in shftl2 = %li\n",(n->length) * sizeof(n->number[0]));
     n->number = (unsigned char *) realloc(n->number, (n->length) * sizeof(n->number[0]));
+//    printf("after realloc\n");
     if (n->number == NULL) printf("memory error in big_int_bin_shft_l2\n");
     memmove(n->number + x, n->number, n->length - x);
     for (int i = 0; i < x; i++) n->number[i] = 0;
+//    printf("///////////bin_shftl2 end/////////////////\n");
 }
 
 
@@ -362,7 +369,7 @@ void big_int_add2(big_int *n1, big_int *n2) {
             n3->number[i] = x & 0xFF;
             carry = x >> 8;
         }
-        if (t) big_int_swap2(n1,n2);
+        if (t) big_int_swap2(n1, n2);
         n3->number[mx] = carry;
         n3->sign = n1->sign;
         big_int_dlz(n3);
@@ -526,8 +533,8 @@ void big_int_sub2(big_int *n1, big_int *n2) {
 big_int *big_int_euclid_binary(big_int *x, big_int *y) {
     big_int *zero = big_int_get("0");
     int k, n = 0;
-    big_int *x0= big_int_copy(x);
-    big_int *y0= big_int_copy(y);
+    big_int *x0 = big_int_copy(x);
+    big_int *y0 = big_int_copy(y);
     big_int *a = big_int_disj(x0, y0);
     if (!big_int_equal(a, zero)) {
         while ((a->number[0] & 1) != 1) {
@@ -555,7 +562,7 @@ big_int *big_int_euclid_binary(big_int *x, big_int *y) {
     }
     big_int_dlz(x0);
     big_int_dlz(y0);
-    big_int *n3= big_int_add(x0,y0);
+    big_int *n3 = big_int_add(x0, y0);
     big_int_bin_shft_l2(n3, n);
     big_int_free(x0);
     big_int_free(y0);
@@ -573,8 +580,8 @@ big_int *big_int_mult(big_int *x, big_int *y) {
     n3->sign = '+';
     big_int *x0 = big_int_copy(x);
     big_int *y0 = big_int_copy(y);
-    x0->sign='+';
-    y0->sign='+';
+    x0->sign = '+';
+    y0->sign = '+';
     n3->number = (unsigned char *) calloc(n3->length, sizeof(n3->number[0]));
     if (x0->length >= y0->length) {
         while (!big_int_leq(y0, zero)) {
@@ -621,7 +628,7 @@ void big_int_div(big_int *n1, big_int *n2, big_int *res1, big_int *rmdr) {
     big_int_dlz(n3);
     res1->sign = n3->sign;
     res1->length = n3->length;
-    res1->number=(unsigned char *)realloc(res1->number,res1->length);
+    res1->number = (unsigned char *) realloc(res1->number, res1->length);
     memmove(res1->number, n3->number, n3->length);
     big_int_free(n3);
     big_int *n5 = big_int_mult(n2, res1);
@@ -629,7 +636,7 @@ void big_int_div(big_int *n1, big_int *n2, big_int *res1, big_int *rmdr) {
     big_int_free(n5);
     rmdr->sign = '+';
     rmdr->length = n4->length;
-    rmdr->number=(unsigned char *)realloc(rmdr->number,rmdr->length);
+    rmdr->number = (unsigned char *) realloc(rmdr->number, rmdr->length);
     memmove(rmdr->number, n4->number, n4->length);
     big_int_free(n4);
 }
@@ -651,12 +658,12 @@ void big_int_div2(big_int *n1, big_int *n2, big_int *res1, big_int *rmdr) {
     }
     res1->sign = (n1->sign == n2->sign) ? '+' : '-';
     res1->length = q->length;
-    res1->number=(unsigned char *)realloc(res1->number,res1->length);
+    res1->number = (unsigned char *) realloc(res1->number, res1->length);
     memmove(res1->number, q->number, q->length);
     big_int_free(q);
     rmdr->sign = '+';
     rmdr->length = r->length;
-    rmdr->number=(unsigned char *)realloc(rmdr->number,rmdr->length);
+    rmdr->number = (unsigned char *) realloc(rmdr->number, rmdr->length);
     memmove(rmdr->number, r->number, r->length);
     big_int_free(r);
 }
@@ -700,24 +707,24 @@ big_int *big_int_rl_mod_pow(big_int *x, big_int *n, big_int *m) {
 }
 
 
-big_int *big_int_lr_mod_pow(big_int *x, big_int *n, big_int *m){
-    big_int *n3= big_int_get("1");
-    for (int i = n->length - 1; i > -1; i--){
-        for(int j=7;j>-1;j--){
-            big_int *sq=big_int_mult(n3,n3);
+big_int *big_int_lr_mod_pow(big_int *x, big_int *n, big_int *m) {
+    big_int *n3 = big_int_get("1");
+    for (int i = n->length - 1; i > -1; i--) {
+        for (int j = 7; j > -1; j--) {
+            big_int *sq = big_int_mult(n3, n3);
             big_int *xmodm = big_int_get("0");
             big_int *trash = big_int_get("0");
             big_int_div2(sq, m, trash, xmodm);
-            big_int_swap2(xmodm,n3);
+            big_int_swap2(xmodm, n3);
             big_int_free(sq);
             big_int_free(xmodm);
             big_int_free(trash);
-            if((n->number[i])&(1<<j)){
-                big_int *mul=big_int_get("0");
-                big_int *trash=big_int_get("0");
-                big_int_div2(x,m,trash,mul);
-                big_int *mul2= big_int_mult(n3,mul);
-                big_int_swap2(mul2,n3);
+            if ((n->number[i]) & (1 << j)) {
+                big_int *mul = big_int_get("0");
+                big_int *trash = big_int_get("0");
+                big_int_div2(x, m, trash, mul);
+                big_int *mul2 = big_int_mult(n3, mul);
+                big_int_swap2(mul2, n3);
                 big_int_free(mul);
                 big_int_free(trash);
                 big_int_free(mul2);
@@ -728,12 +735,157 @@ big_int *big_int_lr_mod_pow(big_int *x, big_int *n, big_int *m){
     return n3;
 }
 
+big_int *big_int_slice(big_int *n1, long l1, long l2 ){
+    big_int *n= (big_int *) malloc(sizeof(big_int));
+    n->sign=n1->sign;
+    n->length=(unsigned int)(l2-l1+1);
+    n->number=calloc(n->length,sizeof(n1->number[0]));
+    memcpy(n->number,n1->number+l1,n->length);
+//    printf("before dlz\n");
+//    printf("n = ");
+//    big_int_print(n);
+    big_int_dlz(n);
+//    printf("after dlz\n");
+    return n;
+}
+
+
+big_int *karatsuba_mult(big_int *n1, big_int *n2) {
+    printf("////karatsuba start//////\n");
+    printf("n10 len= %d\n",n1->length);
+    printf("n10 sgn = %c\n",n1->sign);
+    printf("n10 = ");
+    big_int_print(n1);
+    printf("n20 len = %d\n",n2->length);
+    printf("n20 sgn = %c\n",n2->sign);
+    printf("n20 = ");
+//
+//    big_int_print(n2);
+    if (n1->length + n2->length <= const1) { return big_int_mult(n1, n2); }//printf("////karatsuba end based//////\n");
+    else {
+        unsigned int mx = (n1->length>=n2->length) ? n1->length : n2->length;
+        mx+=mx%2!=0;
+        n1->number=(unsigned char*)realloc(n1->number,mx);
+        n2->number=(unsigned char*)realloc(n2->number,mx);
+//        printf("before slices\n");
+//        printf("limits: [%d,%d] and [%d,%d]\n",0,mx/2-1,mx/2,mx-1);
+        big_int *q= big_int_slice(n1,0,mx/2-1);
+//        printf("after q\n");
+        big_int *p= big_int_slice(n1,mx/2,mx-1);
+//        printf("after p\n");
+        big_int *s= big_int_slice(n2,0,mx/2-1);
+//        printf("after s\n");
+        big_int *r= big_int_slice(n2,mx/2,mx-1);
+//        printf("after r\n");
+//        printf("len of q = %d\n",q->length);
+//        printf("q = ");
+//        big_int_print(q);
+//        printf("len of p = %d\n",p->length);
+//        printf("p = ");
+//        big_int_print(p);
+//        printf("len of s = %d\n",s->length);
+//        printf("s = ");
+//        big_int_print(s);
+//        printf("len of r = %d\n",r->length);
+//        printf("r = ");
+//        big_int_print(r);
+//
+//        printf("after slices\n");
+//        printf("start of recursive calc p*r\n");
+        big_int *a1= karatsuba_mult(p,r);//A1
+//        printf("len of a1 = %d\n",a1->length);
+//        printf("a1 = p*r = ");
+//        big_int_print(a1);
+//        printf("end of recursive calc p*r\n");
+//        printf("start of recursive calc q*s\n");
+        big_int *a2= karatsuba_mult(q,s);//A2
+//        printf("len of a2 = %d\n",a2->length);
+//        printf("a2 = q*s = ");
+//        big_int_print(a2);
+//        printf("end of recursive calc q*s\n");
+        big_int *sm1=big_int_add(p,q);
+        big_int *sm2=big_int_add(r,s);
+//        printf("len of sm1 = %d\n",sm1->length);
+//        printf("sm1 = ");
+//        big_int_print(sm1);
+//        printf("len of sm2 = %d\n",sm2->length);
+//        printf("sm2 = ");
+//        big_int_print(sm2);
+//        printf("start of recursive calc sm1*sm2\n");
+        big_int *a3= karatsuba_mult(sm1,sm2);//A3
+//        printf("len of a3 = %d\n",a3->length);
+//        printf("a3 = sm1*sm2 = ");
+//        big_int_print(a3);
+//        printf("end of recursive calc sm1*sm2\n");
+//        printf("start of a3-(a1+a2)\n");
+//        printf("len of a3 = %d\n",a3->length);
+//        printf("a3 = ");
+//        big_int_print(a3);
+        big_int *sm3=big_int_add(a1,a2);
+        big_int_sub2(a3,sm3);
+//        printf("len of a3 = %d\n",a3->length);
+//        printf("a3 = ");
+//        big_int_print(a3);
+//        printf("end of a3-a1-a2\n");
+//        printf("start of a1 shift\n");
+//        printf("bytes = %d\n", mx);
+//        printf("len of a1 = %d\n",a1->length);
+//        printf("a1 = ");
+//        big_int_print(a1);
+        big_int_bin_shft_l2(a1,8*mx);//A1<<n
+//        printf("a1 = ");
+//        big_int_print(a1);
+//        printf("end of a1 shift\n");
+//        printf("start of a3 shift\n");
+//        printf("bytes = %d\n", mx/2);
+//        printf("len of a3 = %d\n",a3->length);
+//        printf("a3 = ");
+//        big_int_print(a3);
+        big_int_bin_shft_l2(a3,8*(mx/2));//A3=(A3-(A1+A2))<<n/2
+//        printf("len of a3 = %d\n",a3->length);
+//        printf("a3 = ");
+//        big_int_print(a3);
+//        printf("end of a3 shift\n");
+//        printf("start of fin sum\n");
+//        printf("len of a1 = %d\n",a1->length);
+//        printf("a1 = ");
+//        big_int_print(a1);
+//        printf("len of a3 = %d\n",a3->length);
+//        printf("a3 = ");
+//        big_int_print(a3);
+        big_int *res= big_int_add(a1,a3);
+//        printf("len of res = %d\n",a3->length);
+//        printf("res = a3+a1 = ");
+//        big_int_print(res);
+//        printf("len of a2 = %d\n",a2->length);
+//        printf("a2 = q*s = ");
+//        big_int_print(a2);
+        big_int_add2(res,a2);//A1<<n + (A3-(A1+A2))<<n/2 + A2
+//        printf("len of res = %d\n",a3->length);
+//        printf("res+=a2 = ");
+//        big_int_print(res);
+//        printf("fin\n");
+        big_int_free(q);
+        big_int_free(p);
+        big_int_free(r);
+        big_int_free(s);
+        big_int_free(a1);
+        big_int_free(a2);
+        big_int_free(a3);
+        big_int_free(sm1);
+        big_int_free(sm2);
+        big_int_free(sm3);
+        printf("////karatsuba end//////\n");
+        return res;
+    }
+}
+
 
 int tst_add() {
     FILE *file = fopen("add.txt", "r");
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
-    int err=0;
+    int err = 0;
     for (long i = 0; i < 3000000; i++) {
 
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
@@ -755,19 +907,19 @@ int tst_add() {
         strcpy(binary, buffer);
         big_int *ans = big_int_get(binary);
 
-        big_int *n3=big_int_add(n1, n2);
-        big_int_add2(n12,n2);
+        big_int *n3 = big_int_add(n1, n2);
+        big_int_add2(n12, n2);
         big_int_dlz(n3);
         big_int_dlz(n12);
-        big_int_swap2(n3,n12);
-        big_int_swap(n3,n12);
+        big_int_swap2(n3, n12);
+        big_int_swap(n3, n12);
         big_int_dlz(n3);
         big_int_dlz(n12);
-        big_int_swap(n3,n12);
-        big_int_swap2(n3,n12);
+        big_int_swap(n3, n12);
+        big_int_swap2(n3, n12);
         big_int_dlz(n3);
         big_int_dlz(n12);
-        if ((!big_int_equal(ans, n3))||(!big_int_equal(ans, n12))) {
+        if ((!big_int_equal(ans, n3)) || (!big_int_equal(ans, n12))) {
             printf("////////////////////////IMPOSTER IN ADD i=%li//////////////\n", i);
             printf("n1=");
             big_int_print(n1);
@@ -779,7 +931,7 @@ int tst_add() {
             big_int_print(n3);
             printf("my ans2=");
             big_int_print(n12);
-            err=1;
+            err = 1;
             break;
         }
         big_int_free(n1);
@@ -799,7 +951,7 @@ int tst_sub() {
     FILE *file = fopen("sub.txt", "r");
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
-    int err=0;
+    int err = 0;
     for (long i = 0; i < 3000000; i++) {
 
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
@@ -821,19 +973,19 @@ int tst_sub() {
         strcpy(binary, buffer);
         big_int *ans = big_int_get(binary);
 
-        big_int *n3=big_int_sub(n1, n2);
-        big_int_sub2(n12,n2);
+        big_int *n3 = big_int_sub(n1, n2);
+        big_int_sub2(n12, n2);
         big_int_dlz(n3);
         big_int_dlz(n12);
-        big_int_swap2(n1,n12);
-        big_int_swap(n1,n12);
+        big_int_swap2(n1, n12);
+        big_int_swap(n1, n12);
         big_int_dlz(n3);
         big_int_dlz(n12);
-        big_int_swap2(n1,n12);
-        big_int_swap2(n1,n12);
+        big_int_swap2(n1, n12);
+        big_int_swap2(n1, n12);
         big_int_dlz(n3);
         big_int_dlz(n12);
-        if ((!big_int_equal(ans, n3))||(!big_int_equal(ans, n12))) {
+        if ((!big_int_equal(ans, n3)) || (!big_int_equal(ans, n12))) {
             printf("////////////////////////IMPOSTER IN SUBi=%li//////////////\n", i);
             printf("n1=");
             big_int_print(n1);
@@ -845,7 +997,7 @@ int tst_sub() {
             big_int_print(n3);
             printf("my ans2=");
             big_int_print(n12);
-            err=1;
+            err = 1;
             break;
         }
         big_int_free(n1);
@@ -865,8 +1017,8 @@ int tst_eu() {
     FILE *file = fopen("eu.txt", "r");
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
-    int err=0;
-    for (long i = 0; i < 3*100*100; i++) {
+    int err = 0;
+    for (long i = 0; i < 3 * 100 * 100; i++) {
 
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
@@ -886,15 +1038,15 @@ int tst_eu() {
         strcpy(binary, buffer);
         big_int *ans = big_int_get(binary);
 
-        big_int *n3=big_int_euclid_binary(n1, n2);
+        big_int *n3 = big_int_euclid_binary(n1, n2);
 //        big_int_dlz(n3);
 
 //        big_int_print(n1);
 //        big_int_print(n3);
-        big_int_swap(n1,n3);
+        big_int_swap(n1, n3);
 //        big_int_print(n1);
 //        big_int_print(n3);
-        big_int_swap(n1,n3);
+        big_int_swap(n1, n3);
 //        big_int_print(n1);
 //        big_int_print(n3);
 //        printf("-----------\n");
@@ -905,7 +1057,7 @@ int tst_eu() {
 
         if ((!big_int_equal(ans, n3))) {
             printf("////////////////////////IMPOSTER IN EU i=%li//////////////\n", i);
-            err=1;
+            err = 1;
             break;
         }
         big_int_free(n1);
@@ -925,8 +1077,8 @@ int tst_pow() {
     FILE *file = fopen("pow.txt", "r");
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
-    int err=0;
-    for (long i = 0; i <100*10*100+100*10*10+10000; i++) {
+    int err = 0;
+    for (long i = 0; i < 100 * 10 * 100 + 100 * 10 * 10 + 10000; i++) {
 
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
@@ -952,11 +1104,11 @@ int tst_pow() {
         strcpy(binary, buffer);
         big_int *ans = big_int_get(binary);
 //        printf("bf\n");
-        big_int *n3=big_int_lr_mod_pow(n1, n2,mod);
-        big_int *n4=big_int_rl_mod_pow(n1, n2,mod);
+        big_int *n3 = big_int_lr_mod_pow(n1, n2, mod);
+        big_int *n4 = big_int_rl_mod_pow(n1, n2, mod);
 //        printf("af\n");
 
-        if ((!big_int_equal(ans, n3))||(!big_int_equal(ans, n4))) {
+        if ((!big_int_equal(ans, n3)) || (!big_int_equal(ans, n4))) {
             printf("////////////////////////IMPOSTER IN POWi=%li//////////////\n", i);
             printf("n1=");
             big_int_print(n1);
@@ -968,7 +1120,7 @@ int tst_pow() {
             big_int_print(ans);
             printf("my=");
             big_int_print(n3);
-            err=1;
+            err = 1;
             break;
         }
         big_int_free(n1);
@@ -989,8 +1141,8 @@ int tst_div() {
     FILE *file = fopen("div.txt", "r");
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
-    int err=0;
-    for (long i = 0; i < 3*100*100; i++) {
+    int err = 0;
+    for (long i = 0; i < 3 * 100 * 100; i++) {
 
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
@@ -1016,13 +1168,13 @@ int tst_div() {
         strcpy(binary, buffer);
         big_int *ans2 = big_int_get(binary);
 
-        big_int *my1= big_int_get("0");
-        big_int *my2= big_int_get("0");
+        big_int *my1 = big_int_get("0");
+        big_int *my2 = big_int_get("0");
 //        printf("bf div\n");
 
-        big_int_div2(n1, n2,my1,my2);
+        big_int_div2(n1, n2, my1, my2);
 //        printf("af div\n");
-        if ((!big_int_equal(ans1, my1))||(!big_int_equal(ans2, my2))) {
+        if ((!big_int_equal(ans1, my1)) || (!big_int_equal(ans2, my2))) {
             printf("////////////////////////IMPOSTER IN DIV i=%li//////////////\n", i);
             printf("n1=");
             big_int_print(n1);
@@ -1036,7 +1188,7 @@ int tst_div() {
             big_int_print(my1);
             printf("my ans2=");
             big_int_print(my2);
-            err=1;
+            err = 1;
             break;
         }
         big_int_free(n1);
@@ -1058,8 +1210,8 @@ int tst_shft1() {
     FILE *file = fopen("shft1.txt", "r");
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
-    int err=0;
-    for (long i = 0; i < 100000*3; i++) {
+    int err = 0;
+    for (long i = 0; i < 100000 * 3; i++) {
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
             buffer[strlen(buffer) - 1] = '\0';
@@ -1084,23 +1236,23 @@ int tst_shft1() {
         strcpy(binary, buffer);
         big_int *ans2 = big_int_get(binary);
 
-        big_int *my1=big_int_copy(n1);
-        big_int *my2=big_int_copy(n1);
+        big_int *my1 = big_int_copy(n1);
+        big_int *my2 = big_int_copy(n1);
 
         big_int_bin_shft_l(my1);
         big_int_bin_shft_r(my2);
-        big_int_dlz(my1);
-        big_int_dlz(my2);
-        big_int_swap2(my1,my2);
-        big_int_swap2(my1,my2);
-        big_int_dlz(my1);
-        big_int_dlz(my2);
-        big_int_swap(my1,my2);
-        big_int_swap(my1,my2);
-        big_int_dlz(my1);
-        big_int_dlz(my2);
+//        big_int_dlz(my1);
+//        big_int_dlz(my2);
+//        big_int_swap2(my1, my2);
+//        big_int_swap2(my1, my2);
+//        big_int_dlz(my1);
+//        big_int_dlz(my2);
+//        big_int_swap(my1, my2);
+//        big_int_swap(my1, my2);
+//        big_int_dlz(my1);
+//        big_int_dlz(my2);
 //        printf("af div\n");
-        if ((!big_int_equal(ans1, my1))||(!big_int_equal(ans2, my2))) {
+        if ((!big_int_equal(ans1, my1)) || (!big_int_equal(ans2, my2))) {
             printf("////////////////////////IMPOSTER IN shft1 i=%li//////////////\n", i);
             printf("n1=");
             big_int_print(n1);
@@ -1114,7 +1266,7 @@ int tst_shft1() {
             big_int_print(my1);
             printf("my ans2=");
             big_int_print(my2);
-            err=1;
+            err = 1;
             break;
         }
         big_int_free(n1);
@@ -1123,7 +1275,7 @@ int tst_shft1() {
 //        big_int_free(ans2);
         big_int_free(my1);
 //        big_int_free(my2);
-//        if(i%10==0){printf("i=%li\n",i);}
+        if(i%1000==0){printf("i=%li\n",i);}
     }
     free(binary); // Освобождаем память
     free(buffer);
@@ -1135,8 +1287,8 @@ int tst_shft2() {
     FILE *file = fopen("shft2.txt", "r");
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
-    int err=0;
-    for (long i = 0; i < 100000*3; i++) {
+    int err = 0;
+    for (long i = 0; i < 100000 * 3; i++) {
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
             buffer[strlen(buffer) - 1] = '\0';
@@ -1161,34 +1313,34 @@ int tst_shft2() {
         strcpy(binary, buffer);
         big_int *ans2 = big_int_get(binary);
 
-        big_int *my1=big_int_copy(n1);
-        big_int *my2=big_int_copy(n1);
+        big_int *my1 = big_int_copy(n1);
+        big_int *my2 = big_int_copy(n1);
 
-        big_int_bin_shft_l2(my1,n2->number[0]);
+        big_int_bin_shft_l2(my1, n2->number[0]);
 //        printf("my1=");
 //        big_int_print(my2);
-        big_int_bin_shft_r2(my2,n2->number[0]);
+        big_int_bin_shft_r2(my2, n2->number[0]);
 //        printf("my2=");
 //        big_int_print(my2);
 //        printf("my2[0]=%d\n",my2->number[0]);
 //        printf("len my2=%d\n",my2->length);
 //        big_int_print(n1);
 //        printf("---------------------\n");
-        big_int_dlz(my1);
-        big_int_dlz(my2);
-        big_int_swap(my1,my2);
-        big_int_swap2(my1,my2);
-        big_int_dlz(my1);
-        big_int_dlz(my2);
-        big_int_swap2(my1,my2);
-        big_int_swap2(my1,my2);
-        big_int_dlz(my1);
-        big_int_dlz(my2);
-        if ((!big_int_equal(ans1, my1))||(!big_int_equal(ans2, my2))) {
+//        big_int_dlz(my1);
+//        big_int_dlz(my2);
+//        big_int_swap(my1, my2);
+//        big_int_swap2(my1, my2);
+//        big_int_dlz(my1);
+//        big_int_dlz(my2);
+//        big_int_swap2(my1, my2);
+//        big_int_swap2(my1, my2);
+//        big_int_dlz(my1);
+//        big_int_dlz(my2);
+        if ((!big_int_equal(ans1, my1)) || (!big_int_equal(ans2, my2))) {
             printf("////////////////////////IMPOSTER IN shft2 i=%li//////////////\n", i);
             printf("n1=");
             big_int_print(n1);
-            printf("cnt=%d\n",n2->number[0]);
+            printf("cnt=%d\n", n2->number[0]);
             printf("ans1=");
             big_int_print(ans1);
             printf("ans2=");
@@ -1197,7 +1349,7 @@ int tst_shft2() {
             big_int_print(my1);
             printf("my ans2=");
             big_int_print(my2);
-            err=1;
+            err = 1;
             break;
         }
         big_int_free(n1);
@@ -1218,8 +1370,8 @@ int tst_swap() {
     FILE *file = fopen("swap.txt", "r");
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
-    int err=0;
-    for (long i = 0; i < 3*100*100; i++) {
+    int err = 0;
+    for (long i = 0; i < 3 * 100 * 100; i++) {
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
             buffer[strlen(buffer) - 1] = '\0';
@@ -1244,18 +1396,18 @@ int tst_swap() {
         strcpy(binary, buffer);
         big_int *ans2 = big_int_get(binary);
 
-        big_int_swap2(n1,n2);
-        big_int_swap2(n1,n2);
-        big_int_swap2(n1,n2);
-        big_int_swap2(n1,n2);
-        big_int_swap2(n1,n2);
-        big_int_swap(n1,n2);
-        big_int_swap(n1,n2);
-        big_int_swap(n1,n2);
-        big_int_swap(n1,n2);
+        big_int_swap2(n1, n2);
+        big_int_swap2(n1, n2);
+        big_int_swap2(n1, n2);
+        big_int_swap2(n1, n2);
+        big_int_swap2(n1, n2);
+        big_int_swap(n1, n2);
+        big_int_swap(n1, n2);
+        big_int_swap(n1, n2);
+        big_int_swap(n1, n2);
 
 
-        if ((!big_int_equal(ans1, n2))||(!big_int_equal(ans2, n1))) {
+        if ((!big_int_equal(ans1, n2)) || (!big_int_equal(ans2, n1))) {
             printf("////////////////////////IMPOSTER IN swap i=%li//////////////\n", i);
             printf("n1=");
             big_int_print(n1);
@@ -1270,7 +1422,7 @@ int tst_swap() {
 //            big_int_print(my1);
 //            printf("my ans2=");
 //            big_int_print(my2);
-            err=1;
+            err = 1;
             break;
         }
         big_int_free(n1);
@@ -1290,14 +1442,14 @@ int tst_set_bit() {
     FILE *file = fopen("set_bit.txt", "r");
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
-    int err=0;
-    for (long i = 0; i < 255*2*1000; i++) {
+    int err = 0;
+    for (long i = 0; i < 255 * 2 * 1000; i++) {
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
             buffer[strlen(buffer) - 1] = '\0';
         strcpy(binary, buffer);
         big_int *n1 = big_int_get(binary);
-        big_int *n0= big_int_copy(n1);
+        big_int *n0 = big_int_copy(n1);
 
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
@@ -1317,14 +1469,14 @@ int tst_set_bit() {
         strcpy(binary, buffer);
         big_int *ans = big_int_get(binary);
 
-        big_int_set_bit(n1,num->number[0],bit->number[0]);
+        big_int_set_bit(n1, num->number[0], bit->number[0]);
 
         big_int_dlz(n1);
-        big_int_swap2(n1,ans);
-        big_int_swap2(n1,ans);
+        big_int_swap2(n1, ans);
+        big_int_swap2(n1, ans);
         big_int_dlz(ans);
-        big_int_swap2(n1,ans);
-        big_int_swap2(n1,ans);
+        big_int_swap2(n1, ans);
+        big_int_swap2(n1, ans);
         big_int_dlz(n1);
         big_int_dlz(ans);
         if ((!big_int_equal(ans, n1))) {
@@ -1342,7 +1494,7 @@ int tst_set_bit() {
             big_int_print(n1);
 //            printf("my ans2=");
 //            big_int_print(my2);
-            err=1;
+            err = 1;
             break;
         }
         big_int_free(n1);
@@ -1362,7 +1514,7 @@ int tst_copy() {
     FILE *file = fopen("copy.txt", "r");
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
-    int err=0;
+    int err = 0;
     for (long i = 0; i < 2000000; i++) {
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
@@ -1370,23 +1522,23 @@ int tst_copy() {
         strcpy(binary, buffer);
 
         big_int *src = big_int_get(binary);
-        big_int *n1= big_int_copy(src);
-        big_int *n2= big_int_copy(n1);
-        big_int *n3= big_int_copy(n2);
-        big_int *n4= big_int_copy(src);
+        big_int *n1 = big_int_copy(src);
+        big_int *n2 = big_int_copy(n1);
+        big_int *n3 = big_int_copy(n2);
+        big_int *n4 = big_int_copy(src);
 
 
         big_int_dlz(n1);
-        big_int_swap2(n1,n3);
+        big_int_swap2(n1, n3);
         big_int_dlz(n2);
-        big_int_swap2(n1,n2);
+        big_int_swap2(n1, n2);
         big_int_dlz(n2);
-        big_int_swap2(n4,n3);
-        big_int_swap2(n2,src);
+        big_int_swap2(n4, n3);
+        big_int_swap2(n2, src);
         big_int_dlz(n1);
         big_int_dlz(n3);
 
-        if ( (big_int_equal(src, n1)*big_int_equal(src, n2)*big_int_equal(src, n3)*big_int_equal(src, n4))!=1 ) {
+        if ((big_int_equal(src, n1) * big_int_equal(src, n2) * big_int_equal(src, n3) * big_int_equal(src, n4)) != 1) {
             printf("////////////////////////IMPOSTER IN copy i=%li//////////////\n", i);
             printf("src=");
             big_int_print(src);
@@ -1407,7 +1559,7 @@ int tst_copy() {
 //            big_int_print(n1);
 //            printf("my ans2=");
 //            big_int_print(my2);
-            err=1;
+            err = 1;
             break;
         }
         big_int_free(n1);
@@ -1415,7 +1567,7 @@ int tst_copy() {
         big_int_free(n3);
         big_int_free(n4);
         big_int_free(src);
-//        if(i%100000==0){printf("i=%li\n",i);}
+//        if(i%100==0){printf("i=%li\n",i);}
     }
     free(binary); // Освобождаем память
     free(buffer);
@@ -1424,10 +1576,13 @@ int tst_copy() {
 }
 
 int tst_mult() {
+    clock_t start_time, end_time;
+    double total_time;
+    start_time = clock();
     FILE *file = fopen("mult.txt", "r");
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
-    int err=0;
+    int err = 0;
     for (long i = 0; i < 10000; i++) {
 
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
@@ -1453,7 +1608,10 @@ int tst_mult() {
 //        big_int_print(n2);
 //        printf("ans");
 //        big_int_print(ans);
-        big_int *n3 =big_int_mult(n1,n2);
+        big_int *n3 = big_int_mult(n1, n2);
+//        printf("bf\n");
+//        big_int *n3 = karatsuba_mult(n1, n2);
+//        printf("af\n");
 //        printf("my ans=");
 //        big_int_print(n3);
 //        printf("----\n");
@@ -1468,55 +1626,145 @@ int tst_mult() {
 
         if ((!big_int_equal(ans, n3))) {
             printf("////////////////////////IMPOSTER IN mult i=%li//////////////\n", i);
-//            printf("n1=");
-//            big_int_print(n1);
-//            printf("n2=");
-//            big_int_print(n2);
-//            printf("ans");
-//            big_int_print(ans);
-//            printf("my=");
-//            big_int_print(n3);
-            err=1;
+            printf("n1=");
+            big_int_print(n1);
+            printf("n2=");
+            big_int_print(n2);
+            printf("ans");
+            big_int_print(ans);
+            printf("my ans=");
+            big_int_print(n3);
+//            printf("my kar=");
+//            big_int_print(n4);
+            err = 1;
             break;
         }
         big_int_free(n1);
         big_int_free(n2);
         big_int_free(n3);
+//        big_int_free(n4);
         big_int_free(ans);
-//        if(i%100==0){printf("i=%li\n",i);}
+//        if(i%1000==0){printf("i=%li\n",i);}
     }
     free(binary); // Освобождаем память
     free(buffer);
     fclose(file); // Закрываем файл
+    end_time = clock();
+    total_time = ((double) (end_time - start_time)) / CLOCKS_PER_SEC;
+
+    printf("Время выполнения mult: %f секунд\n", total_time);
     return err;
 }
 
+int tst_mult2() {
+    clock_t start_time, end_time;
+    double total_time;
+    start_time = clock();
+    FILE *file = fopen("mult.txt", "r");
+    char *binary = malloc(MAX_BINARY_LENGTH + 1);
+    char *buffer = malloc(MAX_BINARY_LENGTH + 1);
+    int err = 0;
+    for (long i = 0; i < 10000; i++) {
 
+        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+        big_int *n1 = big_int_get(binary);
 
-void tst(){
+        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+        big_int *n2 = big_int_get(binary);
+
+        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+        big_int *ans = big_int_get(binary);
+//        printf("n1=");
+//        big_int_print(n1);
+//        printf("n2=");
+//        big_int_print(n2);
+//        printf("ans");
+//        big_int_print(ans);
+//        big_int *n3 = big_int_mult(n1, n2);
+//        printf("bf\n");
+        big_int *n3 = karatsuba_mult(n1, n2);
+//        printf("af\n");
+//        printf("my ans=");
+//        big_int_print(n3);
+//        printf("----\n");
+//        big_int_dlz(n1);
+//        big_int_swap2(n1,ans);
+//        big_int_swap2(n1,ans);
+//        big_int_dlz(ans);
+//        big_int_swap2(n1,ans);
+//        big_int_swap2(n1,ans);
+//        big_int_dlz(n1);
+//        big_int_dlz(ans);
+
+        if ((!big_int_equal(ans, n3))) {
+            printf("////////////////////////IMPOSTER IN karatsuba i=%li//////////////\n", i);
+            printf("n1=");
+            big_int_print(n1);
+            printf("n2=");
+            big_int_print(n2);
+            printf("ans");
+            big_int_print(ans);
+            printf("my ans=");
+            big_int_print(n3);
+//            printf("my kar=");
+//            big_int_print(n4);
+            err = 1;
+            break;
+        }
+        big_int_free(n1);
+        big_int_free(n2);
+        big_int_free(n3);
+//        big_int_free(n4);
+        big_int_free(ans);
+//        if(i%1000==0){printf("i=%li\n",i);}
+    }
+    free(binary); // Освобождаем память
+    free(buffer);
+    fclose(file); // Закрываем файл
+    end_time = clock();
+    total_time = ((double) (end_time - start_time)) / CLOCKS_PER_SEC;
+
+    printf("Время выполнения karatsuba_mult: %f секунд\n", total_time);
+    return err;
+}
+
+void tst() {
     printf("start of the test\n");
-    if(tst_swap()){return;}
-    else{printf("swap is ok\n");}
-    if(tst_add()){return;}
-    else{printf("add is ok\n");}
-    if(tst_sub()){return;}
-    else{printf("sub is ok\n");}
-    if(tst_eu()){return;}
-    else{printf("eu is ok\n");}
-    if(tst_shft1()){return;}
-    else{printf("shft1 is ok\n");}
-    if(tst_shft2()){return;}
-    else{printf("shft2 is ok\n");}
-    if(tst_div()){return;}
-    else{printf("div is ok\n");}
-    if(tst_set_bit()){return;}
-    else{printf("set_bit is ok\n");}
-    if(tst_copy()){return;}
-    else{printf("copy is ok\n");}
+    printf("-----------------\n");
+//    if(tst_swap()){return;}//ok
+//    else{printf("swap is ok\n");}
+//    if(tst_add()){return;}
+//    else{printf("add is ok\n");}
+//    if(tst_sub()){return;}
+//    else{printf("sub is ok\n");}
+//    if(tst_eu()){return;}
+//    else{printf("eu is ok\n");}
+//    if(tst_shft1()){return;}
+//    else{printf("shft1 is ok\n");}
+//    if(tst_shft2()){return;}
+//    else{printf("shft2 is ok\n");}
+//    if(tst_div()){return;}
+//    else{printf("div is ok\n");}
+//    if(tst_set_bit()){return;}
+//    else{printf("set_bit is ok\n");}
+//    if(tst_copy()){return;}
+//    else{printf("copy is ok\n");}
     if(tst_mult()){return;}
     else{printf("mult is ok\n");}
-    if(tst_pow()){return;}
-    else{printf("pow is ok\n");}
-
+    printf("-----------------\n");
+    if(tst_mult2()){return;}
+    else{printf("karatsuba_mult is ok\n");}
+//    if(tst_pow()){return;}
+//    else{printf("pow is ok\n");}
+    printf("-----------------\n");
     printf("end of the test\n");
 }
