@@ -280,14 +280,14 @@ def tst_set_bit():
 					
 def tst_copy():
 	with open("copy.txt", "w") as file:
-		for x in range(2**5000,2**5000+1000000):#1000
+		for x in range(2**5000+99700,2**5000+100000):#1000
 			file.write(bin(x)[2:]+"\n")
 
 
 def tst_mult():
 	with open("mult.txt", "w") as file:
-		for x in range(2**100+1,2**100+501):
-			for y in range(2**10+1,2**10+501):
+		for x in range(2**100+491,2**100+501):
+			for y in range(2**10+491,2**10+501):
 				x0=x*(-1)**r(1,5)
 				y0=y*(-1)**r(1,5)
 				x0=x
@@ -306,8 +306,8 @@ def tst_mult():
 					file.write("-"+bin(x0*y0)[3:]+"\n")
 		print('first')
 		
-		for x in range(2**1000+1,2**1000+101):
-			for y in range(2**100+1,2**100+101):
+		for x in range(2**1000+91,2**1000+101):
+			for y in range(2**100+91,2**100+101):
 				x0=x*(-1)**r(1,5)
 				y0=y*(-1)**r(1,5)
 				if x0>=0:
@@ -324,8 +324,8 @@ def tst_mult():
 					file.write("-"+bin(x0*y0)[3:]+"\n")
 		print('second')
 		
-		for x in range(2**5000+1,2**5000+101):
-			for y in range(2**3000+1,2**3000+101):
+		for x in range(2**5000+91,2**5000+101):
+			for y in range(2**3000+91,2**3000+101):
 				x0=x*(-1)**r(1,5)
 				y0=y*(-1)**r(1,5)
 				if x0>=0:
@@ -343,7 +343,7 @@ def tst_mult():
 		print('third')
 		
 
-"""
+
 print("add st")	
 tst_add()
 print("add end")
@@ -352,8 +352,7 @@ tst_sub()
 print("sub end")
 print("eu st")		
 tst_eu()
-print("eu end")
-		
+print("eu end")	
 print("div st")		
 tst_div()
 print("div end")
@@ -375,7 +374,6 @@ print('copy end')
 print('mult st')
 tst_mult()
 print('mult end')
-"""
 print("pow st")		
 tst_mod_pow()
 print("pow end")

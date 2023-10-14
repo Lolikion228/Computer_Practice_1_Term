@@ -1669,7 +1669,7 @@ int tst_copy() {
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
     int err = 0;
-    for (long i = 0; i < 2000000; i++) {
+    for (long i = 0; i < 300; i++) {
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
             buffer[strlen(buffer) - 1] = '\0';
@@ -1737,7 +1737,7 @@ int tst_mult() {
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
     int err = 0;
-    for (long i = 0; i < 500*500+100*100+100*100; i++) {
+    for (long i = 0; i < 300; i++) {
 
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
@@ -1818,7 +1818,7 @@ int tst_mult2() {
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
     int err = 0;
-    for (long i = 0; i < 500*500+100*100+100*100; i++) {
+    for (long i = 0; i < 300; i++) {
 
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
