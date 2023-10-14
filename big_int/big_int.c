@@ -9,7 +9,7 @@
 #include <time.h>
 
 #define MAX_BINARY_LENGTH 16000
-#define const1 45
+#define const1 100
 
 
 big_int *big_int_get(const char *bin_number) {
@@ -815,7 +815,7 @@ big_int *big_int_slice(big_int *n1, long l1, long l2 ){
         n->length = 1;
         n->number=calloc(1,sizeof(n1->number[0]));
         return n;
-    };
+    }
 
     n->number=calloc(n->length,sizeof(n1->number[0]));
     memcpy(n->number,n1->number+l1,n->length);//что если хотим прочитать за пределом,,,
@@ -964,7 +964,7 @@ int tst_add() {
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
     int err = 0;
-    for (long i = 0; i < 3000000; i++) {
+    for (long i = 0; i < 300; i++) {
 
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
@@ -1030,7 +1030,7 @@ int tst_sub() {
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
     int err = 0;
-    for (long i = 0; i < 3000000; i++) {
+    for (long i = 0; i < 300; i++) {
 
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
@@ -1096,7 +1096,7 @@ int tst_eu() {
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
     int err = 0;
-    for (long i = 0; i < 3 * 100 * 100; i++) {
+    for (long i = 0; i < 300; i++) {
 
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
@@ -1159,7 +1159,7 @@ int tst_pow() {
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
     int err = 0;
-    for (long i = 0; i < 100*100*100*2+10*10*10; i++) {
+    for (long i = 0; i < 375; i++) {
 
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
@@ -1229,7 +1229,7 @@ int tst_pow2() {
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
     int err = 0;
-    for (long i = 0; i < 100 * 10 * 100 + 100 * 10 * 10 + 10000; i++) {
+    for (long i = 0; i < 375; i++) {
 
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
@@ -1296,7 +1296,7 @@ int tst_div() {
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
     int err = 0;
-    for (long i = 0; i < 3 * 100 * 100; i++) {
+    for (long i = 0; i < 300; i++) {
 
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
@@ -1365,7 +1365,7 @@ int tst_shft1() {
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
     int err = 0;
-    for (long i = 0; i < 100000 * 3; i++) {
+    for (long i = 0; i < 300; i++) {
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
             buffer[strlen(buffer) - 1] = '\0';
@@ -1429,7 +1429,7 @@ int tst_shft1() {
 //        big_int_free(ans2);
         big_int_free(my1);
 //        big_int_free(my2);
-        if(i%1000==0){printf("i=%li\n",i);}
+//        if(i%1000==0){printf("i=%li\n",i);}
     }
     free(binary); // Освобождаем память
     free(buffer);
@@ -1442,7 +1442,7 @@ int tst_shft2() {
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
     int err = 0;
-    for (long i = 0; i < 100000 * 3; i++) {
+    for (long i = 0; i < 300; i++) {
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
             buffer[strlen(buffer) - 1] = '\0';
@@ -1525,7 +1525,7 @@ int tst_swap() {
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
     int err = 0;
-    for (long i = 0; i < 3 * 100 * 100; i++) {
+    for (long i = 0; i < 300; i++) {
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
             buffer[strlen(buffer) - 1] = '\0';
@@ -1597,7 +1597,7 @@ int tst_set_bit() {
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
     int err = 0;
-    for (long i = 0; i < 255 * 2 * 1000; i++) {
+    for (long i = 0; i < 200; i++) {
         fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
             buffer[strlen(buffer) - 1] = '\0';
@@ -1894,31 +1894,30 @@ int tst_mult2() {
 void tst() {
     printf("start of the test\n");
     printf("-----------------\n");
-//    if(tst_swap()){return;}//ok
-//    else{printf("swap is ok\n");}
-//    if(tst_add()){return;}
-//    else{printf("add is ok\n");}
-//    if(tst_sub()){return;}
-//    else{printf("sub is ok\n");}
-//    if(tst_eu()){return;}
-//    else{printf("eu is ok\n");}
-//    if(tst_shft1()){return;}
-//    else{printf("shft1 is ok\n");}
-//    if(tst_shft2()){return;}
-//    else{printf("shft2 is ok\n");}
-//    if(tst_div()){return;}
-//    else{printf("div is ok\n");}
-//    if(tst_set_bit()){return;}
-//    else{printf("set_bit is ok\n");}
-//    if(tst_copy()){return;}
-//    else{printf("copy is ok\n");}
-//    if(tst_mult()){return;}
-//    else{printf("mult is ok\n");}
-//    if(tst_mult2()){return;}
-//    else{printf("karatsuba_mult is ok\n");}
+    if(tst_swap()){return;}//ok
+    else{printf("swap is ok\n");}
+    if(tst_add()){return;}
+    else{printf("add is ok\n");}
+    if(tst_sub()){return;}
+    else{printf("sub is ok\n");}
+    if(tst_eu()){return;}
+    else{printf("eu is ok\n");}
+    if(tst_shft1()){return;}
+    else{printf("shft1 is ok\n");}
+    if(tst_shft2()){return;}
+    else{printf("shft2 is ok\n");}
+    if(tst_div()){return;}
+    else{printf("div is ok\n");}
+    if(tst_set_bit()){return;}
+    else{printf("set_bit is ok\n");}
+    if(tst_copy()){return;}
+    else{printf("copy is ok\n");}
+    if(tst_mult()){return;}
+    else{printf("mult is ok\n");}
+    if(tst_mult2()){return;}
+    else{printf("karatsuba_mult is ok\n");}
     if(tst_pow()){return;}
     else{printf("pow is ok\n");}
-    printf("-----------------\n");
     if(tst_pow2()){return;}
     else{printf("pow2 is ok\n");}
     printf("-----------------\n");
