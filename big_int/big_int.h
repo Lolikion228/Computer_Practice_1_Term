@@ -69,12 +69,12 @@ big_int *big_int_rl_mod_pow2(big_int *x, big_int *n, big_int *m);//ok
 
 big_int *big_int_lr_mod_pow2(big_int *x, big_int *n, big_int *m);//ok
 
-big_int *big_int_slice(big_int *n1, long l1, long l2 );
+big_int *big_int_slice(big_int *n1, long l1, long l2 );//ok
 
-big_int *karatsuba_mult(big_int *n1,big_int *n2);
-/*
- * VALGRIND ALL THE FUNCS!!!!!!!!!!!!!!!!!
- */
+big_int *big_int_karatsuba_mult(big_int *n1,big_int *n2);//ok
+
+big_int *big_int_rnd(unsigned int n);
+
 void tst();
 
 #endif //UNTITLED_BIG_INT_H

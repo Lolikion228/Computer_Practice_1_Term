@@ -688,13 +688,13 @@ big_int *big_int_rl_mod_pow2(big_int *x, big_int *n, big_int *m) {
             big_int *xmodm = big_int_get("0");
             big_int *trash = big_int_get("0");
             big_int_div2(x0, m0, trash, xmodm);
-            big_int *n4 = karatsuba_mult(ans, xmodm);
+            big_int *n4 = big_int_karatsuba_mult(ans, xmodm);
             big_int_swap2(ans, n4);
             big_int_free(n4);
             big_int_free(xmodm);
             big_int_free(trash);
         }
-        big_int *sq = karatsuba_mult(x0, x0);
+        big_int *sq = big_int_karatsuba_mult(x0, x0);
         big_int *sqmodm1 = big_int_get("0");
         big_int *trash1 = big_int_get("0");
         big_int_div2(sq, m0, trash1, sqmodm1);
@@ -747,7 +747,7 @@ big_int *big_int_lr_mod_pow2(big_int *x, big_int *n, big_int *m) {
     big_int *n3 = big_int_get("1");
     for (int i = n->length - 1; i > -1; i--) {
         for (int j = 7; j > -1; j--) {
-            big_int *sq = karatsuba_mult(n3, n3);
+            big_int *sq = big_int_karatsuba_mult(n3, n3);
             big_int *xmodm = big_int_get("0");
             big_int *trash = big_int_get("0");
             big_int_div2(sq, m, trash, xmodm);
@@ -759,7 +759,7 @@ big_int *big_int_lr_mod_pow2(big_int *x, big_int *n, big_int *m) {
                 big_int *mul = big_int_get("0");
                 big_int *trash = big_int_get("0");
                 big_int_div2(x, m, trash, mul);
-                big_int *mul2 = karatsuba_mult(n3, mul);
+                big_int *mul2 = big_int_karatsuba_mult(n3, mul);
                 big_int_swap2(mul2, n3);
                 big_int_free(mul);
                 big_int_free(trash);
@@ -791,7 +791,7 @@ big_int *big_int_slice(big_int *n1, long l1, long l2 ){
 }
 
 
-big_int *karatsuba_mult(big_int *n1, big_int *n2) {
+big_int *big_int_karatsuba_mult(big_int *n1, big_int *n2) {
     if (n1->length + n2->length <= const1) { return big_int_mult(n1, n2); }
     else {
         unsigned int mx = (n1->length>=n2->length) ? n1->length : n2->length;
@@ -802,11 +802,11 @@ big_int *karatsuba_mult(big_int *n1, big_int *n2) {
         big_int *p= big_int_slice(n1,mx/2,mx-1);
         big_int *s= big_int_slice(n2,0,mx/2-1);
         big_int *r= big_int_slice(n2,mx/2,mx-1);
-        big_int *a1= karatsuba_mult(p,r);//A1
-        big_int *a2= karatsuba_mult(q,s);//A2
+        big_int *a1= big_int_karatsuba_mult(p,r);//A1
+        big_int *a2= big_int_karatsuba_mult(q,s);//A2
         big_int *sm1=big_int_add(p,q);
         big_int *sm2=big_int_add(r,s);
-        big_int *a3= karatsuba_mult(sm1,sm2);//A3
+        big_int *a3= big_int_karatsuba_mult(sm1,sm2);//A3
         big_int *sm3=big_int_add(a1,a2);
         big_int_sub2(a3,sm3);
         big_int_bin_shft_l2(a1,8*mx);//A1<<n
@@ -827,6 +827,18 @@ big_int *karatsuba_mult(big_int *n1, big_int *n2) {
     }
 }
 
+
+big_int *big_int_rnd(unsigned int n){
+    srand(time(NULL));
+    big_int *res = (big_int *) malloc(sizeof(big_int));
+    res->length=n;
+    res->sign='+';
+    res->number= calloc(n,sizeof(unsigned char));
+    for(long i=0;i<n;i++){
+        res->number[i]=rand()%256;
+    }
+    return res;
+}
 
 int tst_add() {
     FILE *file = fopen("add.txt", "r");
@@ -1436,7 +1448,7 @@ int tst_mult2() {
             buffer[strlen(buffer) - 1] = '\0';
         strcpy(binary, buffer);
         big_int *ans = big_int_get(binary);
-        big_int *n3 = karatsuba_mult(n1, n2);
+        big_int *n3 = big_int_karatsuba_mult(n1, n2);
         if ((!big_int_equal(ans, n3))) {
             printf("////////////////////////IMPOSTER IN karatsuba i=%li//////////////\n", i);
             err = 1;
@@ -1452,7 +1464,7 @@ int tst_mult2() {
     fclose(file); // Закрываем файл
     end_time = clock();
     total_time = ((double) (end_time - start_time)) / CLOCKS_PER_SEC;
-    printf("Время выполнения karatsuba_mult: %f секунд\n", total_time);
+    printf("Время выполнения big_int_karatsuba_mult: %f секунд\n", total_time);
     return err;
 }
 
