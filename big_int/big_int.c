@@ -838,8 +838,8 @@ big_int *big_int_rnd(unsigned int n){
     for(long i=0;i<n;i++){
         res->number[i]=rand()%256;
     }
-    if((res->number[0])&1){
-        res->number[0]-=1;
+    if(!((res->number[0])&1)){
+        res->number[0]+=1;
     }
     return res;
 }
