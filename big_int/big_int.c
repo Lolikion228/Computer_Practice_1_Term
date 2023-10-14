@@ -1014,6 +1014,7 @@ int tst_pow() {
         big_int_free(mod);
         big_int_free(ans);
         big_int_free(n3);
+        big_int_free(n4);
     }
     free(binary); // Освобождаем память
     free(buffer);
@@ -1066,6 +1067,7 @@ int tst_pow2() {
         big_int_free(mod);
         big_int_free(ans);
         big_int_free(n3);
+        big_int_free(n4);
     }
     free(binary); // Освобождаем память
     free(buffer);
@@ -1157,7 +1159,9 @@ int tst_shft1() {
         }
         big_int_free(n1);
         big_int_free(ans1);
+        big_int_free(ans2);
         big_int_free(my1);
+        big_int_free(my2);
     }
     free(binary); // Освобождаем память
     free(buffer);
@@ -1464,8 +1468,8 @@ void tst() {
     else{printf("sub is ok\n");}
     if(tst_eu()){return;}//ok
     else{printf("eu is ok\n");}
-//    if(tst_shft1()){return;}//FIX IT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//    else{printf("shft1 is ok\n");}
+    if(tst_shft1()){return;}//Ok
+    else{printf("shft1 is ok\n");}
     if(tst_shft2()){return;}//ok
     else{printf("shft2 is ok\n");}
     if(tst_div()){return;}//ok
@@ -1478,10 +1482,10 @@ void tst() {
     else{printf("mult is ok\n");}
     if(tst_mult2()){return;}//ok
     else{printf("karatsuba_mult is ok\n");}
-//    if(tst_pow()){return;}//FIX IT!!!!!!!!!!!!!!!!!!!!!!!!!!
-//    else{printf("pow is ok\n");}
-//    if(tst_pow2()){return;}//FIX IT!!!!!!!!!!!!!!!!!!!!!!!!!!
-//    else{printf("pow2 is ok\n");}
+    if(tst_pow()){return;}//ok
+    else{printf("pow is ok\n");}
+    if(tst_pow2()){return;}//Ok
+    else{printf("pow2 is ok\n");}
     printf("-----------------\n");
     printf("end of the test\n");
 }
