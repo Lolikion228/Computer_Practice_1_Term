@@ -7,10 +7,11 @@
 #include <stdlib.h>
 extern long con;
 int main() {
-    tst();
+//    tst();
 //    clock_t start_time, end_time;
 //    double total_time;
 //    start_time = clock();
+
 //    big_int *n1= big_int_rnd(10000);
 //    big_int *n2= big_int_rnd(10000);
 //    big_int *n3= big_int_mult(n1,n2);

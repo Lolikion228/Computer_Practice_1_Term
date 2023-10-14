@@ -75,6 +75,8 @@ big_int *big_int_karatsuba_mult(big_int *n1,big_int *n2);//ok
 
 big_int *big_int_rnd(unsigned int n);
 
+big_int *big_int_get_prime(unsigned int len,unsigned int tst_cnt);
+
 void tst();
 
 #endif //UNTITLED_BIG_INT_H

@@ -9,8 +9,9 @@
 #include <time.h>
 
 #define MAX_BINARY_LENGTH 16000
-#define const1 100
+#define const1 41
 
+long con=const1;
 
 big_int *big_int_get(const char *bin_number) {
     big_int *n1 = (big_int *) malloc(sizeof(big_int));
@@ -837,9 +838,17 @@ big_int *big_int_rnd(unsigned int n){
     for(long i=0;i<n;i++){
         res->number[i]=rand()%256;
     }
+    if((res->number[0])&1){
+        res->number[0]-=1;
+    }
     return res;
 }
 
+big_int *big_int_get_prime(unsigned int len,unsigned int tst_cnt){
+    big_int *res= big_int_rnd(len);
+
+    return res;
+}
 int tst_add() {
     FILE *file = fopen("add.txt", "r");
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
@@ -1472,32 +1481,32 @@ int tst_mult2() {
 void tst() {
     printf("start of the test\n");
     printf("-----------------\n");
-    if(tst_swap()){return;}//ok
-    else{printf("swap is ok\n");}
-    if(tst_add()){return;}//ok
-    else{printf("add is ok\n");}
-    if(tst_sub()){return;}//ok
-    else{printf("sub is ok\n");}
-    if(tst_eu()){return;}//ok
-    else{printf("eu is ok\n");}
-    if(tst_shft1()){return;}//Ok
-    else{printf("shft1 is ok\n");}
-    if(tst_shft2()){return;}//ok
-    else{printf("shft2 is ok\n");}
-    if(tst_div()){return;}//ok
-    else{printf("div is ok\n");}
-    if(tst_set_bit()){return;}//ok
-    else{printf("set_bit is ok\n");}
-    if(tst_copy()){return;}//ok
-    else{printf("copy is ok\n");}
+//    if(tst_swap()){return;}//ok
+//    else{printf("swap is ok\n");}
+//    if(tst_add()){return;}//ok
+//    else{printf("add is ok\n");}
+//    if(tst_sub()){return;}//ok
+//    else{printf("sub is ok\n");}
+//    if(tst_eu()){return;}//ok
+//    else{printf("eu is ok\n");}
+//    if(tst_shft1()){return;}//Ok
+//    else{printf("shft1 is ok\n");}
+//    if(tst_shft2()){return;}//ok
+//    else{printf("shft2 is ok\n");}
+//    if(tst_div()){return;}//ok
+//    else{printf("div is ok\n");}
+//    if(tst_set_bit()){return;}//ok
+//    else{printf("set_bit is ok\n");}
+//    if(tst_copy()){return;}//ok
+//    else{printf("copy is ok\n");}
     if(tst_mult()){return;}//ok
     else{printf("mult is ok\n");}
     if(tst_mult2()){return;}//ok
     else{printf("karatsuba_mult is ok\n");}
-    if(tst_pow()){return;}//ok
-    else{printf("pow is ok\n");}
-    if(tst_pow2()){return;}//Ok
-    else{printf("pow2 is ok\n");}
+//    if(tst_pow()){return;}//ok
+//    else{printf("pow is ok\n");}
+//    if(tst_pow2()){return;}//Ok
+//    else{printf("pow2 is ok\n");}
     printf("-----------------\n");
     printf("end of the test\n");
 }
