@@ -867,34 +867,56 @@ int big_int_primality_test(big_int* n,unsigned int tst_cnt){
             big_int_add2(a, l);
         }
         if (!big_int_leq(a, r)) {
-
-            a = r;
+            big_int_swap2(a,r);
         }
+
         big_int *x= big_int_rl_mod_pow2(a,d,n);
         for(long i=1;i<cnt_of_two+1;i++){
             big_int *y=big_int_rl_mod_pow2(x,l,n);
             if( (big_int_equal(y,one)) && (!big_int_equal(x,one)) && (!big_int_equal(x,r2)) ){
+                big_int_free(one);
+                big_int_free(r);
+                big_int_free(r2);
+                big_int_free(x);
+                big_int_free(a);
+                big_int_free(y);
+                big_int_free(l);
+                big_int_free(d);
                 return 0;
             }
             big_int_swap2(x,y);
             big_int_free(y);
         }
-        if(!big_int_equal(x,one)){return 0;}
-
+        if(!big_int_equal(x,one)){
+            big_int_free(one);
+            big_int_free(r);
+            big_int_free(r2);
+            big_int_free(a);
+            big_int_free(x);
+            big_int_free(l);
+            big_int_free(d);
+            return 0;
+        }
+        big_int_free(x);
+        big_int_free(a);
     }
-    free
+    big_int_free(one);
+    big_int_free(r);
+    big_int_free(r2);
+    big_int_free(l);
+    big_int_free(d);
     return 1;
 
 }
 
 big_int *big_int_get_prime(unsigned int len,unsigned int tst_cnt){
     int prime=0;
-    big_int *res;
     while(!prime){
-        res= big_int_rnd(len);
+        big_int *res= big_int_rnd(len);
         prime = big_int_primality_test(res,tst_cnt);
+        if(prime)return res;
+        big_int_free(res);
     }
-    return res;
 }
 
 
@@ -1546,7 +1568,7 @@ int tst_prime() {
         strcpy(binary, buffer);
         big_int *ans = big_int_get(binary);
         int my= big_int_primality_test(n1,10);
-        if(my){ big_int_print(n1);}
+//        if(my){ big_int_print(n1);}
         if ((ans->number[0])!=my) {
             printf("////////////////////////IMPOSTER IN prime i=%li//////////////\n", i);
             err = 1;
