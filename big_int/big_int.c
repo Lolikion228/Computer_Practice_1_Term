@@ -640,6 +640,24 @@ void big_int_div2(big_int *n1, big_int *n2, big_int *res1, big_int *rmdr) {
     big_int_free(r);
 }
 
+void big_int_div2_for_pow(big_int *n1, big_int *n2, big_int *rmdr) {
+    big_int *r = big_int_get("0");
+    for (int i = (n1->length) - 1; i >= 0; i--) {
+        for (int bit = 7; bit >= 0; bit--) {
+            big_int_bin_shft_l(r);
+            big_int_set_bit(r, 0, ((n1->number[i]) & (1 << bit)) != 0);
+            if (big_int_leq(n2, r)) {
+                r->sign = '+';
+                big_int_sub2(r, n2);
+            }
+        }
+    }
+    rmdr->sign = '+';
+    rmdr->length = r->length;
+    rmdr->number = (unsigned char *) realloc(rmdr->number, rmdr->length);
+    memmove(rmdr->number, r->number, r->length);
+    big_int_free(r);
+}
 
 big_int *big_int_rl_mod_pow(big_int *x, big_int *n, big_int *m) {
     big_int *ans = big_int_get("1");
@@ -650,26 +668,22 @@ big_int *big_int_rl_mod_pow(big_int *x, big_int *n, big_int *m) {
     while (!big_int_leq(n0, zero)) {
         if ((n0->number[0]) & 1) {
             big_int *xmodm = big_int_get("0");
-            big_int *trash = big_int_get("0");
-            big_int_div2(x0, m0, trash, xmodm);
+            big_int_div2_for_pow(x0, m0,xmodm);
             big_int *n4 = big_int_mult(ans, xmodm);
             big_int_swap2(ans, n4);
             big_int_free(n4);
             big_int_free(xmodm);
-            big_int_free(trash);
         }
         big_int *sq = big_int_mult(x0, x0);
         big_int *sqmodm1 = big_int_get("0");
-        big_int *trash1 = big_int_get("0");
-        big_int_div2(sq, m0, trash1, sqmodm1);
+        big_int_div2_for_pow(sq, m0,sqmodm1);
         big_int_swap2(x0, sqmodm1);
         big_int_bin_shft_r(n0);//n>>=1
         big_int_free(sq);
         big_int_free(sqmodm1);
-        big_int_free(trash1);
     }
     big_int *fin = big_int_get("0");
-    big_int_div2(ans, m0, zero, fin);
+    big_int_div2_for_pow(ans, m0, fin);
     big_int_free(zero);
     big_int_free(x0);
     big_int_free(m0);
@@ -687,26 +701,22 @@ big_int *big_int_rl_mod_pow2(big_int *x, big_int *n, big_int *m) {
     while (!big_int_leq(n0, zero)) {
         if ((n0->number[0]) & 1) {
             big_int *xmodm = big_int_get("0");
-            big_int *trash = big_int_get("0");
-            big_int_div2(x0, m0, trash, xmodm);
+            big_int_div2_for_pow(x0, m0, xmodm);
             big_int *n4 = big_int_karatsuba_mult(ans, xmodm);
             big_int_swap2(ans, n4);
             big_int_free(n4);
             big_int_free(xmodm);
-            big_int_free(trash);
         }
         big_int *sq = big_int_karatsuba_mult(x0, x0);
         big_int *sqmodm1 = big_int_get("0");
-        big_int *trash1 = big_int_get("0");
-        big_int_div2(sq, m0, trash1, sqmodm1);
+        big_int_div2_for_pow(sq, m0,sqmodm1);
         big_int_swap2(x0, sqmodm1);
         big_int_bin_shft_r(n0);//n>>=1
         big_int_free(sq);
         big_int_free(sqmodm1);
-        big_int_free(trash1);
     }
     big_int *fin = big_int_get("0");
-    big_int_div2(ans, m0, zero, fin);
+    big_int_div2_for_pow(ans, m0,  fin);
     big_int_free(zero);
     big_int_free(x0);
     big_int_free(m0);
@@ -721,25 +731,22 @@ big_int *big_int_lr_mod_pow(big_int *x, big_int *n, big_int *m) {
         for (int j = 7; j > -1; j--) {
             big_int *sq = big_int_mult(n3, n3);
             big_int *xmodm = big_int_get("0");
-            big_int *trash = big_int_get("0");
-            big_int_div2(sq, m, trash, xmodm);
+            big_int_div2_for_pow(sq, m,  xmodm);
             big_int_swap2(xmodm, n3);
             big_int_free(sq);
             big_int_free(xmodm);
-            big_int_free(trash);
             if ((n->number[i]) & (1 << j)) {
                 big_int *mul = big_int_get("0");
                 big_int *trash = big_int_get("0");
-                big_int_div2(x, m, trash, mul);
+                big_int_div2_for_pow(x, m,  mul);
                 big_int *mul2 = big_int_mult(n3, mul);
                 big_int_swap2(mul2, n3);
                 big_int_free(mul);
-                big_int_free(trash);
                 big_int_free(mul2);
             }
         }
     }
-    big_int_div2(n3, m, n3, n3);
+    big_int_div2_for_pow(n3, m,  n3);
     return n3;
 }
 
@@ -750,25 +757,21 @@ big_int *big_int_lr_mod_pow2(big_int *x, big_int *n, big_int *m) {
         for (int j = 7; j > -1; j--) {
             big_int *sq = big_int_karatsuba_mult(n3, n3);
             big_int *xmodm = big_int_get("0");
-            big_int *trash = big_int_get("0");
-            big_int_div2(sq, m, trash, xmodm);
+            big_int_div2_for_pow(sq, m,  xmodm);
             big_int_swap2(xmodm, n3);
             big_int_free(sq);
             big_int_free(xmodm);
-            big_int_free(trash);
             if ((n->number[i]) & (1 << j)) {
                 big_int *mul = big_int_get("0");
-                big_int *trash = big_int_get("0");
-                big_int_div2(x, m, trash, mul);
+                big_int_div2_for_pow(x, m,  mul);
                 big_int *mul2 = big_int_karatsuba_mult(n3, mul);
                 big_int_swap2(mul2, n3);
                 big_int_free(mul);
-                big_int_free(trash);
                 big_int_free(mul2);
             }
         }
     }
-    big_int_div2(n3, m, n3, n3);
+    big_int_div2_for_pow(n3, m,  n3);
     return n3;
 }
 
@@ -870,9 +873,9 @@ int big_int_primality_test(big_int* n,unsigned int tst_cnt){
             big_int_swap2(a,r);
         }
 
-        big_int *x= big_int_rl_mod_pow2(a,d,n);
+        big_int *x= big_int_lr_mod_pow2(a,d,n);
         for(long i=1;i<cnt_of_two+1;i++){
-            big_int *y=big_int_rl_mod_pow2(x,l,n);
+            big_int *y=big_int_lr_mod_pow2(x,l,n);
             if( (big_int_equal(y,one)) && (!big_int_equal(x,one)) && (!big_int_equal(x,r2)) ){
                 big_int_free(one);
                 big_int_free(r);
@@ -1611,12 +1614,12 @@ void tst() {
 //    else{printf("mult is ok\n");}
 //    if(tst_mult2()){return;}//ok
 //    else{printf("karatsuba_mult is ok\n");}
-//    if(tst_pow()){return;}//ok
-//    else{printf("pow is ok\n");}
-//    if(tst_pow2()){return;}//Ok
-//    else{printf("pow2 is ok\n");}
-    if(tst_prime()){return;}//MEMORY
-    else{printf("prime is ok\n");}
+    if(tst_pow()){return;}//ok
+    else{printf("pow is ok\n");}
+    if(tst_pow2()){return;}//Ok
+    else{printf("pow2 is ok\n");}
+//    if(tst_prime()){return;}//MEMORY
+//    else{printf("prime is ok\n");}
     printf("-----------------\n");
     printf("end of the test\n");
 }

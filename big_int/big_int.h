@@ -75,9 +75,11 @@ big_int *big_int_karatsuba_mult(big_int *n1,big_int *n2);//ok
 
 big_int *big_int_rnd(unsigned int n);//ok
 
-int big_int_primality_test(big_int* n,unsigned int tst_cnt);
+int big_int_primality_test(big_int* n,unsigned int tst_cnt);//ok
 
-big_int *big_int_get_prime(unsigned int len,unsigned int tst_cnt);
+big_int *big_int_get_prime(unsigned int len,unsigned int tst_cnt);//ok
+
+void big_int_div2_for_pow(big_int *n1, big_int *n2, big_int *rmdr);
 
 void tst();
 

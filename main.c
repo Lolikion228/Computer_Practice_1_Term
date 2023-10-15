@@ -14,15 +14,18 @@ int check(long n){
     return 1;
 }
 int main() {
-    srand(time(NULL));
-//    tst();
-
-    big_int *n1= big_int_get_prime(3,100);
-    long x=n1->number[0]+((n1->number[1])<<8)+((n1->number[2])<<16);
-    printf("%li\n",x);
-    printf("really prime = %d\n", check(x));
-    big_int_free(n1);
+//    srand(time(NULL));
+    tst();
+//    clock_t start_time, end_time;
+//    double total_time;
+//    start_time = clock();
+//
+//    big_int *n1= big_int_get_prime(60,100);
+//    big_int_print(n1);
+//    big_int_free(n1);
+//    end_time = clock();
+//    total_time = ((double) (end_time - start_time)) / CLOCKS_PER_SEC;
+//    printf("Время выполнения big_int_get_prime: %f секунд\n", total_time);
     return 0;
-
 
 }
