@@ -15,7 +15,10 @@ def gcd(a, b):
         a, b = b, a % b
     return a
 
-
+def check_prime(n):
+	for i in range(2,int(n**0.5)+1):
+		if n%i==0: return 0
+	return 1
 def tst_add():
 	with open("add.txt", "w") as file:
 		for x in range(991,1001):
@@ -343,7 +346,12 @@ def tst_mult():
 		print('third')
 		
 
-
+def tst_prime():
+	with open("prime.txt", "w") as file:
+		for x in range(2**50,2**50+1000):
+			file.write(bin(x)[2:]+"\n")
+			file.write(bin(check_prime(x))[2:]+"\n")
+"""
 print("add st")	
 tst_add()
 print("add end")
@@ -377,7 +385,10 @@ print('mult end')
 print("pow st")		
 tst_mod_pow()
 print("pow end")
-
+"""
+print("prime st")		
+tst_prime()
+print("prime end")
 
 
 				

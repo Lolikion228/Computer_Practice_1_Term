@@ -830,7 +830,6 @@ big_int *big_int_karatsuba_mult(big_int *n1, big_int *n2) {
 
 
 big_int *big_int_rnd(unsigned int n){
-    srand(time(NULL));
     big_int *res = (big_int *) malloc(sizeof(big_int));
     res->length=n;
     res->sign='+';
@@ -841,14 +840,64 @@ big_int *big_int_rnd(unsigned int n){
     if(!((res->number[0])&1)){
         res->number[0]+=1;
     }
+
     return res;
+}
+
+
+int big_int_primality_test(big_int* n,unsigned int tst_cnt){
+    srand(time(NULL));
+    long cnt_of_two=0;
+    int fl=0;
+    big_int *one= big_int_get("1");
+    big_int *r2= big_int_sub(n,one);
+    big_int *d= big_int_copy(r2);
+    while ((d->number[0] & 1) != 1) {
+        big_int_bin_shft_r(d);
+        cnt_of_two++;
+    }
+    big_int *l= big_int_get("10");
+
+    big_int *r= big_int_sub(n,l);
+
+    for(unsigned int i=1;i<tst_cnt+1;i++) {
+
+        big_int *a = big_int_rnd(1 + rand() % (n->length));
+        if (big_int_leq(a, one)) {
+            big_int_add2(a, l);
+        }
+        if (!big_int_leq(a, r)) {
+
+            a = r;
+        }
+        big_int *x= big_int_rl_mod_pow2(a,d,n);
+        for(long i=1;i<cnt_of_two+1;i++){
+            big_int *y=big_int_rl_mod_pow2(x,l,n);
+            if( (big_int_equal(y,one)) && (!big_int_equal(x,one)) && (!big_int_equal(x,r2)) ){
+                return 0;
+            }
+            big_int_swap2(x,y);
+            big_int_free(y);
+        }
+        if(!big_int_equal(x,one)){return 0;}
+
+    }
+    free
+    return 1;
+
 }
 
 big_int *big_int_get_prime(unsigned int len,unsigned int tst_cnt){
-    big_int *res= big_int_rnd(len);
-
+    int prime=0;
+    big_int *res;
+    while(!prime){
+        res= big_int_rnd(len);
+        prime = big_int_primality_test(res,tst_cnt);
+    }
     return res;
 }
+
+
 int tst_add() {
     FILE *file = fopen("add.txt", "r");
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
@@ -1477,6 +1526,43 @@ int tst_mult2() {
     return err;
 }
 
+int tst_prime() {
+    clock_t start_time, end_time;
+    double total_time;
+    start_time = clock();
+    FILE *file = fopen("prime.txt", "r");
+    char *binary = malloc(MAX_BINARY_LENGTH + 1);
+    char *buffer = malloc(MAX_BINARY_LENGTH + 1);
+    int err = 0;
+    for (long i = 0; i < 1000; i++) {
+        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+        big_int *n1 = big_int_get(binary);
+        fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+        big_int *ans = big_int_get(binary);
+        int my= big_int_primality_test(n1,10);
+        if(my){ big_int_print(n1);}
+        if ((ans->number[0])!=my) {
+            printf("////////////////////////IMPOSTER IN prime i=%li//////////////\n", i);
+            err = 1;
+            break;
+        }
+        big_int_free(n1);
+        big_int_free(ans);
+    }
+    free(binary); // Освобождаем память
+    free(buffer);
+    fclose(file); // Закрываем файл
+    end_time = clock();
+    total_time = ((double) (end_time - start_time)) / CLOCKS_PER_SEC;
+    printf("Время выполнения big_int_test_prime: %f секунд\n", total_time);
+    return err;
+}
 
 void tst() {
     printf("start of the test\n");
@@ -1499,14 +1585,16 @@ void tst() {
 //    else{printf("set_bit is ok\n");}
 //    if(tst_copy()){return;}//ok
 //    else{printf("copy is ok\n");}
-    if(tst_mult()){return;}//ok
-    else{printf("mult is ok\n");}
-    if(tst_mult2()){return;}//ok
-    else{printf("karatsuba_mult is ok\n");}
+//    if(tst_mult()){return;}//ok
+//    else{printf("mult is ok\n");}
+//    if(tst_mult2()){return;}//ok
+//    else{printf("karatsuba_mult is ok\n");}
 //    if(tst_pow()){return;}//ok
 //    else{printf("pow is ok\n");}
 //    if(tst_pow2()){return;}//Ok
 //    else{printf("pow2 is ok\n");}
+    if(tst_prime()){return;}//MEMORY
+    else{printf("prime is ok\n");}
     printf("-----------------\n");
     printf("end of the test\n");
 }

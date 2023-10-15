@@ -73,7 +73,9 @@ big_int *big_int_slice(big_int *n1, long l1, long l2 );//ok
 
 big_int *big_int_karatsuba_mult(big_int *n1,big_int *n2);//ok
 
-big_int *big_int_rnd(unsigned int n);
+big_int *big_int_rnd(unsigned int n);//ok
+
+int big_int_primality_test(big_int* n,unsigned int tst_cnt);
 
 big_int *big_int_get_prime(unsigned int len,unsigned int tst_cnt);
 
