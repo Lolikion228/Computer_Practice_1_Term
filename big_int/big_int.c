@@ -666,11 +666,13 @@ big_int *big_int_rl_mod_pow(big_int *x, big_int *n, big_int *m) {
     big_int *x0 = big_int_copy(x);
     big_int *n0 = big_int_copy(n);
     big_int *m0 = big_int_copy(m);
+    big_int *n4;
+    big_int *xmodm;
     while (!big_int_leq(n0, zero)) {
         if ((n0->number[0]) & 1) {
-            big_int *xmodm = big_int_get("0");
+            xmodm = big_int_get("0");
             big_int_div2_for_pow(x0, m0,xmodm);
-            big_int *n4 = big_int_mult(ans, xmodm);
+            n4 = big_int_mult(ans, xmodm);
             big_int_swap2(ans, n4);
             big_int_free(n4);
             big_int_free(xmodm);
