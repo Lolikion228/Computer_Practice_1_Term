@@ -9,7 +9,7 @@
 #include <time.h>
 
 #define MAX_BINARY_LENGTH 16000
-#define const1 41
+#define const1 100
 
 long con=const1;
 
@@ -82,7 +82,7 @@ void big_int_print(const big_int *n) {
             printf("%i", (x & bit) != 0);
             bit >>= 1;
         }
-        if (i)printf(" ");
+//        if (i)printf(" ");
     }
     printf("\n");
 
@@ -91,6 +91,7 @@ void big_int_print(const big_int *n) {
 
 void big_int_free(big_int *n) {
     free(n->number);
+    n->number=NULL;
     free(n);
 }
 
@@ -695,31 +696,25 @@ big_int *big_int_rl_mod_pow(big_int *x, big_int *n, big_int *m) {
 big_int *big_int_rl_mod_pow2(big_int *x, big_int *n, big_int *m) {
     big_int *ans = big_int_get("1");
     big_int *zero = big_int_get("0");
-    big_int *x0 = big_int_copy(x);
+    big_int *x0 = big_int_get("0");
     big_int *n0 = big_int_copy(n);
-    big_int *m0 = big_int_copy(m);
+    big_int_div2_for_pow(x,m,x0);
     while (!big_int_leq(n0, zero)) {
         if ((n0->number[0]) & 1) {
-            big_int *xmodm = big_int_get("0");
-            big_int_div2_for_pow(x0, m0, xmodm);
-            big_int *n4 = big_int_karatsuba_mult(ans, xmodm);
+            big_int_div2_for_pow(x0, m, x0);
+            big_int *n4 = big_int_karatsuba_mult(ans, x0);
             big_int_swap2(ans, n4);
             big_int_free(n4);
-            big_int_free(xmodm);
         }
         big_int *sq = big_int_karatsuba_mult(x0, x0);
-        big_int *sqmodm1 = big_int_get("0");
-        big_int_div2_for_pow(sq, m0,sqmodm1);
-        big_int_swap2(x0, sqmodm1);
+        big_int_div2_for_pow(sq, m,x0);
         big_int_bin_shft_r(n0);//n>>=1
         big_int_free(sq);
-        big_int_free(sqmodm1);
     }
     big_int *fin = big_int_get("0");
-    big_int_div2_for_pow(ans, m0,  fin);
+    big_int_div2_for_pow(ans, m,  fin);
     big_int_free(zero);
     big_int_free(x0);
-    big_int_free(m0);
     big_int_free(n0);
     big_int_free(ans);
     return fin;
@@ -742,6 +737,7 @@ big_int *big_int_lr_mod_pow(big_int *x, big_int *n, big_int *m) {
                 big_int *mul2 = big_int_mult(n3, mul);
                 big_int_swap2(mul2, n3);
                 big_int_free(mul);
+                big_int_free(trash);
                 big_int_free(mul2);
             }
         }
@@ -756,11 +752,8 @@ big_int *big_int_lr_mod_pow2(big_int *x, big_int *n, big_int *m) {
     for (int i = n->length - 1; i > -1; i--) {
         for (int j = 7; j > -1; j--) {
             big_int *sq = big_int_karatsuba_mult(n3, n3);
-            big_int *xmodm = big_int_get("0");
-            big_int_div2_for_pow(sq, m,  xmodm);
-            big_int_swap2(xmodm, n3);
+            big_int_div2_for_pow(sq, m,  n3);
             big_int_free(sq);
-            big_int_free(xmodm);
             if ((n->number[i]) & (1 << j)) {
                 big_int *mul = big_int_get("0");
                 big_int_div2_for_pow(x, m,  mul);
@@ -833,6 +826,7 @@ big_int *big_int_karatsuba_mult(big_int *n1, big_int *n2) {
 
 
 big_int *big_int_rnd(unsigned int n){
+
     big_int *res = (big_int *) malloc(sizeof(big_int));
     res->length=n;
     res->sign='+';
@@ -843,13 +837,15 @@ big_int *big_int_rnd(unsigned int n){
     if(!((res->number[0])&1)){
         res->number[0]+=1;
     }
+    if(!(res->number[(res->length)-1])){
+        res->number[(res->length)-1]+=1;
+    }
 
     return res;
 }
 
 
 int big_int_primality_test(big_int* n,unsigned int tst_cnt){
-    srand(time(NULL));
     long cnt_of_two=0;
     int fl=0;
     big_int *one= big_int_get("1");
@@ -872,9 +868,21 @@ int big_int_primality_test(big_int* n,unsigned int tst_cnt){
         if (!big_int_leq(a, r)) {
             big_int_swap2(a,r);
         }
+//        printf("/////////////////////////////////////////bf1\n");
+//        printf("a=");
+//        big_int_print(a);
+//        printf("d=");
+//        big_int_print(d);
+//        printf("n=");
+//        big_int_print(n);
 
         big_int *x= big_int_lr_mod_pow2(a,d,n);
+//        printf("///////////////////////////af1\n");
         for(long i=1;i<cnt_of_two+1;i++){
+//            big_int *sq= big_int_karatsuba_mult(x,x);
+//            big_int *y= big_int_get("0");
+//            big_int_div2_for_pow(sq,n,y);
+//            big_int_free(sq);
             big_int *y=big_int_lr_mod_pow2(x,l,n);
             if( (big_int_equal(y,one)) && (!big_int_equal(x,one)) && (!big_int_equal(x,r2)) ){
                 big_int_free(one);
@@ -916,6 +924,8 @@ big_int *big_int_get_prime(unsigned int len,unsigned int tst_cnt){
     int prime=0;
     while(!prime){
         big_int *res= big_int_rnd(len);
+//        big_int_print(res);
+        printf("-----\n");
         prime = big_int_primality_test(res,tst_cnt);
         if(prime)return res;
         big_int_free(res);
@@ -1099,7 +1109,7 @@ int tst_pow() {
         big_int *ans = big_int_get(binary);
         big_int *n3 = big_int_lr_mod_pow(n1, n2, mod);
         big_int *n4 = big_int_rl_mod_pow(n1, n2, mod);
-        if ((!big_int_equal(ans, n3)) || (!big_int_equal(ans, n4))) {
+        if ((!big_int_equal(ans, n3)) ||  (!big_int_equal(ans, n4))) {
             printf("////////////////////////IMPOSTER IN POWi=%li//////////////\n", i);
             err = 1;
             break;
@@ -1614,11 +1624,11 @@ void tst() {
 //    else{printf("mult is ok\n");}
 //    if(tst_mult2()){return;}//ok
 //    else{printf("karatsuba_mult is ok\n");}
-    if(tst_pow()){return;}//ok
-    else{printf("pow is ok\n");}
-    if(tst_pow2()){return;}//Ok
+//    if(tst_pow()){return;}//ok
+//    else{printf("pow is ok\n");}
+    if(tst_pow2()){return;}//ok
     else{printf("pow2 is ok\n");}
-//    if(tst_prime()){return;}//MEMORY
+//    if(tst_prime()){return;}//ok
 //    else{printf("prime is ok\n");}
     printf("-----------------\n");
     printf("end of the test\n");

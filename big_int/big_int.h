@@ -67,7 +67,7 @@ big_int *big_int_lr_mod_pow(big_int *x, big_int *n, big_int *m);//ok
 
 big_int *big_int_rl_mod_pow2(big_int *x, big_int *n, big_int *m);//ok
 
-big_int *big_int_lr_mod_pow2(big_int *x, big_int *n, big_int *m);//ok
+big_int *big_int_lr_mod_pow2(big_int *x0, big_int *n, big_int *m);//ok
 
 big_int *big_int_slice(big_int *n1, long l1, long l2 );//ok
 
@@ -79,7 +79,7 @@ int big_int_primality_test(big_int* n,unsigned int tst_cnt);//ok
 
 big_int *big_int_get_prime(unsigned int len,unsigned int tst_cnt);//ok
 
-void big_int_div2_for_pow(big_int *n1, big_int *n2, big_int *rmdr);
+void big_int_div2_for_pow(big_int *n1, big_int *n2, big_int *rmdr);//ok
 
 void tst();
 
