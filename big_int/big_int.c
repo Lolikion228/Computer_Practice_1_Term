@@ -9,7 +9,7 @@
 #include <math.h>
 
 #define MAX_BINARY_LENGTH 16000
-#define const1 45
+#define const1 100
 
 big_int *big_int_get(const char *bin_number) {
     big_int *n1 = (big_int *) malloc(sizeof(big_int));
