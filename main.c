@@ -29,7 +29,7 @@ int main() {
 //    big_int_free(n);
 //    big_int_free(n2);
 //    big_int_free(n1);
-    big_int *n1= big_int_get_prime(200,100);
+    big_int *n1= big_int_get_prime(210,100);
     big_int_print(n1);
     big_int_free(n1);
     end_time = clock();

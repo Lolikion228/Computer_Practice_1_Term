@@ -8,11 +8,8 @@
 #include "stdio.h"
 #include <math.h>
 
-
 #define MAX_BINARY_LENGTH 16000
 #define const1 45
-
-long con = const1;
 
 big_int *big_int_get(const char *bin_number) {
     big_int *n1 = (big_int *) malloc(sizeof(big_int));
@@ -791,7 +788,6 @@ big_int *big_int_slice(big_int *n1, long l1, long l2) {
     big_int_dlz(n);
     return n;
 }
-
 
 big_int *big_int_karatsuba_mult(big_int *n1, big_int *n2) {
     if (n1->length + n2->length <= const1) { return big_int_mult(n1, n2); }
