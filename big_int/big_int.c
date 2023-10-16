@@ -913,9 +913,9 @@ int big_int_primality_test(big_int *n, unsigned int tst_cnt) {
 
 big_int *big_int_get_prime(unsigned int len, unsigned int tst_cnt) {
     int prime = 0;
+    big_int *res;
     while (!prime) {
-        big_int *res = big_int_rnd(len);
-//        big_int_print(res);
+        res = big_int_rnd(len);
         printf("%li\n", clock() / 1000000);
         prime = big_int_primality_test(res, tst_cnt);
         if (prime)return res;
