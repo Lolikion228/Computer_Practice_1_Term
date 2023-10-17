@@ -12,29 +12,18 @@ int main() {
     start_time = clock();
     srand(time(NULL));
 //    tst();
-//    big_int *n1= big_int_get("1111");
-//    big_int *n2= big_int_get("11111");
-//    big_int *n;
-//    n=big_int_add(n1,n2);
-//    big_int_print(n);
-//
-//    big_int_free(n);
-//    n=big_int_get("1111111111111111111111111111111111110");
-//    big_int_print(n);
-//    big_int_free(n);
-//    n=big_int_get("11000000000000000000000000000000000");
-//    big_int_print(n);
-//
-//
-//    big_int_free(n);
-//    big_int_free(n2);
-//    big_int_free(n1);
-    big_int *n1= big_int_get_prime(210,100);
-    big_int_print(n1);
-    big_int_free(n1);
+//    big_int *n1=big_int_get_prime(256,100);
+    big_int *n1= big_int_get("1000000011001100");
+//    n1->number[0]=rand();
+//    printf("n1 = ");
+//    big_int_print(n1);
+//    printf("%d\n", big_int_primality_test(n1,50));
+
+
     end_time = clock();
     total_time = ((double) (end_time - start_time)) / CLOCKS_PER_SEC;
     printf("Время выполнения : %f секунд\n", total_time);
     return 0;
 
 }
+//python3 chck.py

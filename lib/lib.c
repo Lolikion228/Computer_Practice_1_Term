@@ -159,3 +159,17 @@ int chinese_remainder_iterative(const int *a, const int *m, int k) {
     }
     return (x % lcm + lcm) % lcm;
 }
+
+//
+////n,b,R,N2
+//int montogmery_rdc(int a,int N){
+//    int r=a;k;
+//    N2=(-1)*mul_inverse(N,b);
+//    for(long long i=1;i<n;i++){
+//        k=r[i]*N2;
+//        r=r+k*n*(b**i)
+//    }
+//    r=r/R;
+//    if r>=N{r=r-N;}
+//    return r;
+//}

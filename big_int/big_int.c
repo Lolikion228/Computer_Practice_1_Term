@@ -9,27 +9,27 @@
 #include <math.h>
 
 #define MAX_BINARY_LENGTH 16000
-#define const1 100
+#define const1 75
 
 big_int *big_int_get(const char *bin_number) {
-    big_int *n1 = (big_int *) malloc(sizeof(big_int));
-    int len1 = strlen(bin_number), t = 0;
+    big_int *res = (big_int *) malloc(sizeof(big_int));
+    int bit_len = strlen(bin_number), sign = 0;
     if (bin_number[0] == '-') {
-        t = 1;
-        n1->sign = '-';
-    } else n1->sign = '+';
-    n1->length = (len1 + 7 - t) >> 3;
-    n1->number = (unsigned char *) calloc(n1->length, sizeof(n1->number[0]));
-    if (n1->number == NULL) {
+        sign = 1;
+        res->sign = '-';
+    } else res->sign = '+';
+    res->length = (bit_len + 7 - sign) >> 3;
+    res->number = (unsigned char *) calloc(res->length, sizeof(res->number[0]));
+    if (res->number == NULL) {
         printf("memory error in big_int_get\n");
         return NULL;
     }
     int i;
-    for (i = 0; i < len1 - t; i++) {
-        n1->number[i / 8] += (bin_number[len1 - i - 1] - '0') << (i % 8);
+    for (i = 0; i < bit_len - sign; i++) {
+        res->number[i / 8] += (bin_number[bit_len - i - 1] - '0') << (i % 8);
     }
-    big_int_dlz(n1);
-    return n1;
+    big_int_dlz(res);
+    return res;
 }
 
 
@@ -753,6 +753,7 @@ big_int *big_int_lr_mod_pow2(big_int *x, big_int *n, big_int *m) {
     big_int *mul2;
     for (int i = n->length - 1; i > -1; i--) {
         for (int j = 7; j > -1; j--) {
+            big_int_div2_for_pow(n3, m, n3);
             sq = big_int_karatsuba_mult(n3, n3);
             big_int_div2_for_pow(sq, m, n3);
             big_int_free(sq);
@@ -830,9 +831,9 @@ big_int *big_int_rnd(unsigned int n) {
     big_int *res = (big_int *) malloc(sizeof(big_int));
     res->length = n;
     res->sign = '+';
-    res->number = calloc(n, sizeof(unsigned char));
+    res->number = (unsigned char*) calloc(n, sizeof(unsigned char));
     for (long i = 0; i < n; i++) {
-        res->number[i] = rand() % 256;
+        res->number[i] = rand();
     }
     if (!((res->number[0]) & 1)) {
         res->number[0] += 1;
@@ -857,17 +858,29 @@ int big_int_primality_test(big_int *n, unsigned int tst_cnt) {
     }
     big_int *l = big_int_get("10");
     big_int *r = big_int_sub(n, l);
-    big_int *a;
+//    printf("r = ");
+//    big_int_print(r);
+
     big_int *x;
     big_int *y;
+    big_int *a;
     for (unsigned int i = 1; i < tst_cnt + 1; i++) {
         a = big_int_rnd(1 + rand() % (n->length));
+//        printf("a0 = ");
+//        big_int_print(a);
+
         if (big_int_leq(a, one)) {
+//            printf("if1\n");
             big_int_add2(a, l);
         }
         if (!big_int_leq(a, r)) {
-            big_int_swap2(a, r);
+//            printf("if2\n");
+            big_int_swap(a, r);
+            r = big_int_sub(n, l);
         }
+//        printf("a1 = ");
+//        big_int_print(a);
+//        printf("----------------\n");
         x = big_int_lr_mod_pow2(a, d, n);
         for (long i = 1; i < cnt_of_two + 1; i++) {
             y = big_int_lr_mod_pow2(x, l, n);
@@ -904,7 +917,6 @@ int big_int_primality_test(big_int *n, unsigned int tst_cnt) {
     big_int_free(l);
     big_int_free(d);
     return 1;
-
 }
 
 big_int *big_int_get_prime(unsigned int len, unsigned int tst_cnt) {

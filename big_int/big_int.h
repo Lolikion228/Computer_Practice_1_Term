@@ -13,7 +13,9 @@ typedef struct big_int {
     char sign;
 } big_int;
 
-big_int *big_int_get(const char *bin_number);//ok
+//you can get a big_integer from binary string
+//if you want you can write "-" after the older bit
+big_int *big_int_get(const char *bin_number);
 
 int big_int_equal(big_int *n1,big_int *n2);//ok
 
@@ -79,7 +81,7 @@ int big_int_primality_test(big_int* n,unsigned int tst_cnt);//ok
 
 big_int *big_int_get_prime(unsigned int len,unsigned int tst_cnt);//ok
 
-void big_int_div2_for_pow(big_int *n1, big_int *n2, big_int *rmdr);//ok
+void big_int_div2_for_pow(big_int *n1, big_int *n2, big_int *rmdr);
 
 void tst();
 
