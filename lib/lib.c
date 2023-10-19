@@ -3,7 +3,7 @@
 //
 #include "lib.h"
 #include <stdio.h>
-
+#include <stdarg.h>
 //ok
 int euclid(int a, int b) {
     int t;
@@ -173,3 +173,4 @@ int chinese_remainder_iterative(const int *a, const int *m, int k) {
 //    if r>=N{r=r-N;}
 //    return r;
 //}
+

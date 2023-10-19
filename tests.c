@@ -575,7 +575,8 @@ int tst_mult() {
         strcpy(binary, buffer);
         big_int *ans = big_int_get(binary);
         big_int *n3 = big_int_mult(n1, n2);
-        if ((!big_int_equal(ans, n3))) {
+        big_int *n4 = big_int_mul(n1, n2);
+        if ((!big_int_equal(ans, n3)) || (!big_int_equal(ans, n4))) {
             printf("////////////////////////IMPOSTER IN mult i=%li//////////////\n", i);
             err = 1;
             break;
@@ -583,6 +584,7 @@ int tst_mult() {
         big_int_free(n1);
         big_int_free(n2);
         big_int_free(n3);
+        big_int_free(n4);
         big_int_free(ans);
     }
     free(binary); // Освобождаем память
@@ -619,7 +621,7 @@ int tst_mult2() {
             buffer[strlen(buffer) - 1] = '\0';
         strcpy(binary, buffer);
         big_int *ans = big_int_get(binary);
-        big_int *n3 = big_int_karatsuba_mult(n1, n2);
+        big_int *n3 = big_int_karatsuba_mult2(n1, n2);
         if ((!big_int_equal(ans, n3))) {
             printf("////////////////////////IMPOSTER IN karatsuba i=%li//////////////\n", i);
             err = 1;
