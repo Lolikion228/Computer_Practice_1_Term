@@ -709,10 +709,7 @@ int tst_inv() {
             err = 1;
             break;
         }
-        big_int_free(n1);
-        big_int_free(mod);
-        big_int_free(n3);
-        big_int_free(ans);
+        big_int_free2(4,n1,mod,ans,n3);
     }
     free(binary); // Освобождаем память
     free(buffer);

@@ -119,9 +119,7 @@ void big_int_free2(const unsigned int n0, ...) {
     va_start(ptr, n0);
     for (int j = 0; j < n0; j++) {
         big_int *n = va_arg(ptr, big_int * );
-        free(n->number);
-        n->number = NULL;
-        free(n);
+        big_int_free(n);
     }
     va_end(ptr);
 }
@@ -847,7 +845,7 @@ big_int *big_int_rnd(unsigned int n) {
     return res;
 }
 
-
+//8 one r2 d two r x y a
 int big_int_primality_test(big_int *n, unsigned int tst_cnt) {
     long cnt_of_two = 0;
     int fl = 0;
@@ -860,35 +858,43 @@ int big_int_primality_test(big_int *n, unsigned int tst_cnt) {
     }
     big_int *two = big_int_get("10");
     big_int *r = big_int_sub(n, two);
-    big_int *x;
-    big_int *y;
     big_int *a;
+
     for (unsigned int i = 1; i < tst_cnt + 1; i++) {
         if (n->length != 1) { a = big_int_rnd(1 + rand() % ((n->length) - 1)); }
         else { a = big_int_rnd(1 + rand() % ((n->length))); }
         if (big_int_leq(a, one)) {
             big_int_add2(a, two);
         }
-        x = big_int_lr_mod_pow2(a, d, n);
+
+        big_int *x = big_int_lr_mod_pow2(a, d, n);
         if (big_int_equal(x, one) || big_int_equal(x, r2)) { continue; }
         for (long i = 1; i < cnt_of_two + 1; i++) {
-            y = big_int_karatsuba_mult2(x, x);
+            big_int *y = big_int_karatsuba_mult2(x, x);
+//            big_int *tmp= big_int_get("0");
             big_int_div2_for_pow(y, n, y);
+//            big_int_swap(tmp,y);
+//            big_int_free(tmp);
             if ((big_int_equal(y, one)) && (!big_int_equal(x, one)) && (!big_int_equal(x, r2))) {
+//                printf("b1\n");
                 big_int_free2(8, one, r, r2, x, a, y, two, d);
+//                printf("a1\n");
                 return 0;
             }
             big_int_swap2(x, y);
-            big_int_free(y);
+            big_int_free2(1,y);
         }
         if (!big_int_equal(x, one)) {
-            big_int_free2(7, one, r, r2, a, x, two, d, one, y);
+//            printf("b2\n");
+            big_int_free2(7, one, r, r2, a, x, two, d);
+//            printf("a2\n");
             return 0;
         }
         big_int_free2(2, x, a);
     }
-
+//    printf("b3\n");
     big_int_free2(5, one, r, r2, two, d);
+//    printf("a3\n");
     return 1;
 }
 
@@ -936,10 +942,6 @@ void big_int_test_loop(long long n, int (*func)(big_int *, unsigned int)) {
 
 
 big_int *big_int_mul_inverse(big_int *n1, big_int *mod) {
-//    big_int *res = (big_int *) malloc(sizeof(big_int));
-//    res->length = n1->length;
-//    res->sign = '+';
-//    res->number = (unsigned char*) calloc(n, sizeof(unsigned char));
     big_int *one= big_int_get("1");
     big_int *m_one= big_int_get("-1");
     big_int *gcd=big_int_euclid_binary(n1,mod);
@@ -953,84 +955,40 @@ big_int *big_int_mul_inverse(big_int *n1, big_int *mod) {
     big_int *zero = big_int_get("0");
     big_int *q = big_int_get("0");
 
-//    printf("a = ");
-//    big_int_print(a);
-//    printf("b = ");
-//    big_int_print(b);
-//    printf("\n");
     while (!big_int_leq(b, zero)) {
-
         big_int_div3(a, b, q);//q=a/b
-//        printf("a = ");
-//        big_int_print(a);
-//        printf("b = ");
-//        big_int_print(b);
-//        printf("q = a/b =");
-//        big_int_print(q);
         big_int *tmp = big_int_copy(b);//tmp=b
 
-//        printf("\n");
-//        printf("a = ");
-//        big_int_print(a);
-//        printf("b = ");
-//        big_int_print(b);
         big_int *trash = big_int_get("0");//b=a%b
         big_int_div2_for_pow(a, b, trash);
         big_int_swap(trash, b);
-//        printf("b = a%%b = ");
-//        big_int_print(b);
-        big_int_free(trash);
-//        printf("\n");
+
 
 
         big_int_swap(a, tmp);//a=tmp
         big_int_free(tmp);
 
-        tmp = big_int_copy(x_next);//tmp=x_next
-//
-//        printf("q = ");
-//        big_int_print(q);
-//        printf("x_next = ");
-//        big_int_print(x_next);
+        big_int *tmp1 = big_int_copy(x_next);//tmp=x_next
 
         big_int *q_times_x_next = big_int_karatsuba_mult2(q, x_next);//x_next=x-q*x_next
-//        printf("q_times_x_next = ");
-//        big_int_print(q_times_x_next);
         big_int *x_next_new = big_int_sub(x, q_times_x_next);
         big_int_swap(x_next, x_next_new);
-//        printf("x = ");
-//        big_int_print(x);
-//        printf("x_next = x-q*x_next = ");
-//        big_int_print(x_next);
-        big_int_free(x_next_new);
-//        printf("\n");
 
-        big_int_swap(x, tmp);//x=tmp
+        big_int_swap(x, tmp1);//x=tmp
+        big_int_free2(4,q_times_x_next,x_next_new,tmp1,trash);
 
         big_int *tmp2 = big_int_copy(y_next);//tmp2=y_next
 
-//        printf("q = ");
-//        big_int_print(q);
-//        printf("y_next = ");
-//        big_int_print(y_next);
         big_int *q_times_y_next = big_int_karatsuba_mult2(q, y_next);//y_next=y-q*y_next
-//        printf("q_times_y_next = ");
-//        big_int_print(q_times_y_next);
         big_int *y_next_new = big_int_sub(y, q_times_y_next);
         big_int_swap(y_next, y_next_new);
-//        printf("y = ");
-//        big_int_print(y);
-//        printf("y_next = y-q*y_next = ");
-//        big_int_print(y_next);
-        big_int_free(y_next_new);
-//        printf("\n");
         big_int_swap(tmp2, y);//y=tmp2
-//        printf("----------------------------\n");
+        big_int_free2(3,q_times_y_next,y_next_new,tmp2);
     }
     while(x->sign=='-'){
         big_int_add2(x,mod);
     }
-//    big_int_free2(10,x,y,x_next,y_next,a,b,zero,q,fin,xmodm);
+    big_int_free2(10,y,x_next,y_next,a,b,zero,q,one,m_one,gcd);
     return x;
 
 
