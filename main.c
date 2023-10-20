@@ -14,7 +14,7 @@ int main() {
     start_time = clock();
     srand(time(NULL));
 
-//    tst();
+    tst();
 
 
 //
@@ -23,9 +23,8 @@ int main() {
 
 //    big_int_test_loop(10,big_int_primality_test);
 
-
+//    big_int_print(big_int_mul_inverse(big_int_get("11"), big_int_get("1001")));
 //    printf("%d\n", mul_inverse(4,5));
-    big_int_print(big_int_extended_eu(big_int_get("101"), big_int_get("1001")));
 
 
     end_time = clock();

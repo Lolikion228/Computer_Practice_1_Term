@@ -93,7 +93,7 @@ void big_int_div3(big_int *n1, big_int *n2, big_int *res1);
 
 void big_int_div2_for_pow(big_int *n1, big_int *n2, big_int *rmdr);
 
-big_int *big_int_extended_eu(big_int *n1,big_int *n2);
+big_int *big_int_mul_inverse(big_int *n1,big_int *mod);
 
 void tst();
 

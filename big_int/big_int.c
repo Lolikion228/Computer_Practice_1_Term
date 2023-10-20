@@ -935,18 +935,21 @@ void big_int_test_loop(long long n, int (*func)(big_int *, unsigned int)) {
 }
 
 
-big_int *big_int_extended_eu(big_int *n1, big_int *n2) {
+big_int *big_int_mul_inverse(big_int *n1, big_int *mod) {
 //    big_int *res = (big_int *) malloc(sizeof(big_int));
 //    res->length = n1->length;
 //    res->sign = '+';
 //    res->number = (unsigned char*) calloc(n, sizeof(unsigned char));
-
+    big_int *one= big_int_get("1");
+    big_int *m_one= big_int_get("-1");
+    big_int *gcd=big_int_euclid_binary(n1,mod);
+    if(!big_int_equal(gcd,one)){return m_one; }
     big_int *x = big_int_get("1");
     big_int *y = big_int_get("0");
     big_int *x_next = big_int_get("0");
     big_int *y_next = big_int_get("1");
     big_int *a = big_int_copy(n1);
-    big_int *b = big_int_copy(n2);
+    big_int *b = big_int_copy(mod);
     big_int *zero = big_int_get("0");
     big_int *q = big_int_get("0");
 
@@ -1024,9 +1027,8 @@ big_int *big_int_extended_eu(big_int *n1, big_int *n2) {
         big_int_swap(tmp2, y);//y=tmp2
 //        printf("----------------------------\n");
     }
-
     while(x->sign=='-'){
-        big_int_add2(x,n2);
+        big_int_add2(x,mod);
     }
 //    big_int_free2(10,x,y,x_next,y_next,a,b,zero,q,fin,xmodm);
     return x;

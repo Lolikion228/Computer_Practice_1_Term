@@ -9,7 +9,22 @@ def set_bit(t, n, value):
     else:
         number &= ~mask  # Сбрасываем бит, применяя побитовое И с инвертированной маской
     return number
-    
+def multiplicative_inverse(a, m):
+  """Find the multiplicative inverse of a modulo m."""
+  def extended_euclidean(a, b):
+      """Performs the extended Euclidean algorithm."""
+      if a == 0:
+          return (b, 0, 1)
+      else:
+          gcd, x, y = extended_euclidean(b % a, a)
+          return (gcd, y - (b // a) * x, x)
+
+  gcd, x, _ = extended_euclidean(a, m)
+  if gcd == 1:
+      return x % m  # Ensure inverse is positive
+  else:
+      raise ValueError(f"Multiplicative inverse for {a} mod {m} does not exist")
+      
 def gcd(a, b):
     while b != 0:
         a, b = b, a % b
@@ -352,7 +367,20 @@ def tst_prime():
 			y=2**r(1,50)+r(1,10000)
 			file.write(bin(y)[2:]+"\n")
 			file.write(bin(check_prime(y))[2:]+"\n")
-"""
+			
+			
+			
+def tst_inv():
+	with open("inv.txt", "w") as file:
+		for x in range(2**300+1,2**300+101):#1000
+			for y in range(2**256+1,2**256+101):#255
+				file.write(bin(x)[2:]+"\n")
+				file.write(bin(y)[2:]+"\n")
+				if gcd(x,y)==1:
+					file.write(bin(multiplicative_inverse(x,y))[2:]+"\n")
+				else:
+					file.write("-1"+"\n")
+"""					
 print("add st")	
 tst_add()
 print("add end")
@@ -386,10 +414,15 @@ print('mult end')
 print("pow st")		
 tst_mod_pow()
 print("pow end")
-"""
 print("prime st")		
 tst_prime()
 print("prime end")
+"""
+
+print("inv st")		
+tst_inv()
+print("inv end")
+
 
 
 				
