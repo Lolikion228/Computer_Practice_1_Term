@@ -29,7 +29,7 @@ void big_int_free(big_int *n);//ok
 
 void big_int_free2(const unsigned int n0, ...);
 
-void big_int_test_loop(long long n, big_int* (*func)(big_int*, big_int *));
+void big_int_test_loop(long long n, int (*func)(big_int*, unsigned int));
 
 big_int* big_int_mul(big_int* n1,big_int* n2);
 

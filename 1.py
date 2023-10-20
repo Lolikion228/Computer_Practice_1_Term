@@ -348,9 +348,10 @@ def tst_mult():
 
 def tst_prime():
 	with open("prime.txt", "w") as file:
-		for x in range(2**50,2**50+1000):
-			file.write(bin(x)[2:]+"\n")
-			file.write(bin(check_prime(x))[2:]+"\n")
+		for x in range(1000):
+			y=2**r(1,50)+r(1,10000)
+			file.write(bin(y)[2:]+"\n")
+			file.write(bin(check_prime(y))[2:]+"\n")
 """
 print("add st")	
 tst_add()
