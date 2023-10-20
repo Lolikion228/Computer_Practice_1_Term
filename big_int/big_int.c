@@ -659,6 +659,7 @@ void big_int_div2_for_pow(big_int *n1, big_int *n2, big_int *rmdr) {
     }
     rmdr->sign = '+';
     rmdr->length = r->length;
+
     rmdr->number = (unsigned char *) realloc(rmdr->number, rmdr->length);
     memmove(rmdr->number, r->number, r->length);
     big_int_free(r);
@@ -920,7 +921,7 @@ big_int *big_int_get_prime2(unsigned int len, unsigned int tst_cnt) {
     res->number = (unsigned char *) calloc(res->length, sizeof(unsigned char));
     res->number[len - 1] = 128;
     res->number[0] = 1;
-    while (!prime) {
+    while ((!prime)&&(res->length!=len+1)) {
         printf("%li\n", clock() / 1000000);
         prime = big_int_primality_test(res, tst_cnt);
         if (prime)return res;
