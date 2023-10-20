@@ -611,49 +611,12 @@ big_int* big_int_mul(big_int* n1,big_int* n2){
 }
 
 
-void big_int_div(big_int *n1, big_int *n2, big_int *res1, big_int *rmdr) {
-    big_int *one = big_int_get("1");
-    int mx = (int) fmax(n1->length, n2->length), k;
-    big_int *n3 = (big_int *) malloc(sizeof(big_int));
-    n3->length = mx + 1;
-    n3->sign = '+';
-    big_int *x0 = big_int_copy(n1);
-    big_int *y0 = big_int_copy(n2);
-    x0->sign = '+';
-    y0->sign = '+';
-    n3->number = (unsigned char *) calloc(n3->length, sizeof(n3->number[0]));
-    while (big_int_leq(y0, x0)) {
-        big_int_sub2(x0, y0);
-        big_int_add2(n3, one);
-    }
-    big_int_free(one);
-    big_int_free(x0);
-    big_int_free(y0);
-    n3->sign = (n1->sign == n2->sign) ? '+' : '-';
-    big_int_dlz(n3);
-    res1->sign = n3->sign;
-    res1->length = n3->length;
-    res1->number = (unsigned char *) realloc(res1->number, res1->length);
-    memmove(res1->number, n3->number, n3->length);
-    big_int_free(n3);
-    big_int *n5 = big_int_mul(n2, res1);
-    big_int *n4 = big_int_sub(n1, n5);
-    big_int_free(n5);
-    rmdr->sign = '+';
-    rmdr->length = n4->length;
-    rmdr->number = (unsigned char *) realloc(rmdr->number, rmdr->length);
-    memmove(rmdr->number, n4->number, n4->length);
-    big_int_free(n4);
-}
-
-
 void big_int_div2(big_int *n1, big_int *n2, big_int *res1, big_int *rmdr) {
     big_int *r = big_int_get("0");
     big_int *q = big_int_get("0");
     for (int i = (n1->length) - 1; i >= 0; i--) {
         for (int bit = 7; bit >= 0; bit--) {
             big_int_bin_shft_l(r);
-//            big_int_set_bit(r, 0, ((n1->number[i]) & (1 << bit)) != 0);
             r->number[0] |=((n1->number[i]) & (1 << bit)) != 0;
             if (big_int_leq(n2, r)) {
                 r->sign = '+';
@@ -679,8 +642,6 @@ void big_int_div2_for_pow(big_int *n1, big_int *n2, big_int *rmdr) {
     for (int i = (n1->length) - 1; i >= 0; i--) {
         for (int bit = 7; bit >= 0; bit--) {
             big_int_bin_shft_l(r);
-
-//            big_int_set_bit(r, 0, ((n1->number[i]) & (1 << bit)) != 0);
             r->number[0] |= ((n1->number[i]) & (1 << bit)) != 0;
             if (big_int_leq(n2, r)) {
                 r->sign = '+';
@@ -767,7 +728,7 @@ big_int *big_int_lr_mod_pow(big_int *x, big_int *n, big_int *m) {
             if ((n->number[i]) & (1 << j)) {
                 mul = big_int_get("0");
                 big_int_div2_for_pow(x, m, mul);
-                mul2 = big_int_karatsuba_mult2(n3, mul);
+                mul2 = big_int_mul(n3, mul);
                 big_int_swap2(mul2, n3);
                 big_int_free(mul);
                 big_int_free(mul2);

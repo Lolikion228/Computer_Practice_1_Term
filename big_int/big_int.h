@@ -69,8 +69,6 @@ void big_int_set_bit(big_int *n,long long num,int x);//ok
 
 big_int *big_int_copy(const big_int*x);//ok
 
-
-
 big_int *big_int_rl_mod_pow(big_int *x, big_int *n, big_int *m);//ok
 
 big_int *big_int_lr_mod_pow(big_int *x, big_int *n, big_int *m);//ok
