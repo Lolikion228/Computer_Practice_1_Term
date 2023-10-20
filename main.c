@@ -25,7 +25,7 @@ int main() {
 
 
 //    printf("%d\n", mul_inverse(4,5));
-    big_int_print(big_int_extended_eu(big_int_get("111"), big_int_get("10000")));
+    big_int_print(big_int_extended_eu(big_int_get("101"), big_int_get("1001")));
 
 
     end_time = clock();

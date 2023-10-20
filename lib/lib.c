@@ -4,6 +4,7 @@
 #include "lib.h"
 #include <stdio.h>
 #include <stdarg.h>
+
 //ok
 int euclid(int a, int b) {
     int t;
@@ -68,6 +69,31 @@ int euclid_extended(int a, int b, int *x, int *y) {
     *y = (n % 2) ? a12 : a12 * (-1);
     return b;
 }
+
+
+int euclid_extended_iterative(int a, int b, int *x0, int *y0) {
+    int x_next = 0, y_next = 1;//
+    int x = 1;//
+    int y = 0;//
+    while (b != 0) {//
+        int q = a / b;//
+        int tmp = b;//
+        b = a % b;//
+        a = tmp;//
+
+        tmp = x_next;//
+        x_next = x - q * x_next;//
+        x = tmp;//
+
+        tmp = y_next;//
+        y_next = y - q * y_next;//
+        y = tmp;//
+    }
+    *x0=x;
+    *y0=y;
+    return a;
+}
+
 
 
 //ok

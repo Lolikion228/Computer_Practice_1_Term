@@ -10,6 +10,7 @@ int euclid_recursive(int a, int b);
 int linear_diophantine(int *a, int *result,int n, int c);
 long long rl_mod_pow(int x, long long n, int m);
 int euclid_extended(int a, int b, int* x, int* y);
+int euclid_extended_iterative(int a, int b, int *x0,int *y0);
 int euclid_binary(int x,int y);
 int lr_mod_pow(int x, long long n, int p);
 int chinese_remainder(const int *a, const int *m, int k);
