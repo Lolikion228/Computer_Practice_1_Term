@@ -50,11 +50,11 @@ int tst_add() {
             err = 1;
             break;
         }
-        big_int_free(n1);
-        big_int_free(n2);
-        big_int_free(ans);
-        big_int_free(n12);
-        big_int_free(n3);
+        big_int_free(&n1);
+        big_int_free(&n2);
+        big_int_free(&ans);
+        big_int_free(&n12);
+        big_int_free(&n3);
     }
     free(binary); // Освобождаем память
     free(buffer);
@@ -102,11 +102,11 @@ int tst_sub() {
             err = 1;
             break;
         }
-        big_int_free(n1);
-        big_int_free(n2);
-        big_int_free(ans);
-        big_int_free(n12);
-        big_int_free(n3);
+        big_int_free(&n1);
+        big_int_free(&n2);
+        big_int_free(&ans);
+        big_int_free(&n12);
+        big_int_free(&n3);
     }
     free(binary); // Освобождаем память
     free(buffer);
@@ -144,10 +144,10 @@ int tst_eu() {
             err = 1;
             break;
         }
-        big_int_free(n1);
-        big_int_free(n2);
-        big_int_free(ans);
-        big_int_free(n3);
+        big_int_free(&n1);
+        big_int_free(&n2);
+        big_int_free(&ans);
+        big_int_free(&n3);
     }
     free(binary); // Освобождаем память
     free(buffer);
@@ -192,12 +192,12 @@ int tst_pow() {
             err = 1;
             break;
         }
-        big_int_free(n1);
-        big_int_free(n2);
-        big_int_free(mod);
-        big_int_free(ans);
-        big_int_free(n3);
-        big_int_free(n4);
+        big_int_free(&n1);
+        big_int_free(&n2);
+        big_int_free(&mod);
+        big_int_free(&ans);
+        big_int_free(&n3);
+        big_int_free(&n4);
     }
     free(binary); // Освобождаем память
     free(buffer);
@@ -245,12 +245,12 @@ int tst_pow2() {
             err = 1;
             break;
         }
-        big_int_free(n1);
-        big_int_free(n2);
-        big_int_free(mod);
-        big_int_free(ans);
-        big_int_free(n3);
-        big_int_free(n4);
+        big_int_free(&n1);
+        big_int_free(&n2);
+        big_int_free(&mod);
+        big_int_free(&ans);
+        big_int_free(&n3);
+        big_int_free(&n4);
     }
     free(binary); // Освобождаем память
     free(buffer);
@@ -296,12 +296,12 @@ int tst_div() {
             err = 1;
             break;
         }
-        big_int_free(n1);
-        big_int_free(n2);
-        big_int_free(ans1);
-        big_int_free(ans2);
-        big_int_free(my1);
-        big_int_free(my2);
+        big_int_free(&n1);
+        big_int_free(&n2);
+        big_int_free(&ans1);
+        big_int_free(&ans2);
+        big_int_free(&my1);
+        big_int_free(&my2);
     }
     free(binary); // Освобождаем память
     free(buffer);
@@ -340,11 +340,11 @@ int tst_shft1() {
             err = 1;
             break;
         }
-        big_int_free(n1);
-        big_int_free(ans1);
-        big_int_free(ans2);
-        big_int_free(my1);
-        big_int_free(my2);
+        big_int_free(&n1);
+        big_int_free(&ans1);
+        big_int_free(&ans2);
+        big_int_free(&my1);
+        big_int_free(&my2);
     }
     free(binary); // Освобождаем память
     free(buffer);
@@ -388,12 +388,12 @@ int tst_shft2() {
             err = 1;
             break;
         }
-        big_int_free(n1);
-        big_int_free(n2);
-        big_int_free(ans1);
-        big_int_free(ans2);
-        big_int_free(my1);
-        big_int_free(my2);
+        big_int_free(&n1);
+        big_int_free(&n2);
+        big_int_free(&ans1);
+        big_int_free(&ans2);
+        big_int_free(&my1);
+        big_int_free(&my2);
     }
     free(binary); // Освобождаем память
     free(buffer);
@@ -442,10 +442,10 @@ int tst_swap() {
             err = 1;
             break;
         }
-        big_int_free(n1);
-        big_int_free(n2);
-        big_int_free(ans1);
-        big_int_free(ans2);
+        big_int_free(&n1);
+        big_int_free(&n2);
+        big_int_free(&ans1);
+        big_int_free(&ans2);
     }
     free(binary); // Освобождаем память
     free(buffer);
@@ -495,11 +495,11 @@ int tst_set_bit() {
             err = 1;
             break;
         }
-        big_int_free(n1);
-        big_int_free(n0);
-        big_int_free(num);
-        big_int_free(bit);
-        big_int_free(ans);
+        big_int_free(&n1);
+        big_int_free(&n0);
+        big_int_free(&num);
+        big_int_free(&bit);
+        big_int_free(&ans);
     }
     free(binary); // Освобождаем память
     free(buffer);
@@ -537,11 +537,11 @@ int tst_copy() {
             err = 1;
             break;
         }
-        big_int_free(n1);
-        big_int_free(n2);
-        big_int_free(n3);
-        big_int_free(n4);
-        big_int_free(src);
+        big_int_free(&n1);
+        big_int_free(&n2);
+        big_int_free(&n3);
+        big_int_free(&n4);
+        big_int_free(&src);
     }
     free(binary); // Освобождаем память
     free(buffer);
@@ -580,10 +580,10 @@ int tst_mult() {
             err = 1;
             break;
         }
-        big_int_free(n1);
-        big_int_free(n2);
-        big_int_free(n4);
-        big_int_free(ans);
+        big_int_free(&n1);
+        big_int_free(&n2);
+        big_int_free(&n4);
+        big_int_free(&ans);
     }
     free(binary); // Освобождаем память
     free(buffer);
@@ -625,10 +625,10 @@ int tst_mult2() {
             err = 1;
             break;
         }
-        big_int_free(n1);
-        big_int_free(n2);
-        big_int_free(n3);
-        big_int_free(ans);
+        big_int_free(&n1);
+        big_int_free(&n2);
+        big_int_free(&n3);
+        big_int_free(&ans);
     }
     free(binary); // Освобождаем память
     free(buffer);
@@ -665,8 +665,8 @@ int tst_prime() {
             err = 1;
             break;
         }
-        big_int_free(n1);
-        big_int_free(ans);
+        big_int_free(&n1);
+        big_int_free(&ans);
     }
     free(binary); // Освобождаем память
     free(buffer);
@@ -685,7 +685,7 @@ int tst_inv() {
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
     int err = 0;
-    for (long i = 0; i < 100*100; i++) {
+    for (long i = 0; i < 100; i++) {
         buffer=fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
             buffer[strlen(buffer) - 1] = '\0';
@@ -709,7 +709,7 @@ int tst_inv() {
             err = 1;
             break;
         }
-        big_int_free2(4,n1,mod,ans,n3);
+        big_int_free2(4,&n1,&mod,&ans,&n3);
     }
     free(binary); // Освобождаем память
     free(buffer);
@@ -724,35 +724,35 @@ int tst_inv() {
 void tst() {
     printf("start of the test\n");
     printf("-----------------\n");
-//    if(tst_swap()){return;}//ok
-//    else{printf("swap is ok\n");}
-//    if(tst_add()){return;}//ok
-//    else{printf("add is ok\n");}
-//    if(tst_sub()){return;}//ok
-//    else{printf("sub is ok\n");}
-//    if(tst_eu()){return;}//ok
-//    else{printf("eu is ok\n");}
-//    if(tst_shft1()){return;}//Ok
-//    else{printf("shft1 is ok\n");}
-//    if(tst_shft2()){return;}//ok
-//    else{printf("shft2 is ok\n");}
-//    if(tst_div()){return;}//ok
-//    else{printf("div is ok\n");}
-//    if(tst_set_bit()){return;}//ok
-//    else{printf("set_bit is ok\n");}
-//    if(tst_copy()){return;}//ok
-//    else{printf("copy is ok\n");}
-//    if(tst_mult()){return;}//ok
-//    else{printf("mult is ok\n");}
-//    if(tst_mult2()){return;}//ok
-//    else{printf("karatsuba_mult is ok\n");}
-//    if(tst_pow()){return;}//ok
-//    else{printf("pow is ok\n");}
-//    if(tst_pow2()){return;}//ok
-//    else{printf("pow2 is ok\n");}
-//    if(tst_prime()){return;}//memory
-//    else{printf("prime is ok\n");}
-    if(tst_inv()){return;}
+    if(tst_swap()){return;}//ok
+    else{printf("swap is ok\n");}
+    if(tst_add()){return;}//ok
+    else{printf("add is ok\n");}
+    if(tst_sub()){return;}//ok
+    else{printf("sub is ok\n");}
+    if(tst_eu()){return;}//ok
+    else{printf("eu is ok\n");}
+    if(tst_shft1()){return;}//Ok
+    else{printf("shft1 is ok\n");}
+    if(tst_shft2()){return;}//ok
+    else{printf("shft2 is ok\n");}
+    if(tst_div()){return;}//ok
+    else{printf("div is ok\n");}
+    if(tst_set_bit()){return;}//ok
+    else{printf("set_bit is ok\n");}
+    if(tst_copy()){return;}//ok
+    else{printf("copy is ok\n");}
+    if(tst_mult()){return;}//ok
+    else{printf("mult is ok\n");}
+    if(tst_mult2()){return;}//ok
+    else{printf("karatsuba_mult is ok\n");}
+    if(tst_pow()){return;}//ok
+    else{printf("pow is ok\n");}
+    if(tst_pow2()){return;}//ok
+    else{printf("pow2 is ok\n");}
+    if(tst_prime()){return;}//ok
+    else{printf("prime is ok\n");}
+    if(tst_inv()){return;}//ok
     else{printf("inverse is ok\n");}
     printf("-----------------\n");
     printf("end of the test\n");

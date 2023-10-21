@@ -25,7 +25,7 @@ void big_int_print(const big_int *n);//ok
 
 void big_int_print2(const unsigned int n, ...);
 
-void big_int_free(big_int *n);//ok
+void big_int_free(big_int **n);//ok
 
 void big_int_free2(const unsigned int n0, ...);
 

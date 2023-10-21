@@ -14,12 +14,10 @@ int main() {
     start_time = clock();
     srand(time(NULL));
 
-//    tst();
+    tst();
 
 
-//
-//    big_int *n1= big_int_get("1");
-//    big_int_free2(1,n1);
+
 //    big_int_free2(1,n1);
 //    big_int_free2(1,n1);
 
@@ -27,11 +25,10 @@ int main() {
 
 //    big_int_test_loop(10,big_int_primality_test);
 
-    big_int *n1= big_int_get_prime(256,10);
-    big_int_print(n1);
-
-//    big_int *n1=big_int_rnd(1000);
-//    big_int *n2=big_int_rnd(1100);
+//    big_int *n1= big_int_get_prime(256,10);
+//    big_int_print(n1);
+//    big_int *n1= big_int_rnd(256);
+//    big_int *n2= big_int_rnd(256);
 //    big_int *n3=big_int_mul_inverse(n1,n2);
 //    big_int *mult= big_int_karatsuba_mult2(n1,n3);
 //    big_int *fin= big_int_get("0");
@@ -39,7 +36,6 @@ int main() {
 //    printf("fin = ");
 //    big_int_print(fin);
 //    big_int_free2(5,n1,n2,n3,mult,fin);
-
     end_time = clock();
     total_time = ((double) (end_time - start_time)) / CLOCKS_PER_SEC;
     printf("Время выполнения : %f секунд\n", total_time);

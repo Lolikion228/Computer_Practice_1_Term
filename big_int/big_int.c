@@ -108,21 +108,7 @@ void big_int_print2(const unsigned int n0, ...) {
 }
 
 
-void big_int_free(big_int *n) {
-    free(n->number);
-    n->number = NULL;
-    free(n);
-}
 
-void big_int_free2(const unsigned int n0, ...) {
-    va_list ptr;
-    va_start(ptr, n0);
-    for (int j = 0; j < n0; j++) {
-        big_int *n = va_arg(ptr, big_int * );
-        big_int_free(n);
-    }
-    va_end(ptr);
-}
 
 
 void big_int_swap(big_int *n1, big_int *n2) {
@@ -347,7 +333,7 @@ void big_int_add2(big_int *n1, big_int *n2) {
             n1->sign = n4->sign;
             n1->length = n4->length;
             memmove(n1->number, n4->number, n4->length);
-            big_int_free(n4);
+            big_int_free(&n4);
             big_int_dlz(n1);
         } else {
             n1->sign = '+';
@@ -356,7 +342,7 @@ void big_int_add2(big_int *n1, big_int *n2) {
             n1->sign = n4->sign;
             n1->length = n4->length;
             memmove(n1->number, n4->number, n4->length);
-            big_int_free(n4);
+            big_int_free(&n4);
             big_int_dlz(n1);
         }
     } else {
@@ -379,7 +365,7 @@ void big_int_add2(big_int *n1, big_int *n2) {
         big_int_dlz(n3);
         n1->length = n3->length;
         memmove(n1->number, n3->number, n3->length);
-        big_int_free(n3);
+        big_int_free(&n3);
     }
 }
 
@@ -463,7 +449,7 @@ void big_int_sub2(big_int *n1, big_int *n2) {
             n1->sign = n4->sign;
             n1->length = n4->length;
             memmove(n1->number, n4->number, n4->length);
-            big_int_free(n4);
+            big_int_free(&n4);
             big_int_dlz(n1);
         } else {
             n2->sign = '-';
@@ -472,7 +458,7 @@ void big_int_sub2(big_int *n1, big_int *n2) {
             n1->sign = n4->sign;
             n1->length = n4->length;
             memmove(n1->number, n4->number, n4->length);
-            big_int_free(n4);
+            big_int_free(&n4);
             big_int_dlz(n1);
         }
     } else {
@@ -529,7 +515,7 @@ void big_int_sub2(big_int *n1, big_int *n2) {
         n1->sign = n3->sign;
         n1->length = n3->length;
         memmove(n1->number, n3->number, n3->length);
-        big_int_free(n3);
+        big_int_free(&n3);
     }
 }
 
@@ -562,7 +548,7 @@ big_int *big_int_euclid_binary(const big_int *x, const big_int *y) {
     }
     big_int *n3 = big_int_add(x0, y0);
     big_int_bin_shft_l2(n3, n);
-    big_int_free2(4, x0, y0, a, zero);
+    big_int_free2(4, &x0, &y0, &a, &zero);
     return n3;
 }
 
@@ -619,7 +605,7 @@ void big_int_div2(big_int *n1, big_int *n2, big_int *res1, big_int *rmdr) {
     rmdr->length = r->length;
     rmdr->number = (unsigned char *) realloc(rmdr->number, rmdr->length);
     memmove(rmdr->number, r->number, r->length);
-    big_int_free2(2, r, q);
+    big_int_free2(2,&r, &q);
 }
 
 
@@ -641,7 +627,7 @@ void big_int_div3(big_int *n1, big_int *n2, big_int *res1) {
     res1->length = q->length;
     res1->number = (unsigned char *) realloc(res1->number, res1->length);
     memmove(res1->number, q->number, q->length);
-    big_int_free2(2, r, q);
+    big_int_free2(2, &r, &q);
 }
 
 
@@ -662,7 +648,7 @@ void big_int_div2_for_pow(big_int *n1, big_int *n2, big_int *rmdr) {
 
     rmdr->number = (unsigned char *) realloc(rmdr->number, rmdr->length);
     memmove(rmdr->number, r->number, r->length);
-    big_int_free(r);
+    big_int_free(&r);
 }
 
 big_int *big_int_rl_mod_pow(big_int *x, big_int *n, big_int *m) {
@@ -680,16 +666,16 @@ big_int *big_int_rl_mod_pow(big_int *x, big_int *n, big_int *m) {
             big_int_div2_for_pow(x0, m0, xmodm);
             n4 = big_int_mul(ans, xmodm);
             big_int_swap2(ans, n4);
-            big_int_free(n4);
-            big_int_free(xmodm);
+            big_int_free(&n4);
+            big_int_free(&xmodm);
         }
         sq = big_int_mul(x0, x0);
         big_int_div2_for_pow(sq, m0, x0);
         big_int_bin_shft_r(n0);//n>>=1
-        big_int_free(sq);
+        big_int_free(&sq);
     }
     big_int_div2_for_pow(ans, m0, ans);
-    big_int_free2(4, zero, x0, m0, n0);
+    big_int_free2(4, &zero, &x0, &m0, &n0);
     return ans;
 }
 
@@ -709,16 +695,16 @@ big_int *big_int_rl_mod_pow2(big_int *x, big_int *n, big_int *m) {
             big_int_div2_for_pow(x0, m0, xmodm);
             n4 = big_int_karatsuba_mult2(ans, xmodm);
             big_int_swap2(ans, n4);
-            big_int_free(n4);
-            big_int_free(xmodm);
+            big_int_free(&n4);
+            big_int_free(&xmodm);
         }
         sq = big_int_karatsuba_mult2(x0, x0);
         big_int_div2_for_pow(sq, m0, x0);
         big_int_bin_shft_r(n0);//n>>=1
-        big_int_free(sq);
+        big_int_free(&sq);
     }
     big_int_div2_for_pow(ans, m0, ans);
-    big_int_free2(4, zero, x0, m0, n0);
+    big_int_free2(4,& zero, &x0, &m0,&n0);
     return ans;
 }
 
@@ -732,14 +718,14 @@ big_int *big_int_lr_mod_pow(big_int *x, big_int *n, big_int *m) {
         for (int j = 7; j > -1; j--) {
             sq = big_int_mul(n3, n3);
             big_int_div2_for_pow(sq, m, n3);
-            big_int_free(sq);
+            big_int_free(&sq);
             if ((n->number[i]) & (1 << j)) {
                 mul = big_int_get("0");
                 big_int_div2_for_pow(x, m, mul);
                 mul2 = big_int_mul(n3, mul);
                 big_int_swap2(mul2, n3);
-                big_int_free(mul);
-                big_int_free(mul2);
+                big_int_free(&mul);
+                big_int_free(&mul2);
             }
         }
     }
@@ -758,14 +744,14 @@ big_int *big_int_lr_mod_pow2(big_int *x, big_int *n, big_int *m) {
             big_int_div2_for_pow(n3, m, n3);
             sq = big_int_karatsuba_mult2(n3, n3);
             big_int_div2_for_pow(sq, m, n3);
-            big_int_free(sq);
+            big_int_free(&sq);
             if ((n->number[i]) & (1 << j)) {
                 mul = big_int_get("0");
                 big_int_div2_for_pow(x, m, mul);
                 mul2 = big_int_karatsuba_mult2(n3, mul);
                 big_int_swap2(mul2, n3);
-                big_int_free(mul);
-                big_int_free(mul2);
+                big_int_free(&mul);
+                big_int_free(&mul2);
             }
         }
     }
@@ -822,7 +808,7 @@ big_int *big_int_karatsuba_mult2(big_int *n1, big_int *n2) {
 
         big_int_add2(res, qs);//A1<<n + (A3-(A1+A2))<<n/2 + A2
 
-        big_int_free2(10, q, p, r, s, pr, qs, a3, sm1, sm2, sm3);
+        big_int_free2(10, &q, &p, &r, &s, &pr, &qs, &a3, &sm1, &sm2, &sm3);
         return res;
     }
 }
@@ -846,56 +832,78 @@ big_int *big_int_rnd(unsigned int n) {
     return res;
 }
 
-//8 one r2 d two r x y a
+void big_int_free(big_int **n) {
+
+    free((*n)->number);
+    free(*n);
+    *n=NULL;
+
+}
+
+void big_int_free2(const unsigned int n0, ...) {
+    va_list ptr;
+    va_start(ptr, n0);
+    for (int j = 0; j < n0; j++) {
+        big_int **n = va_arg(ptr, big_int ** );
+        if((*n)){
+            big_int_free(n);}
+    }
+    va_end(ptr);
+}
+
 int big_int_primality_test(big_int *n, unsigned int tst_cnt) {
     long cnt_of_two = 0;
     int fl = 0;
     big_int *one = big_int_get("1");
     big_int *r2 = big_int_sub(n, one);
     big_int *d = big_int_copy(r2);
+
     while ((d->number[0] & 1) != 1) {
         big_int_bin_shft_r(d);
         cnt_of_two++;
     }
+
     big_int *two = big_int_get("10");
     big_int *r = big_int_sub(n, two);
-    big_int *a;
+    big_int *a=big_int_get("0");
+    big_int *x= big_int_get("0");
+    big_int *y= big_int_get("0");
 
     for (unsigned int i = 1; i < tst_cnt + 1; i++) {
-        if (n->length != 1) { a = big_int_rnd(1 + rand() % ((n->length) - 1)); }
-        else { a = big_int_rnd(1 + rand() % ((n->length))); }
+
+        if (n->length != 1) { big_int_free2(1,&a); a = big_int_rnd(1 + rand() % ((n->length) - 1)); }
+        else { big_int_free2(1,&a); a = big_int_rnd(1 + rand() % ((n->length))); }
         if (big_int_leq(a, one)) {
             big_int_add2(a, two);
         }
 
-        big_int *x = big_int_lr_mod_pow2(a, d, n);
+        big_int_free2(1,&x);
+        x = big_int_lr_mod_pow2(a, d, n);
+
         if (big_int_equal(x, one) || big_int_equal(x, r2)) { continue; }
+
         for (long i = 1; i < cnt_of_two + 1; i++) {
-            big_int *y = big_int_karatsuba_mult2(x, x);
-//            big_int *tmp= big_int_get("0");
+
+            big_int_free2(1,&y);
+            y = big_int_karatsuba_mult2(x, x);
             big_int_div2_for_pow(y, n, y);
-//            big_int_swap(tmp,y);
-//            big_int_free(tmp);
+
             if ((big_int_equal(y, one)) && (!big_int_equal(x, one)) && (!big_int_equal(x, r2))) {
-//                printf("b1\n");
-                big_int_free2(8, one, r, r2, x, a, y, two, d);
-//                printf("a1\n");
+                big_int_free2(8, &one, &r, &r2, &x, &a, &y, &two, &d);
                 return 0;
             }
-            big_int_swap2(x, y);
-            big_int_free2(1,y);
+
+            big_int_swap(x, y);
         }
+
         if (!big_int_equal(x, one)) {
-//            printf("b2\n");
-            big_int_free2(7, one, r, r2, a, x, two, d);
-//            printf("a2\n");
+            big_int_free2(8, &one, &r, &r2, &a, &x, &two, &d,&y);
             return 0;
         }
-        big_int_free2(2, x, a);
+
+        big_int_free2(2, &x, &a);
     }
-//    printf("b3\n");
-    big_int_free2(5, one, r, r2, two, d);
-//    printf("a3\n");
+    big_int_free2(8,&a,&one, &r, &r2, &two, &d,&y,&x);
     return 1;
 }
 
@@ -908,7 +916,7 @@ big_int *big_int_get_prime(unsigned int len, unsigned int tst_cnt) {
         printf("%li\n", clock() / 1000000);
         prime = big_int_primality_test(res, tst_cnt);
         if (prime)return res;
-        big_int_free(res);
+        big_int_free(&res);
     }
 }
 
@@ -946,7 +954,7 @@ big_int *big_int_mul_inverse(big_int *n1, big_int *mod) {
     big_int *one= big_int_get("1");
     big_int *m_one= big_int_get("-1");
     big_int *gcd=big_int_euclid_binary(n1,mod);
-    if(!big_int_equal(gcd,one)){return m_one; }
+    if(!big_int_equal(gcd,one)){ big_int_free2(2,&gcd,&one); return m_one; }
     big_int *x = big_int_get("1");
     big_int *y = big_int_get("0");
     big_int *x_next = big_int_get("0");
@@ -957,41 +965,39 @@ big_int *big_int_mul_inverse(big_int *n1, big_int *mod) {
     big_int *q = big_int_get("0");
 
     while (!big_int_leq(b, zero)) {
+
         big_int_div3(a, b, q);//q=a/b
-        big_int *tmp = big_int_copy(b);//tmp=b
 
-        big_int *trash = big_int_get("0");//b=a%b
-        big_int_div2_for_pow(a, b, trash);
-        big_int_swap(trash, b);
+        big_int *tmp1 = big_int_copy(b);//tmp=b
 
+        big_int_div2_for_pow(a, b, b);//b=a%b
 
+        big_int_swap(a, tmp1);//a=tmp
+        big_int_free2(1,&tmp1);
 
-        big_int_swap(a, tmp);//a=tmp
-        big_int_free(tmp);
-
-        big_int *tmp1 = big_int_copy(x_next);//tmp=x_next
+        tmp1 = big_int_copy(x_next);//tmp=x_next
 
         big_int *q_times_x_next = big_int_karatsuba_mult2(q, x_next);//x_next=x-q*x_next
-        big_int *x_next_new = big_int_sub(x, q_times_x_next);
-        big_int_swap(x_next, x_next_new);
+        big_int_free(&x_next);
+        x_next = big_int_sub(x, q_times_x_next);
 
-        big_int_swap(x, tmp1);//x=tmp
-        big_int_free2(4,q_times_x_next,x_next_new,tmp1,trash);
+        big_int_swap(x, tmp1);//x=tmp1
+        big_int_free2(2,&q_times_x_next,&tmp1);
 
-        big_int *tmp2 = big_int_copy(y_next);//tmp2=y_next
+        tmp1 = big_int_copy(y_next);//tmp2=y_next
 
         big_int *q_times_y_next = big_int_karatsuba_mult2(q, y_next);//y_next=y-q*y_next
-        big_int *y_next_new = big_int_sub(y, q_times_y_next);
-        big_int_swap(y_next, y_next_new);
-        big_int_swap(tmp2, y);//y=tmp2
-        big_int_free2(3,q_times_y_next,y_next_new,tmp2);
+        big_int_free(&y_next);
+        y_next = big_int_sub(y, q_times_y_next);
+
+        big_int_swap(tmp1, y);//y=tmp2
+        big_int_free2(2,&q_times_y_next,&tmp1);
     }
     while(x->sign=='-'){
         big_int_add2(x,mod);
     }
-    big_int_free2(10,y,x_next,y_next,a,b,zero,q,one,m_one,gcd);
+    big_int_free2(10,&y,&x_next,&y_next,&a,&b,&zero,&q,&one,&m_one,&gcd);
     return x;
-
 
 }
 
