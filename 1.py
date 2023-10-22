@@ -82,35 +82,22 @@ def tst_sub():
 def tst_eu():
 	with open("eu.txt", "w") as file:
 		for j in range(1000):
-			x=r(1,2**(5000))
-			y=r(1,2**(5000))
+			x=r(1,2**(3000))
+			y=r(1,2**(3000))
 			file.write(bin(x)[2:]+"\n")
 			file.write(bin(y)[2:]+"\n")
 			file.write(bin(gcd(x,y))[2:]+"\n")
 				
 def tst_div():
 	with open("div.txt", "w") as file:
-		for x in range(91,101):
-			for y in range(91,101):
-				file.write(bin(x)[2:]+"\n")
-				file.write(bin(y)[2:]+"\n")
-				file.write(bin(x//y)[2:]+"\n")	
-				file.write(bin(x%y)[2:]+"\n")	
-		print('first')
-		for x in range(2**50+91,2**50+101):
-			for y in range(91,101):
-				file.write(bin(x)[2:]+"\n")
-				file.write(bin(y)[2:]+"\n")
-				file.write(bin(x//y)[2:]+"\n")	
-				file.write(bin(x%y)[2:]+"\n")
-		print('second')
-		for x in range(2**3000+91,2**3000+101):#3*100**2
-			for y in range(2**3000+91,2**3000+101):
-				file.write(bin(x)[2:]+"\n")
-				file.write(bin(y)[2:]+"\n")
-				file.write(bin(x//y)[2:]+"\n")	
-				file.write(bin(x%y)[2:]+"\n")
-		print('third')
+		for j in range(1000):
+			x=r(1,2**(5000))
+			y=r(1,2**(5000))
+			file.write(bin(x)[2:]+"\n")
+			file.write(bin(y)[2:]+"\n")
+			file.write(bin(x//y)[2:]+"\n")	
+			file.write(bin(x%y)[2:]+"\n")	
+	
 		
 		
 def tst_swap():
@@ -126,46 +113,23 @@ def tst_swap():
 		
 def tst_shft1():
 	with open("shft1.txt", "w") as file:
-		for x in range(9991,10001):
+		for j in range(1000):
+			x=r(1,2**(100000))
+			y=r(1,2**(100000))
 			file.write(bin(x)[2:]+"\n")
-			file.write(bin(x*2)[2:]+"\n")	
-			file.write(bin(x//2)[2:]+"\n")	
-		print('first')
-		for x in range(2**50+9991,2**50+100001):
-			file.write(bin(x)[2:]+"\n")
-			file.write(bin(x*2)[2:]+"\n")	
-			file.write(bin(x//2)[2:]+"\n")	
-		print('second')
-		for x in range(2**5000+9991,2**5000+100001):#3*100**2
-			file.write(bin(x)[2:]+"\n")
-			file.write(bin(x*2)[2:]+"\n")	
+			file.write(bin(x*2)[2:]+"\n")
 			file.write(bin(x//2)[2:]+"\n")
-		print('third')
 		
 		
 def tst_shft2():
 	with open("shft2.txt", "w") as file:
-		for x in range(1,101):
-			for y in range(0,255):
-				file.write(bin(x)[2:]+"\n")
-				file.write(bin(y)[2:]+"\n")
-				file.write(bin(x*(2**y))[2:]+"\n")	
-				file.write(bin(x//(2**y))[2:]+"\n")	
-		print('first')
-		for x in range(2**50+1,2**50+101):
-			for y in range(0,255):
-				file.write(bin(x)[2:]+"\n")
-				file.write(bin(y)[2:]+"\n")
-				file.write(bin(x*(2**y))[2:]+"\n")	
-				file.write(bin(x//(2**y))[2:]+"\n")	
-		print('second')
-		for x in range(2**5000+1,2**5000+101):#3*100**2
-			for y in range(0,255):
-				file.write(bin(x)[2:]+"\n")
-				file.write(bin(y)[2:]+"\n")
-				file.write(bin(x*(2**y))[2:]+"\n")	
-				file.write(bin(x//(2**y))[2:]+"\n")
-		print('third')
+		for j in range(1000):
+			x=r(1,2**(100000))
+			z=r(0,255)
+			file.write(bin(x)[2:]+"\n")
+			file.write(bin(z)[2:]+"\n")
+			file.write(bin(x*(2**z))[2:]+"\n")
+			file.write(bin(x//(2**z))[2:]+"\n")
 					
 				
 def tst_mod_pow():
@@ -293,15 +257,9 @@ def tst_inv():
 
 
 
-print("div st")		
-tst_div()
-print("div end")
-print("shft1 st")
-tst_shft1()
-print("shft1 end")
-print("shft2 st")
-tst_shft2()
-print("shft2 end")
+
+
+
 
 print('set_bit st')
 tst_set_bit()
@@ -335,8 +293,14 @@ print("sub end")
 print("eu st")		
 tst_eu()
 print("eu end")	
-
-
-
+print("div st")		
+tst_div()
+print("div end")
+print("shft1 st")
+tst_shft1()
+print("shft1 end")
+print("shft2 st")
+tst_shft2()
+print("shft2 end")
 
 				

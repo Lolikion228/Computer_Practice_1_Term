@@ -259,7 +259,7 @@ int tst_div() {
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
     int err = 0;
-    for (long i = 0; i < 300; i++) {
+    for (long i = 0; i < 1000; i++) {
         buffer=fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
             buffer[strlen(buffer) - 1] = '\0';
@@ -307,7 +307,7 @@ int tst_shft1() {
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
     int err = 0;
-    for (long i = 0; i < 300; i++) {
+    for (long i = 0; i < 1000; i++) {
         buffer=fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
             buffer[strlen(buffer) - 1] = '\0';
@@ -350,7 +350,7 @@ int tst_shft2() {
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
     int err = 0;
-    for (long i = 0; i < 300; i++) {
+    for (long i = 0; i < 1000; i++) {
         buffer=fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
             buffer[strlen(buffer) - 1] = '\0';
@@ -774,13 +774,12 @@ void tst() {
     else{printf("sub is ok\n");}
     if(tst_eu()){return;}//ok
     else{printf("eu is ok\n");}
-//    if(tst_shft1()){return;}//Ok
-//    else{printf("shft1 is ok\n");}
-//    if(tst_shft2()){return;}//ok
-//    else{printf("shft2 is ok\n");}
-//
-//    if(tst_div()){return;}//ok
-//    else{printf("div is ok\n");}
+    if(tst_div()){return;}//ok
+    else{printf("div is ok\n");}
+    if(tst_shft1()){return;}//Ok
+    else{printf("shft1 is ok\n");}
+    if(tst_shft2()){return;}//ok
+    else{printf("shft2 is ok\n");}
 //    if(tst_set_bit()){return;}//ok
 //    else{printf("set_bit is ok\n");}
 //    if(tst_copy()){return;}//ok
