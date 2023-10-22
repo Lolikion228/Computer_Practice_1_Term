@@ -840,7 +840,7 @@ void tst() {
 //    else{printf("add is ok\n");}
 //    if(tst_sub()){return;}//ok+
 //    else{printf("sub is ok\n");}
-    if(tst_eu()){return;}//ok
+    if(tst_eu()){return;}//ok+
     else{printf("eu is ok\n");}
 //    if(tst_div()){return;}//ok
 //    else{printf("div is ok\n");}
