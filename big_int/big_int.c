@@ -220,6 +220,7 @@ void big_int_bin_shft_l(big_int *n) {
 
 
 void big_int_bin_shft_r2(big_int *n, int cnt) {
+    for (int i = 0; i < (cnt & 7); i++) big_int_bin_shft_r(n);
     unsigned int x = (cnt >> 3);
     if (x >= n->length) {
         free(n->number);
@@ -232,9 +233,7 @@ void big_int_bin_shft_r2(big_int *n, int cnt) {
             memmove(n->number, n->number + x, sizeof(n->number[0]) * (n->length));
             n->number = (unsigned char *) realloc(n->number, (n->length) * sizeof(n->number[0]));
             if (n->number == NULL) printf("memory error in big_int_bin_shft_r2\n"); // if null -> n remains unchanged
-            else {
-                for (int i = 0; i < (cnt & 7); i++) big_int_bin_shft_r(n);
-            }
+
         }
     }
     big_int_dlz(n);

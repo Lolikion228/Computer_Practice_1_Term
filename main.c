@@ -18,6 +18,7 @@ int main() {
 
 
 
+
 //    big_int_free2(1,n1);
 //    big_int_free2(1,n1);
 
@@ -25,7 +26,7 @@ int main() {
 
 //    big_int_test_loop(10,big_int_primality_test);
 
-//    big_int *n1= big_int_get_prime(256,10);
+//    big_int *n1= big_int_get_prime(100,10);
 //    big_int_print(n1);
 //    big_int *n1= big_int_rnd(256);
 //    big_int *n2= big_int_rnd(256);

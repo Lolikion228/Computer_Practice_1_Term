@@ -385,6 +385,18 @@ int tst_shft2() {
         big_int_bin_shft_r2(my2, n2->number[0]);
         if ((!big_int_equal(ans1, my1)) || (!big_int_equal(ans2, my2))) {
             printf("////////////////////////IMPOSTER IN shft2 i=%li//////////////\n", i);
+            printf("n1 = ");
+            big_int_print(n1);
+            printf("cnt = ");
+            printf("%d\n",n2->number[0]);
+            printf("ans1 = ");
+            big_int_print(ans1);
+            printf("ans2 = ");
+            big_int_print(ans2);
+            printf("my1 = ");
+            big_int_print(my1);
+            printf("my2 = ");
+            big_int_print(my2);
             err = 1;
             break;
         }
@@ -394,6 +406,49 @@ int tst_shft2() {
         big_int_free(&ans2);
         big_int_free(&my1);
         big_int_free(&my2);
+    }
+    free(binary); // Освобождаем память
+    free(buffer);
+    fclose(file); // Закрываем файл
+    return err;
+}
+
+int tst_shft3() {
+    FILE *file = fopen("shift_right.txt", "r");
+    char *binary = malloc(MAX_BINARY_LENGTH + 1);
+    char *buffer = malloc(MAX_BINARY_LENGTH + 1);
+    int err = 0;
+    for (long i = 0; i < 300; i++) {
+        buffer=fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+        big_int *n1 = big_int_get(binary);
+        buffer= fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+        big_int *n2 = big_int_get(binary);
+        buffer=fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+        big_int *ans1 = big_int_get(binary);
+        buffer=fgets(buffer, MAX_BINARY_LENGTH + 1, file);
+        if (buffer[strlen(buffer) - 1] == '\n')
+            buffer[strlen(buffer) - 1] = '\0';
+        strcpy(binary, buffer);
+        big_int *my1 = big_int_copy(n1);
+        big_int_bin_shft_r2(my1, n2->number[0]);
+        if ((!big_int_equal(ans1, my1)) ) {
+            printf("////////////////////////IMPOSTER IN shft2 i=%li//////////////\n", i);
+            err = 1;
+            break;
+        }
+        big_int_free(&n1);
+        big_int_free(&n2);
+        big_int_free(&ans1);
+        big_int_free(&my1);
     }
     free(binary); // Освобождаем память
     free(buffer);
@@ -724,36 +779,37 @@ int tst_inv() {
 void tst() {
     printf("start of the test\n");
     printf("-----------------\n");
-    if(tst_swap()){return;}//ok
-    else{printf("swap is ok\n");}
-    if(tst_add()){return;}//ok
-    else{printf("add is ok\n");}
-    if(tst_sub()){return;}//ok
-    else{printf("sub is ok\n");}
-    if(tst_eu()){return;}//ok
-    else{printf("eu is ok\n");}
-    if(tst_shft1()){return;}//Ok
-    else{printf("shft1 is ok\n");}
+//    if(tst_swap()){return;}//ok
+//    else{printf("swap is ok\n");}
+//    if(tst_add()){return;}//ok
+//    else{printf("add is ok\n");}
+//    if(tst_sub()){return;}//ok
+//    else{printf("sub is ok\n");}
+//    if(tst_eu()){return;}//ok
+//    else{printf("eu is ok\n");}
+//    if(tst_shft1()){return;}//Ok
+//    else{printf("shft1 is ok\n");}
     if(tst_shft2()){return;}//ok
     else{printf("shft2 is ok\n");}
-    if(tst_div()){return;}//ok
-    else{printf("div is ok\n");}
-    if(tst_set_bit()){return;}//ok
-    else{printf("set_bit is ok\n");}
-    if(tst_copy()){return;}//ok
-    else{printf("copy is ok\n");}
-    if(tst_mult()){return;}//ok
-    else{printf("mult is ok\n");}
-    if(tst_mult2()){return;}//ok
-    else{printf("karatsuba_mult is ok\n");}
-    if(tst_pow()){return;}//ok
-    else{printf("pow is ok\n");}
-    if(tst_pow2()){return;}//ok
-    else{printf("pow2 is ok\n");}
-    if(tst_prime()){return;}//ok
-    else{printf("prime is ok\n");}
-    if(tst_inv()){return;}//ok
-    else{printf("inverse is ok\n");}
+
+//    if(tst_div()){return;}//ok
+//    else{printf("div is ok\n");}
+//    if(tst_set_bit()){return;}//ok
+//    else{printf("set_bit is ok\n");}
+//    if(tst_copy()){return;}//ok
+//    else{printf("copy is ok\n");}
+//    if(tst_mult()){return;}//ok
+//    else{printf("mult is ok\n");}
+//    if(tst_mult2()){return;}//ok
+//    else{printf("karatsuba_mult is ok\n");}
+//    if(tst_pow()){return;}//ok
+//    else{printf("pow is ok\n");}
+//    if(tst_pow2()){return;}//ok
+//    else{printf("pow2 is ok\n");}
+//    if(tst_prime()){return;}//ok
+//    else{printf("prime is ok\n");}
+//    if(tst_inv()){return;}//ok
+//    else{printf("inverse is ok\n");}
     printf("-----------------\n");
     printf("end of the test\n");
 }

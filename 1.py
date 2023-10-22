@@ -236,22 +236,22 @@ def tst_shft1():
 		
 def tst_shft2():
 	with open("shft2.txt", "w") as file:
-		for x in range(91,101):
-			for y in range(245,255):
+		for x in range(1,101):
+			for y in range(0,255):
 				file.write(bin(x)[2:]+"\n")
 				file.write(bin(y)[2:]+"\n")
 				file.write(bin(x*(2**y))[2:]+"\n")	
 				file.write(bin(x//(2**y))[2:]+"\n")	
 		print('first')
-		for x in range(2**50+91,2**50+101):
-			for y in range(245,255):
+		for x in range(2**50+1,2**50+101):
+			for y in range(0,255):
 				file.write(bin(x)[2:]+"\n")
 				file.write(bin(y)[2:]+"\n")
 				file.write(bin(x*(2**y))[2:]+"\n")	
 				file.write(bin(x//(2**y))[2:]+"\n")	
 		print('second')
-		for x in range(2**5000+91,2**5000+101):#3*100**2
-			for y in range(245,255):
+		for x in range(2**5000+1,2**5000+101):#3*100**2
+			for y in range(0,255):
 				file.write(bin(x)[2:]+"\n")
 				file.write(bin(y)[2:]+"\n")
 				file.write(bin(x*(2**y))[2:]+"\n")	
@@ -396,9 +396,7 @@ print("div end")
 print("shft1 st")
 tst_shft1()
 print("shft1 end")
-print("shft2 st")
-tst_shft2()
-print("shft2 end")
+
 print('swap st')
 tst_swap()
 print('swap end')
@@ -417,12 +415,15 @@ print("pow end")
 print("prime st")		
 tst_prime()
 print("prime end")
-"""
 
 print("inv st")		
 tst_inv()
 print("inv end")
+"""
 
 
+print("shft2 st")
+tst_shft2()
+print("shft2 end")
 
 				
