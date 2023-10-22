@@ -122,6 +122,7 @@ void big_int_swap(big_int *n1, big_int *n2) {
     n1->sign = n2->sign;
     n1->length = n2->length;
     n1->number = (unsigned char *) realloc(n1->number, n2->length);
+
     memmove(n1->number, n2->number, n2->length);
     n2->sign = sgn;
     n2->length = len;

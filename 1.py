@@ -36,130 +36,57 @@ def check_prime(n):
 	return 1
 def tst_add():
 	with open("add.txt", "w") as file:
-		for x in range(991,1001):
-			for y in range(991,1001):
-				x0=x*(-1)**r(1,5)
-				y0=y*(-1)**r(1,5)
-				if x0>=0:
-					file.write(bin(x0)[2:]+"\n")
-				else:
-					file.write("-"+bin(x0)[3:]+"\n")
-				if y0>=0:
-					file.write(bin(y0)[2:]+"\n")
-				else:
-					file.write("-"+bin(y0)[3:]+"\n")
-				if x0+y0>=0:
-					file.write(bin(x0+y0)[2:]+"\n")
-				else:
-					file.write("-"+bin(x0+y0)[3:]+"\n")
-		print('first')
-		for x in range(2**100+991,2**100+1001):
-			for y in range(2**100+991,2**100+1001):
-				x0=x*(-1)**r(1,5)
-				y0=y*(-1)**r(1,5)
-				if x0>=0:
-					file.write(bin(x0)[2:]+"\n")
-				else:
-					file.write("-"+bin(x0)[3:]+"\n")
-				if y0>=0:
-					file.write(bin(y0)[2:]+"\n")
-				else:
-					file.write("-"+bin(y0)[3:]+"\n")
-				if x0+y0>=0:
-					file.write(bin(x0+y0)[2:]+"\n")
-				else:
-					file.write("-"+bin(x0+y0)[3:]+"\n")
-		print('second')
-		for x in range(2**5000+991,2**5000+1001):
-			for y in range(2**5000+991,2**5000+1001):
-				x0=x*(-1)**r(1,5)
-				y0=y*(-1)**r(1,5)
-				if x0>=0:
-					file.write(bin(x0)[2:]+"\n")
-				else:
-					file.write("-"+bin(x0)[3:]+"\n")
-				if y0>=0:
-					file.write(bin(y0)[2:]+"\n")
-				else:
-					file.write("-"+bin(y0)[3:]+"\n")
-				if x0+y0>=0:
-					file.write(bin(x0+y0)[2:]+"\n")
-				else:
-					file.write("-"+bin(x0+y0)[3:]+"\n")
-		print('third')
+
+		for j in range(1000):
+			x=r(1,2**(100000))
+			x0=x*(-1)**r(1,5)
+			y=r(1,2**(100000))
+			y0=y*(-1)**r(1,5)
+			if x0>=0:
+				file.write(bin(x0)[2:]+"\n")
+			else:
+				file.write("-"+bin(x0)[3:]+"\n")
+			if y0>=0:
+				file.write(bin(y0)[2:]+"\n")
+			else:
+				file.write("-"+bin(y0)[3:]+"\n")
+			if x0+y0>=0:
+				file.write(bin(x0+y0)[2:]+"\n")
+			else:
+				file.write("-"+bin(x0+y0)[3:]+"\n")
+		
 
 
 def tst_sub():
 	with open("sub.txt", "w") as file:
-		for x in range(991,1001):
-			for y in range(991,1001):
-				x0=x*(-1)**r(1,5)
-				y0=y*(-1)**r(1,5)
-				if x0>=0:
-					file.write(bin(x0)[2:]+"\n")
-				else:
-					file.write("-"+bin(x0)[3:]+"\n")
-				if y0>=0:
-					file.write(bin(y0)[2:]+"\n")
-				else:
-					file.write("-"+bin(y0)[3:]+"\n")
-				if x0-y0>=0:
-					file.write(bin(x0-y0)[2:]+"\n")
-				else:
-					file.write("-"+bin(x0-y0)[3:]+"\n")
-		print('first')
-		for x in range(2**100+991,2**100+1001):
-			for y in range(2**100+991,2**100+1001):
-				x0=x*(-1)**r(1,5)
-				y0=y*(-1)**r(1,5)
-				if x0>=0:
-					file.write(bin(x0)[2:]+"\n")
-				else:
-					file.write("-"+bin(x0)[3:]+"\n")
-				if y0>=0:
-					file.write(bin(y0)[2:]+"\n")
-				else:
-					file.write("-"+bin(y0)[3:]+"\n")
-				if x0-y0>=0:
-					file.write(bin(x0-y0)[2:]+"\n")
-				else:
-					file.write("-"+bin(x0-y0)[3:]+"\n")
-		print('second')
-		for x in range(2**5000+991,2**5000+1001):
-			for y in range(2**5000+991,2**5000+1001):
-				x0=x*(-1)**r(1,5)
-				y0=y*(-1)**r(1,5)
-				if x0>=0:
-					file.write(bin(x0)[2:]+"\n")
-				else:
-					file.write("-"+bin(x0)[3:]+"\n")
-				if y0>=0:
-					file.write(bin(y0)[2:]+"\n")
-				else:
-					file.write("-"+bin(y0)[3:]+"\n")
-				if x0-y0>=0:
-					file.write(bin(x0-y0)[2:]+"\n")
-				else:
-					file.write("-"+bin(x0-y0)[3:]+"\n")
-		print('third')	
-
+		for j in range(1000):
+			x=r(1,2**(100000))
+			x0=x*(-1)**r(1,5)
+			y=r(1,2**(100000))
+			y0=y*(-1)**r(1,5)
+			if x0>=0:
+				file.write(bin(x0)[2:]+"\n")
+			else:
+				file.write("-"+bin(x0)[3:]+"\n")
+			if y0>=0:
+				file.write(bin(y0)[2:]+"\n")
+			else:
+				file.write("-"+bin(y0)[3:]+"\n")
+			if x0-y0>=0:
+				file.write(bin(x0-y0)[2:]+"\n")
+			else:
+				file.write("-"+bin(x0-y0)[3:]+"\n")
+				
+				
+				
 def tst_eu():
 	with open("eu.txt", "w") as file:
-		for x in range(91,101):#100**2
-			for y in range(91,101):
-				file.write(bin(x)[2:]+"\n")
-				file.write(bin(y)[2:]+"\n")
-				file.write(bin(gcd(x,y))[2:]+"\n")		
-		for x in range(2**50+91,2**50+101):#2*100**2
-			for y in range(91,101):
-				file.write(bin(x)[2:]+"\n")
-				file.write(bin(y)[2:]+"\n")
-				file.write(bin(gcd(x,y))[2:]+"\n")	
-		for x in range(2**5000+91,2**5000+101):#3*100**2
-			for y in range(2**5000+91,2**5000+101):
-				file.write(bin(x)[2:]+"\n")
-				file.write(bin(y)[2:]+"\n")
-				file.write(bin(gcd(x,y))[2:]+"\n")	
+		for j in range(1000):
+			x=r(1,2**(5000))
+			y=r(1,2**(5000))
+			file.write(bin(x)[2:]+"\n")
+			file.write(bin(y)[2:]+"\n")
+			file.write(bin(gcd(x,y))[2:]+"\n")
 				
 def tst_div():
 	with open("div.txt", "w") as file:
@@ -188,31 +115,13 @@ def tst_div():
 		
 def tst_swap():
 	with open("swap.txt", "w") as file:
-		for x in range(91,101):
-			for y in range(91,101):
-				file.write(bin(x)[2:]+"\n")
-				file.write(bin(y)[2:]+"\n")
-				file.write(bin(x)[2:]+"\n")
-				file.write(bin(y)[2:]+"\n")
-				
-					
-		print('first')
-		for x in range(2**50+91,2**50+101):
-			for y in range(91,101):
-				file.write(bin(x)[2:]+"\n")
-				file.write(bin(y)[2:]+"\n")
-				file.write(bin(x)[2:]+"\n")
-				file.write(bin(y)[2:]+"\n")
-				
-		print('second')
-		for x in range(2**10000+91,2**10000+101):#3*100**2
-			for y in range(2**10+91,2**10+101):
-				file.write(bin(x)[2:]+"\n")
-				file.write(bin(y)[2:]+"\n")
-				file.write(bin(x)[2:]+"\n")
-				file.write(bin(y)[2:]+"\n")
-			
-		print('third')
+		for j in range(1000):
+			x=r(1,2**(100000))
+			y=r(1,2**(100000))
+			file.write(bin(x)[2:]+"\n")
+			file.write(bin(y)[2:]+"\n")
+			file.write(bin(y)[2:]+"\n")
+			file.write(bin(x)[2:]+"\n")
 		
 		
 def tst_shft1():
@@ -381,25 +290,19 @@ def tst_inv():
 				else:
 					file.write("-1"+"\n")
 """					
-print("add st")	
-tst_add()
-print("add end")
-print("sub st")		
-tst_sub()
-print("sub end")
-print("eu st")		
-tst_eu()
-print("eu end")	
+
+
+
 print("div st")		
 tst_div()
 print("div end")
 print("shft1 st")
 tst_shft1()
 print("shft1 end")
+print("shft2 st")
+tst_shft2()
+print("shft2 end")
 
-print('swap st')
-tst_swap()
-print('swap end')
 print('set_bit st')
 tst_set_bit()
 print('set_bit end')
@@ -420,10 +323,20 @@ print("inv st")
 tst_inv()
 print("inv end")
 """
+print('swap st')
+tst_swap()
+print('swap end')
+print("add st")	
+tst_add()
+print("add end")
+print("sub st")		
+tst_sub()
+print("sub end")
+print("eu st")		
+tst_eu()
+print("eu end")	
 
 
-print("shft2 st")
-tst_shft2()
-print("shft2 end")
+
 
 				
