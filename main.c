@@ -9,11 +9,10 @@
 #include <stdarg.h>
 
 int main() {
-    clock_t start_time, end_time;
-    double total_time;
-    start_time = clock();
+//    clock_t start_time, end_time;
+//    double total_time;
+//    start_time = clock();
     srand(time(NULL));
-
     tst();
 
 
@@ -37,9 +36,9 @@ int main() {
 //    printf("fin = ");
 //    big_int_print(fin);
 //    big_int_free2(5,n1,n2,n3,mult,fin);
-    end_time = clock();
-    total_time = ((double) (end_time - start_time)) / CLOCKS_PER_SEC;
-    printf("Время выполнения : %f секунд\n", total_time);
+//    end_time = clock();
+//    total_time = ((double) (end_time - start_time)) / CLOCKS_PER_SEC;
+//    printf("Время выполнения : %f секунд\n", total_time);
     return 0;
 
 }

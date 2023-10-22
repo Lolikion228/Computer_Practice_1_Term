@@ -9,7 +9,7 @@
 #include <math.h>
 #include <stdarg.h>
 
-#define MAX_BINARY_LENGTH 16000
+#define MAX_BINARY_LENGTH 160000
 #define const1 100
 
 big_int *big_int_get(const char *bin_number) {
@@ -524,8 +524,12 @@ big_int *big_int_euclid_binary(const big_int *x, const big_int *y) {
     big_int *zero = big_int_get("0");
     int k, n = 0;
     big_int *x0 = big_int_copy(x);
+
     big_int *y0 = big_int_copy(y);
+    x0->sign='+';
+    y0->sign='+';
     big_int *a = big_int_disj(x0, y0);
+
     if (!big_int_equal(a, zero)) {
         while ((a->number[0] & 1) != 1) {
             big_int_bin_shft_r(a);
@@ -534,6 +538,7 @@ big_int *big_int_euclid_binary(const big_int *x, const big_int *y) {
             n++;
         }
     }
+
     while ((!big_int_leq(x0, zero)) && (!big_int_leq(y0, zero))) {
         if ((x0->number[0] & 1) == 1) {
             while ((y0->number[0] & 1) == 0) big_int_bin_shft_r(y0);
@@ -546,6 +551,7 @@ big_int *big_int_euclid_binary(const big_int *x, const big_int *y) {
             big_int_sub2(y0, x0);
         }
     }
+
     big_int *n3 = big_int_add(x0, y0);
     big_int_bin_shft_l2(n3, n);
     big_int_free2(4, &x0, &y0, &a, &zero);

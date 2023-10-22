@@ -7,11 +7,15 @@
 #include "stdio.h"
 #include <time.h>
 
-#define MAX_BINARY_LENGTH 200000
+#define MAX_BINARY_LENGTH 900000
 #define const1 100
 
 
 int tst_add() {
+    int sig = system("python3 add.py");
+    clock_t start_time, end_time;
+    double total_time;
+    start_time = clock();
     FILE *file = fopen("add.txt", "r");
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
@@ -51,11 +55,18 @@ int tst_add() {
     free(binary); // Освобождаем память
     free(buffer);
     fclose(file); // Закрываем файл
+    end_time = clock();
+    total_time = ((double) (end_time - start_time)) / CLOCKS_PER_SEC;
+    printf("Время выполнения add : %f секунд\n", total_time);
     return err;
 }
 
 
 int tst_sub() {
+    int sig = system("python3 sub.py");
+    clock_t start_time, end_time;
+    double total_time;
+    start_time = clock();
     FILE *file = fopen("sub.txt", "r");
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
@@ -103,11 +114,18 @@ int tst_sub() {
     free(binary); // Освобождаем память
     free(buffer);
     fclose(file); // Закрываем файл
+    end_time = clock();
+    total_time = ((double) (end_time - start_time)) / CLOCKS_PER_SEC;
+    printf("Время выполнения sub : %f секунд\n", total_time);
     return err;
 }
 
 
 int tst_eu() {
+    int sig = system("python3 eu.py");
+    clock_t start_time, end_time;
+    double total_time;
+    start_time = clock();
     FILE *file = fopen("eu.txt", "r");
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
@@ -128,9 +146,8 @@ int tst_eu() {
             buffer[strlen(buffer) - 1] = '\0';
         strcpy(binary, buffer);
         big_int *ans = big_int_get(binary);
+
         big_int *n3 = big_int_euclid_binary(n1, n2);
-        big_int_swap(n1, n3);
-        big_int_swap(n1, n3);
         if ((!big_int_equal(ans, n3))) {
             printf("////////////////////////IMPOSTER IN EU i=%li//////////////\n", i);
             err = 1;
@@ -144,11 +161,15 @@ int tst_eu() {
     free(binary); // Освобождаем память
     free(buffer);
     fclose(file); // Закрываем файл
+    end_time = clock();
+    total_time = ((double) (end_time - start_time)) / CLOCKS_PER_SEC;
+    printf("Время выполнения eu : %f секунд\n", total_time);
     return err;
 }
 
 
 int tst_pow() {
+    int sig = system("python3 mod_pow.py");
     clock_t start_time, end_time;
     double total_time;
     start_time = clock();
@@ -156,7 +177,7 @@ int tst_pow() {
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
     int err = 0;
-    for (long i = 0; i < 375; i++) {
+    for (long i = 0; i < 100; i++) {
         buffer=fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
             buffer[strlen(buffer) - 1] = '\0';
@@ -202,6 +223,7 @@ int tst_pow() {
 
 
 int tst_pow2() {
+    int sig = system("python3 mod_pow.py");
     clock_t start_time, end_time;
     double total_time;
     start_time = clock();
@@ -209,7 +231,7 @@ int tst_pow2() {
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
     int err = 0;
-    for (long i = 0; i < 375; i++) {
+    for (long i = 0; i < 100; i++) {
         buffer=fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
             buffer[strlen(buffer) - 1] = '\0';
@@ -255,6 +277,10 @@ int tst_pow2() {
 
 
 int tst_div() {
+    int sig = system("python3 div.py");
+    clock_t start_time, end_time;
+    double total_time;
+    start_time = clock();
     FILE *file = fopen("div.txt", "r");
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
@@ -298,11 +324,18 @@ int tst_div() {
     free(binary); // Освобождаем память
     free(buffer);
     fclose(file); // Закрываем файл
+    end_time = clock();
+    total_time = ((double) (end_time - start_time)) / CLOCKS_PER_SEC;
+    printf("Время выполнения div : %f секунд\n", total_time);
     return err;
 }
 
 
 int tst_shft1() {
+    int sig = system("python3 shft1.py");
+    clock_t start_time, end_time;
+    double total_time;
+    start_time = clock();
     FILE *file = fopen("shft1.txt", "r");
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
@@ -341,11 +374,18 @@ int tst_shft1() {
     free(binary); // Освобождаем память
     free(buffer);
     fclose(file); // Закрываем файл
+    end_time = clock();
+    total_time = ((double) (end_time - start_time)) / CLOCKS_PER_SEC;
+    printf("Время выполнения shft1 : %f секунд\n", total_time);
     return err;
 }
 
 
 int tst_shft2() {
+    int sig = system("python3 shft2.py");
+    clock_t start_time, end_time;
+    double total_time;
+    start_time = clock();
     FILE *file = fopen("shft2.txt", "r");
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
@@ -402,6 +442,9 @@ int tst_shft2() {
     free(binary); // Освобождаем память
     free(buffer);
     fclose(file); // Закрываем файл
+    end_time = clock();
+    total_time = ((double) (end_time - start_time)) / CLOCKS_PER_SEC;
+    printf("Время выполнения shft2 : %f секунд\n", total_time);
     return err;
 }
 
@@ -450,6 +493,10 @@ int tst_shft3() {
 
 
 int tst_swap() {
+    int sig = system("python3 swap.py");
+    clock_t start_time, end_time;
+    double total_time;
+    start_time = clock();
     FILE *file = fopen("swap.txt", "r");
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
@@ -492,16 +539,23 @@ int tst_swap() {
     free(binary); // Освобождаем память
     free(buffer);
     fclose(file); // Закрываем файл
+    end_time = clock();
+    total_time = ((double) (end_time - start_time)) / CLOCKS_PER_SEC;
+    printf("Время выполнения swap : %f секунд\n", total_time);
     return err;
 }
 
 
 int tst_set_bit() {
+    int sig = system("python3 set_bit.py");
+    clock_t start_time, end_time;
+    double total_time;
+    start_time = clock();
     FILE *file = fopen("set_bit.txt", "r");
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
     int err = 0;
-    for (long i = 0; i < 200; i++) {
+    for (long i = 0; i < 1000; i++) {
         buffer=fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
             buffer[strlen(buffer) - 1] = '\0';
@@ -546,11 +600,18 @@ int tst_set_bit() {
     free(binary); // Освобождаем память
     free(buffer);
     fclose(file); // Закрываем файл
+    end_time = clock();
+    total_time = ((double) (end_time - start_time)) / CLOCKS_PER_SEC;
+    printf("Время выполнения set_bit : %f секунд\n", total_time);
     return err;
 }
 
 
 int tst_copy() {
+    int sig = system("python3 copy.py");
+    clock_t start_time, end_time;
+    double total_time;
+    start_time = clock();
     FILE *file = fopen("copy.txt", "r");
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
@@ -588,11 +649,15 @@ int tst_copy() {
     free(binary); // Освобождаем память
     free(buffer);
     fclose(file); // Закрываем файл
+    end_time = clock();
+    total_time = ((double) (end_time - start_time)) / CLOCKS_PER_SEC;
+    printf("Время выполнения copy : %f секунд\n", total_time);
     return err;
 }
 
 
 int tst_mult() {
+    int sig = system("python3 mult.py");
     clock_t start_time, end_time;
     double total_time;
     start_time = clock();
@@ -600,7 +665,7 @@ int tst_mult() {
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
     int err = 0;
-    for (long i = 0; i < 300; i++) {
+    for (long i = 0; i < 1000; i++) {
         buffer=fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
             buffer[strlen(buffer) - 1] = '\0';
@@ -638,6 +703,7 @@ int tst_mult() {
 
 
 int tst_mult2() {
+    int sig = system("python3 mult.py");
     clock_t start_time, end_time;
     double total_time;
     start_time = clock();
@@ -645,7 +711,7 @@ int tst_mult2() {
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
     int err = 0;
-    for (long i = 0; i < 300; i++) {
+    for (long i = 0; i < 1000; i++) {
         buffer=fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
             buffer[strlen(buffer) - 1] = '\0';
@@ -682,6 +748,7 @@ int tst_mult2() {
 }
 
 int tst_prime() {
+    int sig = system("python3 prime.py");
     clock_t start_time, end_time;
     double total_time;
     start_time = clock();
@@ -720,6 +787,7 @@ int tst_prime() {
 }
 
 int tst_inv() {
+    int sig = system("python3 inv.py");
     clock_t start_time, end_time;
     double total_time;
     start_time = clock();
@@ -727,7 +795,7 @@ int tst_inv() {
     char *binary = malloc(MAX_BINARY_LENGTH + 1);
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
     int err = 0;
-    for (long i = 0; i < 100; i++) {
+    for (long i = 0; i < 1000; i++) {
         buffer=fgets(buffer, MAX_BINARY_LENGTH + 1, file);
         if (buffer[strlen(buffer) - 1] == '\n')
             buffer[strlen(buffer) - 1] = '\0';
@@ -766,36 +834,36 @@ int tst_inv() {
 void tst() {
     printf("start of the test\n");
     printf("-----------------\n");
-    if(tst_swap()){return;}//ok
+    if(tst_swap()){return;}//ok+
     else{printf("swap is ok\n");}
-    if(tst_add()){return;}//ok
+    if(tst_add()){return;}//ok+
     else{printf("add is ok\n");}
-    if(tst_sub()){return;}//ok
+    if(tst_sub()){return;}//ok+
     else{printf("sub is ok\n");}
-    if(tst_eu()){return;}//ok
+    if(tst_eu()){return;}//ok+
     else{printf("eu is ok\n");}
-    if(tst_div()){return;}//ok
+    if(tst_div()){return;}//ok+
     else{printf("div is ok\n");}
-    if(tst_shft1()){return;}//Ok
+    if(tst_shft1()){return;}//Ok+
     else{printf("shft1 is ok\n");}
-    if(tst_shft2()){return;}//ok
+    if(tst_shft2()){return;}//ok+
     else{printf("shft2 is ok\n");}
-//    if(tst_set_bit()){return;}//ok
-//    else{printf("set_bit is ok\n");}
-//    if(tst_copy()){return;}//ok
-//    else{printf("copy is ok\n");}
-//    if(tst_mult()){return;}//ok
-//    else{printf("mult is ok\n");}
-//    if(tst_mult2()){return;}//ok
-//    else{printf("karatsuba_mult is ok\n");}
-//    if(tst_pow()){return;}//ok
-//    else{printf("pow is ok\n");}
-//    if(tst_pow2()){return;}//ok
-//    else{printf("pow2 is ok\n");}
-//    if(tst_prime()){return;}//ok
-//    else{printf("prime is ok\n");}
-//    if(tst_inv()){return;}//ok
-//    else{printf("inverse is ok\n");}
+    if(tst_set_bit()){return;}//ok+
+    else{printf("set_bit is ok\n");}
+    if(tst_copy()){return;}//ok+
+    else{printf("copy is ok\n");}
+    if(tst_mult()){return;}//ok+
+    else{printf("mult is ok\n");}
+    if(tst_mult2()){return;}//ok+
+    else{printf("karatsuba_mult is ok\n");}
+    if(tst_pow()){return;}//ok+
+    else{printf("pow is ok\n");}
+    if(tst_pow2()){return;}//ok+
+    else{printf("pow2 is ok\n");}
+    if(tst_prime()){return;}//ok+
+    else{printf("prime is ok\n");}
+    if(tst_inv()){return;}//ok+
+    else{printf("inverse is ok\n");}
     printf("-----------------\n");
     printf("end of the test\n");
 }

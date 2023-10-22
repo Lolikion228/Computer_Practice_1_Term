@@ -36,7 +36,6 @@ def check_prime(n):
 	return 1
 def tst_add():
 	with open("add.txt", "w") as file:
-
 		for j in range(1000):
 			x=r(1,2**(100000))
 			x0=x*(-1)**r(1,5)
@@ -132,112 +131,62 @@ def tst_shft2():
 			file.write(bin(x//(2**z))[2:]+"\n")
 					
 				
+
+
 def tst_mod_pow():
 	with open("pow.txt", "w") as file:
-		for x in range(96,101):#100
-			for y in range(996,1001):#100
-				for z in range(96,101):#100 all=100*100*100
-					file.write(bin(x)[2:]+"\n")
-					file.write(bin(y)[2:]+"\n")
-					file.write(bin(z)[2:]+"\n")
-					file.write(bin((x**y)%z)[2:]+"\n")
-		print('first')
-		for x in range(2**50+96,2**50+101):#10
-			for y in range(2**10+96,2**10+101):#10
-				for z in range(96,101):#10 all=10*10*10
-					file.write(bin(x)[2:]+"\n")
-					file.write(bin(y)[2:]+"\n")
-					file.write(bin(z)[2:]+"\n")
-					file.write(bin((x**y)%z)[2:]+"\n")
-		print('second')
-		for x in range(2**5000+5,2**5000+10):#10
-			for y in range(2**7+96,2**7+101):#10
-				for z in range(96,101):#10 all=10*10*10
-					file.write(bin(x)[2:]+"\n")
-					file.write(bin(y)[2:]+"\n")
-					file.write(bin(z)[2:]+"\n")
-					file.write(bin((x**y)%z)[2:]+"\n")
-		print('third')
-
+		for j in range(100):
+			x=r(1,2**(50))
+			y=r(1,2**(15))
+			z=r(1,2**(50))
+			file.write(bin(x)[2:]+"\n")
+			file.write(bin(y)[2:]+"\n")
+			file.write(bin(z)[2:]+"\n")
+			file.write(bin((x**y)%z)[2:]+"\n")
+					
 def tst_set_bit():
 	with open("set_bit.txt", "w") as file:
-		for x in range(2**5000+991,2**5000+1001):#1000
-			for y in range(245,255):#255
-				for z in range(0,2):#2
-					file.write(bin(x)[2:]+"\n")
-					file.write(bin(y)[2:]+"\n")
-					file.write(bin(z)[2:]+"\n")
-					file.write(bin(set_bit(x,y,z))[2:]+"\n")
+		for j in range(1000):
+			x=r(1,2**(100000))
+			y=r(0,255)
+			z=r(0,1)
+			file.write(bin(x)[2:]+"\n")
+			file.write(bin(y)[2:]+"\n")
+			file.write(bin(z)[2:]+"\n")
+			file.write(bin(set_bit(x,y,z))[2:]+"\n")
 					
 def tst_copy():
 	with open("copy.txt", "w") as file:
-		for x in range(2**5000+99700,2**5000+100000):#1000
-			file.write(bin(x)[2:]+"\n")
+		for j in range(1000):
+			x=r(1,2**(100000))
+			file.write(bin(x)[2:]+"\n")	
 
 
 def tst_mult():
 	with open("mult.txt", "w") as file:
-		for x in range(2**100+491,2**100+501):
-			for y in range(2**10+491,2**10+501):
-				x0=x*(-1)**r(1,5)
-				y0=y*(-1)**r(1,5)
-				x0=x
-				y0=y
-				if x0>=0:
-					file.write(bin(x0)[2:]+"\n")
-				else:
-					file.write("-"+bin(x0)[3:]+"\n")
-				if y0>=0:
-					file.write(bin(y0)[2:]+"\n")
-				else:
-					file.write("-"+bin(y0)[3:]+"\n")
-				if x0*y0>=0:
-					file.write(bin(x0*y0)[2:]+"\n")
-				else:
-					file.write("-"+bin(x0*y0)[3:]+"\n")
-		print('first')
-		
-		for x in range(2**1000+91,2**1000+101):
-			for y in range(2**100+91,2**100+101):
-				x0=x*(-1)**r(1,5)
-				y0=y*(-1)**r(1,5)
-				if x0>=0:
-					file.write(bin(x0)[2:]+"\n")
-				else:
-					file.write("-"+bin(x0)[3:]+"\n")
-				if y0>=0:
-					file.write(bin(y0)[2:]+"\n")
-				else:
-					file.write("-"+bin(y0)[3:]+"\n")
-				if x0*y0>=0:
-					file.write(bin(x0*y0)[2:]+"\n")
-				else:
-					file.write("-"+bin(x0*y0)[3:]+"\n")
-		print('second')
-		
-		for x in range(2**5000+91,2**5000+101):
-			for y in range(2**3000+91,2**3000+101):
-				x0=x*(-1)**r(1,5)
-				y0=y*(-1)**r(1,5)
-				if x0>=0:
-					file.write(bin(x0)[2:]+"\n")
-				else:
-					file.write("-"+bin(x0)[3:]+"\n")
-				if y0>=0:
-					file.write(bin(y0)[2:]+"\n")
-				else:
-					file.write("-"+bin(y0)[3:]+"\n")
-				if x0*y0>=0:
-					file.write(bin(x0*y0)[2:]+"\n")
-				else:
-					file.write("-"+bin(x0*y0)[3:]+"\n")
-		print('third')
+		for j in range(1000):
+			x=r(1,2**(5000))
+			x0=x*(-1)**r(1,5)
+			y=r(1,2**(5000))
+			y0=y*(-1)**r(1,5)
+			if x0>=0:
+				file.write(bin(x0)[2:]+"\n")
+			else:
+				file.write("-"+bin(x0)[3:]+"\n")
+			if y0>=0:
+				file.write(bin(y0)[2:]+"\n")
+			else:
+				file.write("-"+bin(y0)[3:]+"\n")
+			if x0*y0>=0:
+				file.write(bin(x0*y0)[2:]+"\n")
+			else:
+				file.write("-"+bin(x0*y0)[3:]+"\n")
 		
 
 def tst_prime():
 	with open("prime.txt", "w") as file:
 		for x in range(1000):
-			y=2**r(1,50)+r(1,10000)
+			y=r(1,10000000000000)
 			file.write(bin(y)[2:]+"\n")
 			file.write(bin(check_prime(y))[2:]+"\n")
 			
@@ -245,42 +194,18 @@ def tst_prime():
 			
 def tst_inv():
 	with open("inv.txt", "w") as file:
-		for x in range(2**300+1,2**300+101):#1000
-			for y in range(2**256+1,2**256+101):#255
-				file.write(bin(x)[2:]+"\n")
-				file.write(bin(y)[2:]+"\n")
-				if gcd(x,y)==1:
-					file.write(bin(multiplicative_inverse(x,y))[2:]+"\n")
-				else:
-					file.write("-1"+"\n")
-"""					
+		for i in range(1000):
+			x=r(1,2**500)
+			y=r(1,2**500)
+			file.write(bin(x)[2:]+"\n")
+			file.write(bin(y)[2:]+"\n")
+			if gcd(x,y)==1:
+				file.write(bin(multiplicative_inverse(x,y))[2:]+"\n")
+			else:
+				file.write("-1"+"\n")
 
 
 
-
-
-
-
-print('set_bit st')
-tst_set_bit()
-print('set_bit end')
-print('copy st')
-tst_copy()
-print('copy end')
-print('mult st')
-tst_mult()
-print('mult end')
-print("pow st")		
-tst_mod_pow()
-print("pow end")
-print("prime st")		
-tst_prime()
-print("prime end")
-
-print("inv st")		
-tst_inv()
-print("inv end")
-"""
 print('swap st')
 tst_swap()
 print('swap end')
@@ -302,5 +227,27 @@ print("shft1 end")
 print("shft2 st")
 tst_shft2()
 print("shft2 end")
+print('set_bit st')
+tst_set_bit()
+print('set_bit end')
+print('copy st')
+tst_copy()
+print('copy end')
+print('mult st')
+tst_mult()
+print('mult end')
+print("pow st")		
+tst_mod_pow()
+print("pow end")
+print("prime st")		
+tst_prime()
+print("prime end")
+print("inv st")		
+tst_inv()
+print("inv end")
+
+
+
+
 
 				
