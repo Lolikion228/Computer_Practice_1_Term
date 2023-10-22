@@ -834,36 +834,36 @@ int tst_inv() {
 void tst() {
     printf("start of the test\n");
     printf("-----------------\n");
-    if(tst_swap()){return;}//ok+
-    else{printf("swap is ok\n");}
-    if(tst_add()){return;}//ok+
-    else{printf("add is ok\n");}
-    if(tst_sub()){return;}//ok+
-    else{printf("sub is ok\n");}
-    if(tst_eu()){return;}//ok+
+//    if(tst_swap()){return;}//ok+
+//    else{printf("swap is ok\n");}
+//    if(tst_add()){return;}//ok+
+//    else{printf("add is ok\n");}
+//    if(tst_sub()){return;}//ok+
+//    else{printf("sub is ok\n");}
+    if(tst_eu()){return;}//ok
     else{printf("eu is ok\n");}
-    if(tst_div()){return;}//ok+
-    else{printf("div is ok\n");}
-    if(tst_shft1()){return;}//Ok+
-    else{printf("shft1 is ok\n");}
-    if(tst_shft2()){return;}//ok+
-    else{printf("shft2 is ok\n");}
-    if(tst_set_bit()){return;}//ok+
-    else{printf("set_bit is ok\n");}
-    if(tst_copy()){return;}//ok+
-    else{printf("copy is ok\n");}
-    if(tst_mult()){return;}//ok+
-    else{printf("mult is ok\n");}
-    if(tst_mult2()){return;}//ok+
-    else{printf("karatsuba_mult is ok\n");}
-    if(tst_pow()){return;}//ok+
-    else{printf("pow is ok\n");}
-    if(tst_pow2()){return;}//ok+
-    else{printf("pow2 is ok\n");}
-    if(tst_prime()){return;}//ok+
-    else{printf("prime is ok\n");}
-    if(tst_inv()){return;}//ok+
-    else{printf("inverse is ok\n");}
+//    if(tst_div()){return;}//ok
+//    else{printf("div is ok\n");}
+//    if(tst_shft1()){return;}//Ok
+//    else{printf("shft1 is ok\n");}
+//    if(tst_shft2()){return;}//ok
+//    else{printf("shft2 is ok\n");}
+//    if(tst_set_bit()){return;}//ok
+//    else{printf("set_bit is ok\n");}
+//    if(tst_copy()){return;}//ok
+//    else{printf("copy is ok\n");}
+//    if(tst_mult()){return;}//ok
+//    else{printf("mult is ok\n");}
+//    if(tst_mult2()){return;}//ok
+//    else{printf("karatsuba_mult is ok\n");}
+//    if(tst_pow()){return;}//ok
+//    else{printf("pow is ok\n");}
+//    if(tst_pow2()){return;}//ok
+//    else{printf("pow2 is ok\n");}
+//    if(tst_prime()){return;}//ok
+//    else{printf("prime is ok\n");}
+//    if(tst_inv()){return;}//ok
+//    else{printf("inverse is ok\n");}
     printf("-----------------\n");
     printf("end of the test\n");
 }

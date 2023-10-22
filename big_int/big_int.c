@@ -332,6 +332,7 @@ void big_int_add2(big_int *n1, big_int *n2) {
             n2->sign = '-';
             n1->sign = n4->sign;
             n1->length = n4->length;
+            n1->number=(unsigned char*) realloc(n1->number,n4->length);
             memmove(n1->number, n4->number, n4->length);
             big_int_free(&n4);
             big_int_dlz(n1);
@@ -341,6 +342,7 @@ void big_int_add2(big_int *n1, big_int *n2) {
             n1->sign = '-';
             n1->sign = n4->sign;
             n1->length = n4->length;
+            n1->number=(unsigned char*) realloc(n1->number,n4->length);
             memmove(n1->number, n4->number, n4->length);
             big_int_free(&n4);
             big_int_dlz(n1);
@@ -364,6 +366,7 @@ void big_int_add2(big_int *n1, big_int *n2) {
         n3->sign = n1->sign;
         big_int_dlz(n3);
         n1->length = n3->length;
+        n1->number=(unsigned char*) realloc(n1->number,n3->length);
         memmove(n1->number, n3->number, n3->length);
         big_int_free(&n3);
     }
@@ -448,6 +451,7 @@ void big_int_sub2(big_int *n1, big_int *n2) {
             n2->sign = '-';
             n1->sign = n4->sign;
             n1->length = n4->length;
+            n1->number=(unsigned char*) realloc(n1->number,n4->length);
             memmove(n1->number, n4->number, n4->length);
             big_int_free(&n4);
             big_int_dlz(n1);
@@ -457,6 +461,7 @@ void big_int_sub2(big_int *n1, big_int *n2) {
             n2->sign = '+';
             n1->sign = n4->sign;
             n1->length = n4->length;
+            n1->number=(unsigned char*) realloc(n1->number,n4->length);
             memmove(n1->number, n4->number, n4->length);
             big_int_free(&n4);
             big_int_dlz(n1);
@@ -514,6 +519,7 @@ void big_int_sub2(big_int *n1, big_int *n2) {
         big_int_dlz(n3);
         n1->sign = n3->sign;
         n1->length = n3->length;
+        n1->number=(unsigned char*) realloc(n1->number,n3->length);
         memmove(n1->number, n3->number, n3->length);
         big_int_free(&n3);
     }
