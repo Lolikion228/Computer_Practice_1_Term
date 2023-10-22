@@ -225,7 +225,7 @@ void big_int_bin_shft_r2(big_int *n, int cnt) {
         free(n->number);
         n->sign = '+';
         n->length = 1;
-        n->number = calloc(1, 1);
+        n->number = (unsigned char *)  calloc(1, 1);
     } else {
         if (x) {
             n->length -= x;
@@ -769,10 +769,10 @@ big_int *big_int_slice(big_int *n1, long l1, long l2) {
     }
     if (l1 >= n1->length) {
         n->length = 1;
-        n->number = calloc(1, sizeof(n1->number[0]));
+        n->number = (unsigned char *)  calloc(1, sizeof(n1->number[0]));
         return n;
     }
-    n->number = calloc(n->length, sizeof(n1->number[0]));
+    n->number =(unsigned char *)  calloc(n->length, sizeof(n1->number[0]));
     memcpy(n->number, n1->number + l1, n->length);
     big_int_dlz(n);
     return n;
