@@ -34,7 +34,7 @@ big_int *big_int_get(const char *bin_number) {
 }
 
 
-int big_int_equal_sgn(big_int *n1, big_int *n2) {
+int big_int_equal_sgn(const big_int *n1,const big_int *n2) {
     if (n1->sign != n2->sign) {
         return 0;
     }
@@ -47,7 +47,7 @@ int big_int_equal_sgn(big_int *n1, big_int *n2) {
 }
 
 
-int big_int_equal(big_int *n1, big_int *n2) {
+int big_int_equal(const big_int *n1,const big_int *n2) {
     if (n1->length != n2->length) {
         return 0;
     }
@@ -151,7 +151,7 @@ big_int *big_int_copy(const big_int *x) {
 }
 
 
-int big_int_leq(big_int *n1, big_int *n2) //n1<=n2
+int big_int_leq(const big_int *n1,const big_int *n2) //n1<=n2
 {
     if (n1->length < n2->length) return 1;
     if (n1->length > n2->length) return 0;
@@ -163,7 +163,7 @@ int big_int_leq(big_int *n1, big_int *n2) //n1<=n2
 }
 
 
-int big_int_geq(big_int *n1, big_int *n2)//n1<=n2
+int big_int_geq(const big_int *n1,const big_int *n2)//n1<=n2
 {
     if (n1->sign != n2->sign) return (n1->sign == '+') ? 0 : 1;
     else {
@@ -178,7 +178,7 @@ int big_int_geq(big_int *n1, big_int *n2)//n1<=n2
 }
 
 
-big_int *big_int_disj(big_int *n1, big_int *n2) {
+big_int *big_int_disj(const big_int *n1,const big_int *n2) {
     int min = (int) fmin(n1->length, n2->length);
     big_int *n3 = (big_int *) malloc(sizeof(big_int));
     n3->length = min;
@@ -285,7 +285,7 @@ void big_int_set_bit2(big_int *n, long long num, int x) {
     big_int_dlz(n);
 }
 
-big_int *big_int_add(big_int *n1, big_int *n2) {
+big_int *big_int_add(big_int * n1,big_int *n2) {
     if (n1->sign != n2->sign) {
         int t = n1->sign == '+';
         if (t) {
@@ -565,7 +565,7 @@ big_int *big_int_euclid_binary(const big_int *x, const big_int *y) {
 }
 
 
-big_int *big_int_mul(big_int *n1, big_int *n2) {
+big_int *big_int_mul(const big_int *n1,const big_int *n2) {
 
     unsigned int new_length = n1->length + n2->length;
 
@@ -595,7 +595,7 @@ big_int *big_int_mul(big_int *n1, big_int *n2) {
 }
 
 
-void big_int_div2(big_int *n1, big_int *n2, big_int *res1, big_int *rmdr) {
+void big_int_div2(const big_int *n1,big_int *n2, big_int *res1, big_int *rmdr) {
     big_int *r = big_int_get("0");
     big_int *q = big_int_get("0");
     for (int i = (n1->length) - 1; i >= 0; i--) {
@@ -621,7 +621,7 @@ void big_int_div2(big_int *n1, big_int *n2, big_int *res1, big_int *rmdr) {
 }
 
 
-void big_int_div3(big_int *n1, big_int *n2, big_int *res1) {
+void big_int_div3(const big_int *n1, big_int *n2, big_int *res1) {
     big_int *r = big_int_get("0");
     big_int *q = big_int_get("0");
     for (int i = (n1->length) - 1; i >= 0; i--) {
@@ -643,7 +643,7 @@ void big_int_div3(big_int *n1, big_int *n2, big_int *res1) {
 }
 
 
-void big_int_div2_for_pow(big_int *n1, big_int *n2, big_int *rmdr) {
+void big_int_div2_for_pow(const big_int *n1, big_int *n2, big_int *rmdr) {
     big_int *r = big_int_get("0");
     for (int i = (n1->length) - 1; i >= 0; i--) {
         for (int bit = 7; bit >= 0; bit--) {
@@ -663,7 +663,7 @@ void big_int_div2_for_pow(big_int *n1, big_int *n2, big_int *rmdr) {
     big_int_free(&r);
 }
 
-big_int *big_int_rl_mod_pow(big_int *x, big_int *n, big_int *m) {
+big_int *big_int_rl_mod_pow(const big_int *x,const big_int *n,const big_int *m) {
     big_int *ans = big_int_get("1");
     big_int *zero = big_int_get("0");
     big_int *x0 = big_int_copy(x);
@@ -692,7 +692,7 @@ big_int *big_int_rl_mod_pow(big_int *x, big_int *n, big_int *m) {
 }
 
 
-big_int *big_int_rl_mod_pow2(big_int *x, big_int *n, big_int *m) {
+big_int *big_int_rl_mod_pow2(const big_int *x,const big_int *n,const big_int *m) {
     big_int *ans = big_int_get("1");
     big_int *zero = big_int_get("0");
     big_int *x0 = big_int_copy(x);
@@ -721,7 +721,7 @@ big_int *big_int_rl_mod_pow2(big_int *x, big_int *n, big_int *m) {
 }
 
 
-big_int *big_int_lr_mod_pow(big_int *x, big_int *n, big_int *m) {
+big_int *big_int_lr_mod_pow(const big_int *x,const big_int *n,big_int *m) {
     big_int *n3 = big_int_get("1");
     big_int *sq;
     big_int *mul;
@@ -746,7 +746,7 @@ big_int *big_int_lr_mod_pow(big_int *x, big_int *n, big_int *m) {
 }
 
 
-big_int *big_int_lr_mod_pow2(big_int *x, big_int *n, big_int *m) {
+big_int *big_int_lr_mod_pow2(const big_int *x,const big_int *n, big_int *m) {
     big_int *n3 = big_int_get("1");
     big_int *sq;
     big_int *mul;
@@ -772,7 +772,7 @@ big_int *big_int_lr_mod_pow2(big_int *x, big_int *n, big_int *m) {
 }
 
 
-big_int *big_int_slice(big_int *n1, long l1, long l2) {
+big_int *big_int_slice(const big_int *n1, long l1, long l2) {
     big_int *n = (big_int *) malloc(sizeof(big_int));
     n->sign = n1->sign;
     n->length = (unsigned int) (l2 - l1 + 1);
@@ -791,7 +791,7 @@ big_int *big_int_slice(big_int *n1, long l1, long l2) {
 }
 
 
-big_int *big_int_karatsuba_mult2(big_int *n1, big_int *n2) {
+big_int *big_int_karatsuba_mult2(const big_int *n1,const big_int *n2) {
     if (n1->length + n2->length <= const1) { return big_int_mul(n1, n2); }
     else {
         unsigned int mx = (n1->length >= n2->length) ? n1->length : n2->length;
@@ -954,7 +954,8 @@ void big_int_test_loop(long long n, int (*func)(big_int *, unsigned int)) {
     int start = clock();
     big_int *num1 = big_int_rnd(100);
     for (long long i = 0; i < n; i++) {
-        func(num1, 20);
+        func(num1, 20);    big_int *sq;
+
 //        big_int_free(t);
     }
     int end = clock();
@@ -962,7 +963,7 @@ void big_int_test_loop(long long n, int (*func)(big_int *, unsigned int)) {
 }
 
 
-big_int *big_int_mul_inverse(big_int *n1, big_int *mod) {
+big_int *big_int_mul_inverse(const big_int *n1,big_int *mod) {
     big_int *one= big_int_get("1");
     big_int *m_one= big_int_get("-1");
     big_int *gcd=big_int_euclid_binary(n1,mod);

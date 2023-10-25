@@ -17,9 +17,9 @@ typedef struct big_int {
 //if you want you can write "-" after the older bit
 big_int *big_int_get(const char *bin_number);
 
-int big_int_equal(big_int *n1,big_int *n2);//ok
+int big_int_equal(const big_int *n1, const big_int *n2);//ok
 
-int big_int_equal_sgn(big_int *n1, big_int *n2);//ok
+int big_int_equal_sgn(const big_int *n1,const big_int *n2);//ok
 
 void big_int_print(const big_int *n);//ok
 
@@ -31,7 +31,7 @@ void big_int_free2(const unsigned int n0, ...);
 
 void big_int_test_loop(long long n, int (*func)(big_int*, unsigned int));
 
-big_int* big_int_mul(big_int* n1,big_int* n2);
+big_int* big_int_mul(const big_int* n1,const big_int* n2);
 
 void big_int_dlz(big_int *n);//ok
 
@@ -39,11 +39,11 @@ void big_int_swap(big_int *n1, big_int *n2);//ok
 
 void big_int_swap2(big_int *n1, big_int *n2);//ok
 
-int big_int_leq(big_int *n1, big_int *n2);//ok
+int big_int_leq(const big_int *n1,const big_int *n2);//ok
 
-int big_int_geq(big_int *n1, big_int *n2);//ok
+int big_int_geq(const big_int *n1,const big_int *n2);//ok
 
-big_int* big_int_disj(big_int *n1,big_int *n2);//ok
+big_int* big_int_disj(const big_int *n1,const big_int *n2);//ok
 
 void big_int_bin_shft_r(big_int *n);//ok
 
@@ -63,23 +63,23 @@ void big_int_sub2(big_int *n1, big_int *n2);//ok
 
 big_int *big_int_euclid_binary(const big_int *x,const big_int *y);//ok
 
-void big_int_div2(big_int *n1, big_int *n2, big_int *res1, big_int *rmdr);//ok
+void big_int_div2(const big_int *n1,big_int *n2, big_int *res1, big_int *rmdr);//ok
 
 void big_int_set_bit(big_int *n,long long num,int x);//ok
 
 big_int *big_int_copy(const big_int*x);//ok
 
-big_int *big_int_rl_mod_pow(big_int *x, big_int *n, big_int *m);//ok
+big_int *big_int_rl_mod_pow(const big_int *x,const big_int *n,const big_int *m);//ok
 
-big_int *big_int_lr_mod_pow(big_int *x, big_int *n, big_int *m);//ok
+big_int *big_int_lr_mod_pow(const big_int *x,const big_int *n,big_int *m);//ok
 
-big_int *big_int_rl_mod_pow2(big_int *x, big_int *n, big_int *m);//ok
+big_int *big_int_rl_mod_pow2(const big_int *x,const big_int *n,const big_int *m);//ok
 
-big_int *big_int_lr_mod_pow2(big_int *x0, big_int *n, big_int *m);//ok
+big_int *big_int_lr_mod_pow2(const big_int *x0,const big_int *n, big_int *m);//ok
 
-big_int *big_int_slice(big_int *n1, long l1, long l2 );//ok
+big_int *big_int_slice(const big_int *n1, long l1, long l2 );//ok
 
-big_int *big_int_karatsuba_mult2(big_int *n1, big_int *n2);//ok
+big_int *big_int_karatsuba_mult2(const big_int *n1,const big_int *n2);//ok
 
 big_int *big_int_rnd(unsigned int n);//ok
 
@@ -89,11 +89,11 @@ big_int *big_int_get_prime(unsigned int len,unsigned int tst_cnt);//ok
 
 big_int *big_int_get_prime2(unsigned int len, unsigned int tst_cnt);
 
-void big_int_div3(big_int *n1, big_int *n2, big_int *res1);
+void big_int_div3(const big_int *n1, big_int *n2, big_int *res1);
 
-void big_int_div2_for_pow(big_int *n1, big_int *n2, big_int *rmdr);
+void big_int_div2_for_pow(const big_int *n1, big_int *n2, big_int *rmdr);
 
-big_int *big_int_mul_inverse(big_int *n1,big_int *mod);
+big_int *big_int_mul_inverse(const big_int *n1,big_int *mod);
 
 void tst();
 
