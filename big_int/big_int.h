@@ -13,8 +13,21 @@ typedef struct big_int {
     char sign;
 } big_int;
 
-//you can get a big_integer from binary string
-//if you want you can write "-" after the older bit
+typedef struct {
+    unsigned int length;
+
+    big_int *exp;
+    big_int *mod;
+} rsa_key;
+
+rsa_key *RSA_key_get(unsigned int len);
+
+big_int *RSA_enc(big_int *message, rsa_key *key);
+
+void RSA_dec(big_int *message,big_int *secret_key, rsa_key *public_key);
+
+void RSA_key_free(rsa_key* public_key);
+
 big_int *big_int_get(const char *bin_number);
 
 int big_int_equal(const big_int *n1, const big_int *n2);//ok
@@ -88,6 +101,8 @@ int big_int_primality_test(big_int* n,unsigned int tst_cnt);//ok
 big_int *big_int_get_prime(unsigned int len,unsigned int tst_cnt);//ok
 
 big_int *big_int_get_prime2(unsigned int len, unsigned int tst_cnt);
+
+big_int *big_int_get_prime3(unsigned int len, unsigned int tst_cnt);
 
 void big_int_div3(const big_int *n1, big_int *n2, big_int *res1);
 

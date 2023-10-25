@@ -867,6 +867,10 @@ int big_int_primality_test(big_int *n, unsigned int tst_cnt) {
     long cnt_of_two = 0;
     int fl = 0;
     big_int *one = big_int_get("1");
+    big_int *two = big_int_get("10");
+    if(big_int_equal(one,n)){return 0;}
+    if(big_int_equal(two,n)){return 1;}
+
     big_int *r2 = big_int_sub(n, one);
     big_int *d = big_int_copy(r2);
 
@@ -875,7 +879,7 @@ int big_int_primality_test(big_int *n, unsigned int tst_cnt) {
         cnt_of_two++;
     }
 
-    big_int *two = big_int_get("10");
+
     big_int *r = big_int_sub(n, two);
     big_int *a=big_int_get("0");
     big_int *x= big_int_get("0");
@@ -884,7 +888,8 @@ int big_int_primality_test(big_int *n, unsigned int tst_cnt) {
     for (unsigned int i = 1; i < tst_cnt + 1; i++) {
 
         if (n->length != 1) { big_int_free2(1,&a); a = big_int_rnd(1 + rand() % ((n->length) - 1)); }
-        else { big_int_free2(1,&a); a = big_int_rnd(1 + rand() % ((n->length))); }
+        else { big_int_free2(1,&a); a = big_int_rnd(1);a->number[0]=(2+rand())%((n->number[0])-2); }
+
         if (big_int_leq(a, one)) {
             big_int_add2(a, two);
         }
@@ -925,7 +930,7 @@ big_int *big_int_get_prime(unsigned int len, unsigned int tst_cnt) {
     big_int *res;
     while (!prime) {
         res = big_int_rnd(len);
-        printf("%li\n", clock() / 1000000);
+//        printf("%li\n", clock() / 1000000);
         prime = big_int_primality_test(res, tst_cnt);
         if (prime)return res;
         big_int_free(&res);
@@ -949,6 +954,22 @@ big_int *big_int_get_prime2(unsigned int len, unsigned int tst_cnt) {
     }
 }
 
+big_int *big_int_get_prime3(unsigned int len, unsigned int tst_cnt) {
+    int prime = 0;
+
+    big_int *two = big_int_get("10");
+    while(1==1) {
+        big_int *res = big_int_rnd(len);
+        prime = big_int_primality_test(res, tst_cnt);
+        while ((!prime) && (res->length != len + 1)) {
+            printf("%li\n", clock() / 1000000);
+            prime = big_int_primality_test(res, tst_cnt);
+            if (prime)return res;
+            big_int_add2(res, two);
+        }
+        if (prime)return res;
+    }
+}
 
 void big_int_test_loop(long long n, int (*func)(big_int *, unsigned int)) {
     int start = clock();
@@ -1015,14 +1036,52 @@ big_int *big_int_mul_inverse(const big_int *n1,big_int *mod) {
 }
 
 
+rsa_key *RSA_key_get(unsigned int len){
+    rsa_key *key = (rsa_key *) malloc(sizeof(rsa_key));
+    key->exp= big_int_get("10000000000000001");//e=65537
+    key->length=len;
+    key->mod= big_int_get("0");
+    return key;
+}
+
+
+big_int *RSA_enc(big_int *message, rsa_key *key){
+    big_int *p = big_int_get_prime((key->length)/2,10);
+    printf("after prime1\n");
+    big_int *q = big_int_get_prime((key->length)/2,10);
+    printf("after prime2\n");
+    big_int *one = big_int_get("1");
+    big_int_free(&(key->mod));
+    key->mod = big_int_karatsuba_mult2(p,q);
+
+    big_int_sub2(p,one);
+    big_int_sub2(q,one);
+
+    big_int *eu_func=big_int_karatsuba_mult2(p,q);
 
 
 
+    big_int *inv_e = big_int_mul_inverse(key->exp,eu_func);
+
+    big_int *res= big_int_lr_mod_pow2(message,key->exp,key->mod);
+    big_int_swap(res,message);
+    big_int_free2(5,&p,&q,&res,&one,&eu_func);
+
+    return inv_e;
+}
 
 
 
+void RSA_dec(big_int *message,big_int *secret_key, rsa_key *public_key){
+    big_int *res= big_int_lr_mod_pow2(message,secret_key,public_key->mod);
+    big_int_swap(message,res);
+    big_int_free2(1,&res);
+}
 
-
+void RSA_key_free(rsa_key* public_key){
+    big_int_free2(2,&(public_key->mod),&(public_key->exp));
+    free(public_key);
+}
 
 
 
