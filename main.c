@@ -31,37 +31,27 @@ int main() {
 //    big_int_print(mod1);
 //    big_int_print(exp1);
 
-//    console_app();
+    console_app();
+//    printf("%08d1",13);
+//    add_key("test",20);
+//    add_key("test2",60);
 
-    add_key("lol1",2);
-    add_key("lol2",3);
-    add_key("lol31",4);
-    add_key("prikol3",5);
-//    char*mod=NULL;
-//    char*secret=NULL;
-//    read_file("lol4",&mod);
-//    read_file2("lol4",&secret);
-//    if( (mod!=NULL) && (secret!=NULL) ) {
-//        printf("%s", mod);
-//        printf("%s",secret);
-//    }
 
-//    big_int *msg=char_to_big_int("prikol123 12409 prikol");
-//    rsa_key *public_key= RSA_key_get(24);
-//    big_int *secret_key= RSA_enc(msg,public_key);
-//    RSA_dec(msg,secret_key,public_key);
+//lol2
+//    rsa_key *key= RSA_key_get(10);
+//    big_int_free(&(key->mod));
+//    key->mod=big_int_get("0001001010001011");
+//    key->length=key->mod->length;
+//    big_int *secret_key=big_int_get("0000110011001001");
+//    big_int *msg= char_to_big_int("t");
+//    printf("msg=");
+//    big_int_print(msg);
+//    RSA_enc2(msg,key);
+//    printf("enc msg=");
+//    big_int_print(msg);
+//    RSA_dec(msg,secret_key,key);
 //    big_int_txt_print(msg);
-//    console_app();
 
-
-
-
-//    big_int *n1= big_int_get("-111");//-7
-//    big_int *mod= big_int_get("101");//5
-//    big_int *n3= big_int_mul_inverse(n1,mod);
-//    big_int *n3= big_int_get("0");
-//    big_int_div3(n1,mod,n3);
-//    big_int_print(n3);
 
 
 
