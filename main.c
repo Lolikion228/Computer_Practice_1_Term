@@ -31,7 +31,7 @@ int main() {
 //    big_int_print(exp1);
 
     console_app();
-    printf("lolik\n");
+
 
 //    big_int *msg=char_to_big_int("prikol123 12409 prikol");
 //    rsa_key *public_key= RSA_key_get(24);
