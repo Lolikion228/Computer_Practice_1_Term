@@ -86,7 +86,6 @@ void big_int_print(const big_int *n) {
 //        if (i)printf(" ");
     }
     printf("\n");
-
 }
 
 void big_int_print2(const unsigned int n0, ...) {

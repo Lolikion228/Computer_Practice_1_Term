@@ -2,6 +2,7 @@
 #include <string.h>
 #include "big_int/big_int.h"
 #include "tests.h"
+#include <sys/time.h>
 #include <time.h>
 #include <stdlib.h>
 #include "rsa/rsa.h"
@@ -30,8 +31,20 @@ int main() {
 //    big_int_print(mod1);
 //    big_int_print(exp1);
 
-    console_app();
+//    console_app();
 
+    add_key("lol1",2);
+    add_key("lol2",3);
+    add_key("lol31",4);
+    add_key("prikol3",5);
+//    char*mod=NULL;
+//    char*secret=NULL;
+//    read_file("lol4",&mod);
+//    read_file2("lol4",&secret);
+//    if( (mod!=NULL) && (secret!=NULL) ) {
+//        printf("%s", mod);
+//        printf("%s",secret);
+//    }
 
 //    big_int *msg=char_to_big_int("prikol123 12409 prikol");
 //    rsa_key *public_key= RSA_key_get(24);
