@@ -4,7 +4,7 @@
 #include "tests.h"
 #include <time.h>
 #include <stdlib.h>
-#include "rsa.h"
+#include "rsa/rsa.h"
 #include  "lib/lib.h"
 #define MAX_BINARY_LENGTH 40000
 /////// mult: x*=y;
