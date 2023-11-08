@@ -12,7 +12,7 @@ def check_prime(n):
 def tst_prime():
 	with open("prime.txt", "w") as file:
 		for x in range(1000):
-			y=r(1,10000000000000)
+			y=r(1,100)
 			file.write(bin(y)[2:]+"\n")
 			file.write(bin(check_prime(y))[2:]+"\n")
 			

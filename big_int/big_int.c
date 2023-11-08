@@ -5,12 +5,14 @@
 #include <string.h>
 #include "big_int.h"
 #include <stdlib.h>
-#include "stdio.h"
+#include <stdio.h>
 #include <math.h>
 #include <stdarg.h>
 
 #define MAX_BINARY_LENGTH 160000
 #define const1 100
+
+
 
 big_int *big_int_get(const char *bin_number) {
     big_int *res = (big_int *) malloc(sizeof(big_int));
@@ -233,8 +235,6 @@ void big_int_bin_shft_r2(big_int *n, int cnt) {
             n->length -= x;
             memmove(n->number, n->number + x, sizeof(n->number[0]) * (n->length));
             n->number = (unsigned char *) realloc(n->number, (n->length) * sizeof(n->number[0]));
-            if (n->number == NULL) printf("memory error in big_int_bin_shft_r2\n"); // if null -> n remains unchanged
-
         }
     }
     big_int_dlz(n);
@@ -595,7 +595,7 @@ big_int *big_int_mul(const big_int *n1,const big_int *n2) {
 }
 
 
-void big_int_div2(const big_int *n1,big_int *n2, big_int *res1, big_int *rmdr) {
+void big_int_div2(const big_int *n1, big_int *n2, big_int *res1, big_int *rmdr) {
     big_int *r = big_int_get("0");
     big_int *q = big_int_get("0");
     for (int i = (n1->length) - 1; i >= 0; i--) {
@@ -623,25 +623,15 @@ void big_int_div2(const big_int *n1,big_int *n2, big_int *res1, big_int *rmdr) {
 
 void big_int_div3(const big_int *n1, big_int *n2, big_int *res1) {
     big_int *r = big_int_get("0");
-    big_int *q = big_int_get("0");
-    for (int i = (n1->length) - 1; i >= 0; i--) {
-        for (int bit = 7; bit >= 0; bit--) {
-            big_int_bin_shft_l(r);
-            r->number[0] |= ((n1->number[i]) & (1 << bit)) != 0;
-            if (big_int_leq(n2, r)) {
-                r->sign = '+';
-                big_int_sub2(r, n2);
-                big_int_set_bit(q, i * 8 + bit, 1);
-            }
-        }
-    }
-    res1->sign = (n1->sign == n2->sign) ? '+' : '-';
-    res1->length = q->length;
-    res1->number = (unsigned char *) realloc(res1->number, res1->length);
-    memmove(res1->number, q->number, q->length);
-    big_int_free2(2, &r, &q);
+    big_int_div2(n1,n2,res1,r);
+    big_int_free(&r);
 }
 
+void big_int_rem(const big_int *n1, big_int *n2, big_int *rem) {
+    big_int *q = big_int_get("0");
+    big_int_div2(n1,n2,q,rem);
+    big_int_free(&q);
+}
 
 void big_int_div2_for_pow(const big_int *n1, big_int *n2, big_int *rmdr) {
     big_int *r = big_int_get("0");
@@ -845,11 +835,9 @@ big_int *big_int_rnd(unsigned int n) {
 }
 
 void big_int_free(big_int **n) {
-
     free((*n)->number);
     free(*n);
     *n=NULL;
-
 }
 
 void big_int_free2(const unsigned int n0, ...) {
@@ -887,12 +875,13 @@ int big_int_primality_test(big_int *n, unsigned int tst_cnt) {
 
     for (unsigned int i = 1; i < tst_cnt + 1; i++) {
 
-        if (n->length != 1) { big_int_free2(1,&a); a = big_int_rnd(1 + rand() % ((n->length) - 1)); }
+        if (n->length != 1) { big_int_free2(1,&a); a = big_int_rnd(1 + rand() % ((n->length) - 1)); }//[0;len-1]
         else { big_int_free2(1,&a); a = big_int_rnd(1);a->number[0]=(2+rand())%((n->number[0])-2); }
 
         if (big_int_leq(a, one)) {
             big_int_add2(a, two);
         }
+
 
         big_int_free2(1,&x);
         x = big_int_lr_mod_pow2(a, d, n);
@@ -928,7 +917,7 @@ int big_int_primality_test(big_int *n, unsigned int tst_cnt) {
 big_int *big_int_get_prime(unsigned int len, unsigned int tst_cnt) {
     int prime = 0;
     big_int *res;
-
+    //first 100 primes
     while (!prime) {
         res = big_int_rnd(len);
 //        printf("%li\n", clock()/CLOCKS_PER_SEC );
@@ -985,7 +974,8 @@ void big_int_test_loop(long long n, int (*func)(big_int *, unsigned int)) {
 }
 
 
-big_int *big_int_mul_inverse(const big_int *n1,big_int *mod) {
+big_int *big_int_mul_inverse(const big_int *n1, big_int *mod) {
+
     big_int *one= big_int_get("1");
     big_int *m_one= big_int_get("-1");
     big_int *gcd=big_int_euclid_binary(n1,mod);
@@ -1012,7 +1002,7 @@ big_int *big_int_mul_inverse(const big_int *n1,big_int *mod) {
 
         tmp1 = big_int_copy(x_next);//tmp=x_next
 
-        big_int *q_times_x_next = big_int_karatsuba_mult2(q, x_next);//x_next=x-q*x_next
+        big_int *q_times_x_next = big_int_karatsuba_mult2(q, x_next);//x_next=x-q*x_next //x*=y
         big_int_free(&x_next);
         x_next = big_int_sub(x, q_times_x_next);
 
@@ -1031,57 +1021,10 @@ big_int *big_int_mul_inverse(const big_int *n1,big_int *mod) {
     while(x->sign=='-'){
         big_int_add2(x,mod);
     }
+
     big_int_free2(10,&y,&x_next,&y_next,&a,&b,&zero,&q,&one,&m_one,&gcd);
     return x;
 
-}
-
-
-rsa_key *RSA_key_get(unsigned int len){
-    rsa_key *key = (rsa_key *) malloc(sizeof(rsa_key));
-    key->exp= big_int_get("10000000000000001");//e=65537
-    key->length=len;
-    key->mod= big_int_get("0");
-    return key;
-}
-
-
-big_int *RSA_enc(big_int *message, rsa_key *key){
-    big_int *p = big_int_get_prime((key->length)/2,10);
-    printf("after prime1\n");
-    big_int *q = big_int_get_prime((key->length)/2,10);
-    printf("after prime2\n");
-    big_int *one = big_int_get("1");
-    big_int_free(&(key->mod));
-    key->mod = big_int_karatsuba_mult2(p,q);
-
-    big_int_sub2(p,one);
-    big_int_sub2(q,one);
-
-    big_int *eu_func=big_int_karatsuba_mult2(p,q);
-
-
-
-    big_int *inv_e = big_int_mul_inverse(key->exp,eu_func);
-
-    big_int *res= big_int_lr_mod_pow2(message,key->exp,key->mod);
-    big_int_swap(res,message);
-    big_int_free2(5,&p,&q,&res,&one,&eu_func);
-
-    return inv_e;
-}
-
-
-
-void RSA_dec(big_int *message,big_int *secret_key, rsa_key *public_key){
-    big_int *res= big_int_lr_mod_pow2(message,secret_key,public_key->mod);
-    big_int_swap(message,res);
-    big_int_free2(1,&res);
-}
-
-void RSA_key_free(rsa_key* public_key){
-    big_int_free2(2,&(public_key->mod),&(public_key->exp));
-    free(public_key);
 }
 
 
