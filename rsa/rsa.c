@@ -379,33 +379,35 @@ void console_app() {
             rsa_key *public_key= RSA_key_get(15);
             big_int_free(&(public_key->mod));
             public_key->mod=get_public_key(name);
-            public_key->length=public_key->mod->length;
+            if( (secret_key!=NULL) && (public_key->mod!=NULL) ){
+                public_key->length=public_key->mod->length;
 
-            char*pth0="rsa/encrypted/";
-            char*pth1="rsa/decrypted/";
-            char*pth=(char*)calloc(strlen(pth0)+ strlen(name)+4, sizeof(char));
-            strncpy(pth,pth0,strlen(pth0));
-            strncpy(pth+strlen(pth0),name,strlen(name));
-            strncpy(pth+strlen(pth0)+strlen(name),".txt",4);
-            FILE *f_in=fopen(pth,"r");
-            strncpy(pth,pth1,strlen(pth1));
-            FILE *f_out=fopen(pth,"w+");
-            char *str=(char*)calloc(MAX_BINARY_LENGTH,sizeof(char));
-            while (fgets(str, MAX_BINARY_LENGTH, f_in) != NULL){
+                char*pth0="rsa/encrypted/";
+                char*pth1="rsa/decrypted/";
+                char*pth=(char*)calloc(strlen(pth0)+ strlen(name)+4, sizeof(char));
+                strncpy(pth,pth0,strlen(pth0));
+                strncpy(pth+strlen(pth0),name,strlen(name));
+                strncpy(pth+strlen(pth0)+strlen(name),".txt",4);
+                FILE *f_in=fopen(pth,"r");
+                strncpy(pth,pth1,strlen(pth1));
+                FILE *f_out=fopen(pth,"w+");
+                char *str=(char*)calloc(MAX_BINARY_LENGTH,sizeof(char));
+                while (fgets(str, MAX_BINARY_LENGTH, f_in) != NULL){
 
-                char*msg=(char*)calloc(strlen(str)-1,sizeof(char));
-                strncpy(msg,str,strlen(str)-1);
-//                printf("%s\n",msg);
-                big_int *msg2=big_int_get(msg);
-                RSA_dec(msg2,secret_key,public_key);
-//                big_int_txt_print(msg2);
-                for (int i = 0; i < msg2->length; i++) {
-                    fprintf(f_out,"%c", msg2->number[i]);
+                    char*msg=(char*)calloc(strlen(str)-1,sizeof(char));
+                    strncpy(msg,str,strlen(str)-1);
+    //                printf("%s\n",msg);
+                    big_int *msg2=big_int_get(msg);
+                    RSA_dec(msg2,secret_key,public_key);
+    //                big_int_txt_print(msg2);
+                    for (int i = 0; i < msg2->length; i++) {
+                        fprintf(f_out,"%c", msg2->number[i]);
+                    }
+                    fprintf(f_out,"\n");
                 }
-                fprintf(f_out,"\n");
+                fclose(f_out);
+                fclose(f_in);
             }
-            fclose(f_out);
-            fclose(f_in);
         }
         if (c3) {
             break;
