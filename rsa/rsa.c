@@ -357,10 +357,51 @@ void console_app() {
                 }
                 fprintf(f_out,"\n");
                 fclose(f_out);
+                big_int_free(&msg2);
+                free(pth);
             }
+            free(name);
+            free(msg);
+            RSA_key_free(key);
         }
         if (c2) {
             printf("dec_f\n");
+            int i1=-1,i2=-1;
+            for (int j = 0; j < strlen(cmd); j++) {
+                if ((cmd[j] == ' ') && (i1 == -1)) { i1 = j;continue; }
+                if (cmd[j] == '\n') {i2 = j;break;}
+            }
+            char*name=(char*)calloc(i2-i1-1, sizeof(char));
+            strncpy(name,cmd+7,i2-i1-1);
+            printf("name=%s\n",name);
+
+
+            big_int *secret_key= get_secret_key(name);
+
+            rsa_key *public_key= RSA_key_get(15);
+            big_int_free(&(public_key->mod));
+            public_key->mod=get_public_key(name);
+            public_key->length=public_key->mod->length;
+
+            char*pth0="rsa/encrypted/";
+            char*pth=(char*)calloc(strlen(pth0)+ strlen(name)+4, sizeof(char));
+            strncpy(pth,pth0,strlen(pth0));
+            strncpy(pth+strlen(pth0),name,strlen(name));
+            strncpy(pth+strlen(pth0)+strlen(name),".txt",4);
+            printf("path=%s\n",pth);
+            FILE *f_in=fopen(pth,"r");
+            char *str=(char*)calloc(MAX_BINARY_LENGTH,sizeof(char));
+            while (fgets(str, MAX_BINARY_LENGTH, f_in) != NULL){
+
+                char*msg=(char*)calloc(strlen(str)-1,sizeof(char));
+                strncpy(msg,str,strlen(str)-1);
+//                printf("%s\n",msg);
+                big_int *msg2=big_int_get(msg);
+                RSA_dec(msg2,secret_key,public_key);
+                printf("dec=");
+                big_int_txt_print(msg2);
+            }
+            fclose(f_in);
         }
         if (c3) {
             break;
