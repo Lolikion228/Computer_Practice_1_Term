@@ -10,7 +10,7 @@
 #include <dirent.h>
 #include <sys/time.h>
 
-#define MAX_BINARY_LENGTH 40000
+#define MAX_BINARY_LENGTH 400000
 
 rsa_key *RSA_key_get(unsigned int len){
 
@@ -196,7 +196,7 @@ void help_func(){
 }
 
 
-//FIX
+
 void add_key(char*name,int len){
     FILE *file0=fopen("rsa/secret_keys.txt", "r");
     char *buffer = malloc(MAX_BINARY_LENGTH + 1);
@@ -265,22 +265,24 @@ void console_app(){
     char*encode_cmd="encode";
     char*decode_cmd="decode";
     char*exit_cmd="exit";
-    char *command = (char*)malloc(400);
+    char*add_cmd="add_key";
+    char *command = (char*)malloc(40000);
 
     while(1==1){
         printf(">>>");
-        char* trash=fgets(command,400,stdin);
+        char* trash=fgets(command,40000,stdin);
 
-        int c1=1,c2=1,c3=1,c4=1;
+        int c1=1,c2=1,c3=1,c4=1,c5=1;
 
         for(int j=0;j< strlen(command);j++){
+            if ( (j<strlen(add_cmd)) && (command[j]!=add_cmd[j]) ){c5=0;}
             if( (j<4) && (command[j]!=help_cmd[j]) ){c1=0;}
             if( (j<4) && (command[j]!=exit_cmd[j]) ){c4=0;}
             if( j<6 ){
                 if(command[j]!=encode_cmd[j]) {c2=0;}
                 if(command[j]!=decode_cmd[j]) {c3=0;}
             }
-            if(c1+c2+c3+c4<=1){
+            if(c1+c2+c3+c4+c5<=1){
                 break;
             }
         }
@@ -297,40 +299,21 @@ void console_app(){
                 if (command[j] == '\n') { i2 = j; }
             }
             char*target=(char*)calloc(i1-6-1,sizeof(char));
-//            printf("name = %s\n",target);
-//            printf("len=%li %d\n", strlen(target),i1-6-1);
             char*msg=(char*)calloc(i2-i1-1,sizeof (char));
             strncpy(target,command+7,i1-6-1);
             strncpy(msg,command+1+i1,i2-i1-1);
-//            printf("name = %s\n",target);
-//            printf("len=%li\n", strlen(target));
-//            printf("msg = %s\n",msg);
             char*mod=NULL;
 
-            //encode name1 101010
-
             read_file(target,&mod);
-
-//            printf("name = %s\n",target);
-//            printf("len=%li\n", strlen(target));
-
 
             if( (mod!=NULL)  ){
                 big_int* mod1= big_int_get(mod);
 
                 rsa_key*key1= RSA_key_get(30);
                 key1->mod=mod1;
-//                printf("mod = ");
-//                big_int_print(key1->mod);
 
-                big_int *int_msg= char_to_big_int(msg);//last \n????
-//                printf("msg = ");
-//                big_int_print(int_msg);
+                big_int *int_msg= char_to_big_int(msg);
                 RSA_enc2(int_msg,key1);
-
-
-//                printf("mod2=");
-//                big_int_print(key1->mod);
                 char*secret=NULL;
                 read_file2(target,&secret);
 
@@ -341,7 +324,6 @@ void console_app(){
 
                 strncpy(path+strlen(z1),target,strlen(target));
                 strncpy(path+strlen(z1)+strlen(target),".txt",4);
-//                printf("path=%s\n",path);
                 FILE *out= fopen(path,"a");
 
                 for (int i = int_msg->length - 1; i > -1; i--) {
@@ -358,10 +340,6 @@ void console_app(){
 
                 free(path);
                 free(target);
-
-//                RSA_dec(int_msg,secret_key,key1);
-//                printf("decrypted msg = ");
-//                big_int_print(int_msg);
             }
             free(mod);
         }
@@ -378,7 +356,6 @@ void console_app(){
 
             char*mod=NULL;
             char*secret=NULL;
-//            printf("target=%s\n",target);
             read_file(target,&mod);
             read_file2(target,&secret);
 
@@ -387,10 +364,6 @@ void console_app(){
             if( (mod!=NULL) && (secret!=NULL) ){
                 big_int *public_key1= big_int_get(mod);
                 big_int *secret_key= big_int_get(secret);
-//                printf("public=");
-//                big_int_print(public_key1);
-//                printf("secret=");
-//                big_int_print(secret_key);
                 rsa_key *key= RSA_key_get(20);
                 key->mod=public_key1;
                 key->length=public_key1->length;
@@ -402,22 +375,32 @@ void console_app(){
                 FILE *in= fopen(path,"r");
                 char *buffer = malloc(MAX_BINARY_LENGTH + 1);
                 while(fgets(buffer, MAX_BINARY_LENGTH + 1, in)!=NULL){
-//                    printf("input=%s",buffer);
                     char*str= calloc(strlen(buffer)-1, sizeof(char ));
                     strncpy(str,buffer,strlen(buffer)-1);
                     big_int*msg= big_int_get(str);
-//                    printf("ln=%li\n", strlen(str));
                     RSA_dec(msg,secret_key,key);
-//                    printf("decoded=");
-//                    big_int_print(msg);
                     big_int_txt_print(msg);
                 }
                 fclose(in);
             }
         }
         if(c4){break;}
-        if(c1+c2+c3+c4==0){printf("incorrect command\n");}
-//        printf("-----------------------------------------------------------\n");
+        if(c5){
+
+            int i1=-1;
+            for (long j = 8; j < strlen(command); j++) {
+                if (command[j] == '\n'){i1=j;break;}
+
+            }
+            int len,t;
+            char*target=(char*)calloc(i1-7-1,sizeof(char));
+            strncpy(target,command+8,i1-7-1);
+            printf("key_len:");
+            t=scanf("%d",&len);
+            add_key(target,len);
+
+        }
+        if(c1+c2+c3+c4+c5==0){printf("incorrect command\n");}
 
     }
     free(command);

@@ -31,7 +31,7 @@ int main() {
 //    big_int_print(mod1);
 //    big_int_print(exp1);
 
-//    console_app();
+    console_app();
 //    printf("%08d1",13);
 //    add_key("test",20);
 //    add_key("test2",60);
