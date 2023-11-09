@@ -12,397 +12,336 @@
 
 #define MAX_BINARY_LENGTH 400000
 
-rsa_key *RSA_key_get(unsigned int len){
+rsa_key *RSA_key_get(unsigned int len) {
 
     rsa_key *key = (rsa_key *) malloc(sizeof(rsa_key));
-    key->exp= big_int_get("10000000000000001");//e=65537
-    key->length=len;
-    key->mod= big_int_get("0");
+    key->exp = big_int_get("10000000000000001");//e=65537
+    key->length = len;
+    key->mod = big_int_get("0");
     return key;
 }
 
-big_int* char_to_big_int(const char* str){
+big_int *char_to_big_int(const char *str) {
     big_int *res = (big_int *) malloc(sizeof(big_int));
     res->length = strlen(str);
     res->number = (unsigned char *) calloc(res->length, sizeof(res->number[0]));
-    for(int i=0;i<strlen(str);i++){
-        res->number[i]=str[i];
+    for (int i = 0; i < strlen(str); i++) {
+        res->number[i] = str[i];
     }
     return res;
 }
 
-void big_int_txt_print(big_int *x){
+void big_int_txt_print(big_int *x) {
 
 
-    for(int i=0;i<x->length;i++){
-        printf("%c",x->number[i]);
+    for (int i = 0; i < x->length; i++) {
+        printf("%c", x->number[i]);
     }
 
     printf("\n");
 }
 
 
-big_int *RSA_enc(big_int *message, rsa_key *key){
-    big_int *p = big_int_get_prime((key->length)/2,10);
+big_int *RSA_enc(big_int *message, rsa_key *key) {
+    big_int *p = big_int_get_prime((key->length) / 2, 10);
 //    printf("after prime1\n");
-    big_int *q = big_int_get_prime((key->length)/2,10);
+    big_int *q = big_int_get_prime((key->length) / 2, 10);
 //    printf("after prime2\n");
     big_int *one = big_int_get("1");
     big_int_free(&(key->mod));
-    key->mod = big_int_karatsuba_mult2(p,q);
+    key->mod = big_int_karatsuba_mult2(p, q);
 
-    big_int_sub2(p,one);
-    big_int_sub2(q,one);
+    big_int_sub2(p, one);
+    big_int_sub2(q, one);
 
-    big_int *eu_func=big_int_karatsuba_mult2(p,q);
+    big_int *eu_func = big_int_karatsuba_mult2(p, q);
 
 
+    big_int *inv_e = big_int_mul_inverse(key->exp, eu_func);
 
-    big_int *inv_e = big_int_mul_inverse(key->exp,eu_func);
-
-    big_int *res= big_int_lr_mod_pow2(message,key->exp,key->mod);
-    big_int_swap(res,message);
-    big_int_free2(5,&p,&q,&res,&one,&eu_func);
+    big_int *res = big_int_lr_mod_pow2(message, key->exp, key->mod);
+    big_int_swap(res, message);
+    big_int_free2(5, &p, &q, &res, &one, &eu_func);
 
     return inv_e;
 }
 
-void RSA_enc2(big_int *message, rsa_key *key){
+void RSA_enc2(big_int *message, rsa_key *key) {
 
+    big_int *res = big_int_lr_mod_pow2(message, key->exp, key->mod);
+    big_int_swap(res, message);
+    big_int_free2(1, &res);
 
-    big_int *res= big_int_lr_mod_pow2(message,key->exp,key->mod);
-    big_int_swap(res,message);
-    big_int_free2(1,&res);
-
-    return;
-}
-
-big_int *RSA_gen(rsa_key *key){
-    big_int *p = big_int_get_prime((key->length)/2,10);
-//    printf("after prime1\n");
-    big_int *q = big_int_get_prime((key->length)/2,10);
-//    printf("after prime2\n");
-    big_int *one = big_int_get("1");
-    big_int_free(&(key->mod));
-    key->mod = big_int_karatsuba_mult2(p,q);
-
-    big_int_sub2(p,one);
-    big_int_sub2(q,one);
-
-    big_int *eu_func=big_int_karatsuba_mult2(p,q);
-
-    big_int *inv_e = big_int_mul_inverse(key->exp,eu_func);
-
-    big_int_free2(4,&p,&q,&one,&eu_func);
-
-    return inv_e;
 }
 
 
-void RSA_dec(big_int *message,big_int *secret_key, rsa_key *public_key){
+void RSA_dec(big_int *message, big_int *secret_key, rsa_key *public_key) {
 
-    big_int *res= big_int_lr_mod_pow2(message,secret_key,public_key->mod);
-    big_int_swap(message,res);
-    big_int_free2(1,&res);
+    big_int *res = big_int_lr_mod_pow2(message, secret_key, public_key->mod);
+    big_int_swap(message, res);
+    big_int_free2(1, &res);
 }
 
-void RSA_key_free(rsa_key* public_key){
-    big_int_free2(2,&(public_key->mod),&(public_key->exp));
+void RSA_key_free(rsa_key *public_key) {
+    big_int_free2(2, &(public_key->mod), &(public_key->exp));
     free(public_key);
 }
 
-void read_file(char* target,char** mod) {
-    FILE *file = fopen("rsa/public_keys.txt", "r");
-    char *buffer = malloc(MAX_BINARY_LENGTH + 1);
-    int t;
-    long i1 = -1, i2 = -1;
 
-    while(fgets(buffer, MAX_BINARY_LENGTH + 1, file)!=NULL) {
-
-        t = 1;
-        i1 = -1, i2 = -1;
-        for (int j = 0; j < strlen(target); j++) {
-            if (buffer[j] != target[j]) {
-                t = 0;
+void add_key(char *name, unsigned int len) {
+    FILE *f_r = fopen("rsa/public_keys.txt", "r");
+    char *str = (char *) calloc(MAX_BINARY_LENGTH, sizeof(char));
+    while (fgets(str, MAX_BINARY_LENGTH, f_r) != NULL) {
+        int exists = 1;
+        int i1 = -1, i2 = -1;
+        for (int j = 0; j < strlen(str); j++) {
+            if ((str[j] == ' ') && (i1 == -1)) { i1 = j; }
+            if (str[j] == '\n') {
+                i2 = j;
                 break;
             }
         }
-        if(buffer[strlen(target)]!=' '){t=0;}
 
-        if (t) {
-
-            for (long j = 0; j < MAX_BINARY_LENGTH; j++) {
-                if ((buffer[j] == ' ') && (i1 == -1)) { i1 = j; continue;}
-                if ( buffer[j] == '\n')  { i2 = j;break;}
-                if ( (buffer[j] == ' ')&&(i1!=-1) )  { i2 = j;break; }
-            }
-            break;
-        }
-    }
-
-    if(!t){
-        printf("There is no name: %s\n",target);
-        return;
-    }
-    *mod = malloc(i2 - i1 - 1);
-    strncpy(*mod, buffer + i1 + 1, i2 - i1 - 1);
-    free(buffer);
-    fclose(file);
-}
-
-void read_file2(char* target,char** secret) {
-
-    FILE *file = fopen("rsa/secret_keys.txt", "r");
-    char *buffer = malloc(MAX_BINARY_LENGTH + 1);
-    int t;
-
-    long i1 = -1, i2 = -1;
-
-    while(fgets(buffer, MAX_BINARY_LENGTH + 1, file)!=NULL) {
-        t = 1;
-        i1 = -1, i2 = -1;
-        for (int j = 0; j < strlen(target); j++) {
-            if (buffer[j] != target[j]) {
-                t = 0;
-                break;
+        char *name2 = (char *) calloc(i1, sizeof(char));
+        strncpy(name2, str, i1);
+        exists = 0;
+        if (strlen(name2) == strlen(name)) {
+            exists = 1;
+            for (int j = 0; j < strlen(name); j++) {
+                if (name[j] != name2[j]) { exists = 0; }
             }
         }
-        if(buffer[strlen(target)]!=' '){t=0;}
-        if (t) {
-            for (long j = 0; j < MAX_BINARY_LENGTH; j++) {
-                if ((buffer[j] == ' ') && (i1 == -1)) { i1 = j;
-                    continue; }
-                if (buffer[j] == '\n') { i2 = j; break;}
-                if ( (buffer[j] == ' ') && (i1!=-1) ) { i2 = j; break;}
-            }
-            break;
+        if (exists == 1) {
+            printf("key with this name already exists\n");
+            free(str);
+            free(name2);
+            fclose(f_r);
+            return;
         }
     }
 
-    if(!t){
-        printf("There is no name: %s\n",target);
-        return;
-    }
-    *secret = (char*)calloc(i2 - i1 - 1, sizeof(char));
 
-    strncpy(*secret, buffer + i1 + 1, i2 - i1 - 1);
-
-    free(buffer);
-    fclose(file);
-}
-
-void help_func(){
-    printf("description of the app\n");
-}
+    fclose(f_r);
 
 
+    big_int *msg = big_int_get("1111000011110000");
+    rsa_key *public_key = RSA_key_get(len);
+    big_int *secret_key = RSA_enc(msg, public_key);
+//    printf("mod=");
+//    big_int_print(public_key->mod);
+//    printf("secret=");
+//    big_int_print(secret_key);
 
-void add_key(char*name,int len){
-    FILE *file0=fopen("rsa/secret_keys.txt", "r");
-    char *buffer = malloc(MAX_BINARY_LENGTH + 1);
-    long i1 = -1, i2 = -1,flag=1;
-    long cnt=0;
-    while(fgets(buffer, MAX_BINARY_LENGTH + 1, file0)!=NULL) {
-        flag=1;
-        cnt++;
-        for(int i=0;i< strlen(name);i++){
-            if(buffer[i]!=name[i]){flag=0;}
+    FILE *f_public = fopen("rsa/public_keys.txt", "a");//a or a+??? pos to start of file fseek()
+    fprintf(f_public, "%s ", name);
+    for (int i = public_key->mod->length - 1; i > -1; i--) {
+        int x = public_key->mod->number[i];
+        int bit = 128;
+        for (int j = 7; j > -1; j--) {
+            fprintf(f_public, "%i", (x & bit) != 0);
+            bit >>= 1;
         }
-        if(flag==1){break;}
     }
-    if((flag==1)&&(cnt!=0)){
-        printf("Key with this name already exists\n");
-        fclose(file0);
-        free(buffer);
-        return;
-    }
-
-    fclose(file0);
+    fprintf(f_public, "\n");
+    fclose(f_public);
 
 
-    FILE *file=fopen("rsa/secret_keys.txt", "a");
-
-    big_int *msg=big_int_get("10101");
-    rsa_key *key= RSA_key_get(len);
-    big_int *secret_key= RSA_enc(msg,key);
-
-
-    fprintf(file,"%s ",name);
+    FILE *f_secret = fopen("rsa/secret_keys.txt", "a");//a or a+??? pos to start of file fseek()
+    fprintf(f_secret, "%s ", name);
     for (int i = secret_key->length - 1; i > -1; i--) {
         int x = secret_key->number[i];
         int bit = 128;
         for (int j = 7; j > -1; j--) {
-            fprintf(file,"%i", (x & bit) != 0);
+            fprintf(f_secret, "%i", (x & bit) != 0);
             bit >>= 1;
         }
     }
-    fprintf(file,"\n");
-    fclose(file);
+    fprintf(f_secret, "\n");
+    fclose(f_secret);
 
-    FILE *file2=fopen("rsa/public_keys.txt", "a");
-    fprintf(file2,"%s ",name);
-    for (int i =key->mod->length - 1; i > -1; i--) {
-        int x = key->mod->number[i];
-        int bit = 128;
-        for (int j = 7; j > -1; j--) {
-            fprintf(file2,"%i", (x & bit) != 0);
-            bit >>= 1;
-        }
-    }
-    fprintf(file2,"\n");
-    fclose(file2);
+
+    big_int_free2(2, &msg, &secret_key);
+    RSA_key_free(public_key);
+
+
 }
-long get_time(){
-    struct timeval tv1;
-    struct timezone tz;
-    gettimeofday(&tv1, &tz);
-    return tv1.tv_sec;
-}
-//make big free
-void console_app(){
-    printf("///////////////console_app////////////////\n");
-    char*help_cmd="help";
-    char*encode_cmd="encode";
-    char*decode_cmd="decode";
-    char*exit_cmd="exit";
-    char*add_cmd="add_key";
-    char *command = (char*)malloc(40000);
 
-    while(1==1){
-        printf(">>>");
-        char* trash=fgets(command,40000,stdin);
+big_int *get_secret_key(char *target) {
+    FILE *f_s = fopen("rsa/secret_keys.txt", "r");
+    char *str = (char *) calloc(MAX_BINARY_LENGTH, sizeof(char));
 
-        int c1=1,c2=1,c3=1,c4=1,c5=1;
-
-        for(int j=0;j< strlen(command);j++){
-            if ( (j<strlen(add_cmd)) && (command[j]!=add_cmd[j]) ){c5=0;}
-            if( (j<4) && (command[j]!=help_cmd[j]) ){c1=0;}
-            if( (j<4) && (command[j]!=exit_cmd[j]) ){c4=0;}
-            if( j<6 ){
-                if(command[j]!=encode_cmd[j]) {c2=0;}
-                if(command[j]!=decode_cmd[j]) {c3=0;}
-            }
-            if(c1+c2+c3+c4+c5<=1){
+    int equal = 1;
+    while (fgets(str, MAX_BINARY_LENGTH, f_s) != NULL) {
+//        printf("%s",str);
+        equal = 1;
+        int i1 = -1, i2 = -1;
+        for (int j = 0; j < strlen(str); j++) {
+            if ((str[j] == ' ') && (i1 == -1)) { i1 = j; }
+            if (str[j] == '\n') {
+                i2 = j;
                 break;
             }
         }
-        if(strlen(command)>5){
-            c1=0; c4=0;
-        }
-        if(c1){help_func();}
-        if(c2){
 
+        char *name = (char *) calloc(i1, sizeof(char));
+        strncpy(name, str, i1);
+        equal = 0;
+        if (strlen(name) == strlen(target)) {
+            equal = 1;
 
-            int i1=-1,i2=-1;
-            for (long j = 7; j < strlen(command); j++) {
-                if ((command[j] == ' ') && (i1 == -1)) { i1 = j; }
-                if (command[j] == '\n') { i2 = j; }
-            }
-            char*target=(char*)calloc(i1-6-1,sizeof(char));
-            char*msg=(char*)calloc(i2-i1-1,sizeof (char));
-            strncpy(target,command+7,i1-6-1);
-            strncpy(msg,command+1+i1,i2-i1-1);
-            char*mod=NULL;
-
-            read_file(target,&mod);
-
-            if( (mod!=NULL)  ){
-                big_int* mod1= big_int_get(mod);
-
-                rsa_key*key1= RSA_key_get(30);
-                key1->mod=mod1;
-
-                big_int *int_msg= char_to_big_int(msg);
-                RSA_enc2(int_msg,key1);
-                char*secret=NULL;
-                read_file2(target,&secret);
-
-
-                char*z1="rsa/encrypted/";
-                char*path=(char*)calloc(strlen(target)+strlen(z1)+4,sizeof(char));
-                strncpy(path,z1,strlen(z1));
-
-                strncpy(path+strlen(z1),target,strlen(target));
-                strncpy(path+strlen(z1)+strlen(target),".txt",4);
-                FILE *out= fopen(path,"a");
-
-                for (int i = int_msg->length - 1; i > -1; i--) {
-                    int x = int_msg->number[i];
-                    int bit = 128;
-                    for (int j = 7; j > -1; j--) {
-                        fprintf(out,"%i", (x & bit) != 0);
-                        bit >>= 1;
-                    }
+            for (int i = 0; i < strlen(name); i++) {
+                if (name[i] != target[i]) {
+                    equal = 0;
+                    break;
                 }
-
-                fprintf(out,"\n");
-                fclose(out);
-
-                free(path);
-                free(target);
-            }
-            free(mod);
-        }
-        if(c3){
-
-            int i1=-1,i2=-1;
-            for (long j = 0; j < strlen(command); j++) {
-                if ((command[j] == ' ') && (i1 == -1)) { i1 = j; }
-                if (command[j] == '\n') { i2 = j; }
-            }
-
-            char*target=(char*)calloc(i2-i1-1,sizeof(char));
-            strncpy(target,command+7,i2-i1-1);
-
-            char*mod=NULL;
-            char*secret=NULL;
-            read_file(target,&mod);
-            read_file2(target,&secret);
-
-
-
-            if( (mod!=NULL) && (secret!=NULL) ){
-                big_int *public_key1= big_int_get(mod);
-                big_int *secret_key= big_int_get(secret);
-                rsa_key *key= RSA_key_get(20);
-                key->mod=public_key1;
-                key->length=public_key1->length;
-                char*z1="rsa/encrypted/";
-                char*path=(char*)calloc(strlen(target)+strlen(z1)+4,sizeof(char));
-                strncpy(path,z1,strlen(z1));
-                strncpy(path+strlen(z1),target,strlen(target));
-                strncpy(path+strlen(z1)+strlen(target),".txt",4);
-                FILE *in= fopen(path,"r");
-                char *buffer = malloc(MAX_BINARY_LENGTH + 1);
-                while(fgets(buffer, MAX_BINARY_LENGTH + 1, in)!=NULL){
-                    char*str= calloc(strlen(buffer)-1, sizeof(char ));
-                    strncpy(str,buffer,strlen(buffer)-1);
-                    big_int*msg= big_int_get(str);
-                    RSA_dec(msg,secret_key,key);
-                    big_int_txt_print(msg);
-                }
-                fclose(in);
             }
         }
-        if(c4){break;}
-        if(c5){
+        if (equal == 1) {
 
-            int i1=-1;
-            for (long j = 8; j < strlen(command); j++) {
-                if (command[j] == '\n'){i1=j;break;}
+//            printf("%d %d\n",i1,i2);
+            char *s_key = (char *) calloc(i2 - i1 - 1, sizeof(char));
 
-            }
-            int len,t;
-            char*target=(char*)calloc(i1-7-1,sizeof(char));
-            strncpy(target,command+8,i1-7-1);
-            printf("key_len:");
-            t=scanf("%d",&len);
-            add_key(target,len);
-
+            strncpy(s_key, str + i1 + 1, i2 - i1 - 1);
+            big_int *s_key2 = big_int_get(s_key);
+//            printf("name=%s\n",name);
+//            printf("key=%s\n",s_key);
+//            printf("key2=");
+//            big_int_print(s_key2);
+//            printf("%lu %lu\n",strlen(name),strlen(s_key));
+            fclose(f_s);
+            free(str);
+            free(name);
+            free(s_key);
+            return s_key2;
+            break;
         }
-        if(c1+c2+c3+c4+c5==0){printf("incorrect command\n");}
-
+//        printf("-------------------\n");
+        free(name);
     }
-    free(command);
+    printf("there is no key with name:%s\n", target);
+    free(str);
 
+    fclose(f_s);
+    return NULL;
+}
+
+big_int *get_public_key(char *target) {
+    FILE *f_p = fopen("rsa/public_keys.txt", "r");
+    char *str = (char *) calloc(MAX_BINARY_LENGTH, sizeof(char));
+
+    int equal = 1;
+    while (fgets(str, MAX_BINARY_LENGTH, f_p) != NULL) {
+//        printf("%s",str);
+        equal = 1;
+        int i1 = -1, i2 = -1;
+        for (int j = 0; j < strlen(str); j++) {
+            if ((str[j] == ' ') && (i1 == -1)) { i1 = j; }
+            if (str[j] == '\n') {
+                i2 = j;
+                break;
+            }
+        }
+
+        char *name = (char *) calloc(i1, sizeof(char));
+        strncpy(name, str, i1);
+        equal = 0;
+        if (strlen(name) == strlen(target)) {
+            equal = 1;
+
+            for (int i = 0; i < strlen(name); i++) {
+                if (name[i] != target[i]) {
+                    equal = 0;
+                    break;
+                }
+            }
+        }
+        if (equal == 1) {
+
+//            printf("%d %d\n",i1,i2);
+            char *p_key = (char *) calloc(i2 - i1 - 1, sizeof(char));
+
+            strncpy(p_key, str + i1 + 1, i2 - i1 - 1);
+            big_int *p_key2 = big_int_get(p_key);
+//            printf("name=%s\n",name);
+//            printf("key=%s\n",s_key);
+//            printf("key2=");
+//            big_int_print(s_key2);
+//            printf("%lu %lu\n",strlen(name),strlen(s_key));
+            fclose(f_p);
+            free(str);
+            free(name);
+            free(p_key);
+            return p_key2;
+            break;
+        }
+//        printf("-------------------\n");
+        free(name);
+    }
+    printf("there is no key with name:%s\n", target);
+    free(str);
+
+    fclose(f_p);
+    return NULL;
+}
+
+void hlp_f(){
+    printf("description of the app\n");
+}
+void console_app() {
+    char *enc_c = "encode";
+    char *dec_c = "decode";
+    char *ext_c = "exit";
+    char *add_c = "add_key";
+    char *hlp_c = "help";
+    int c1, c2, c3, c4, c5;
+    while (1 == 1) {
+        printf(">>>");
+        c1 = 1;
+        c2 = 1;
+        c3 = 1;
+        c4 = 1;
+        c5 = 1;
+        char *cmd = (char *) calloc(4000, sizeof(char));//with \n on the end!!!
+        char *t = fgets(cmd, 4000, stdin);
+        for (int j = 0; j < 7; j++) {
+            if ((cmd[j] != enc_c[j]) && (j < 6)) { c1 = 0; }
+            if ((cmd[j] != dec_c[j]) && (j < 6)) { c2 = 0; }
+            if ((cmd[j] != ext_c[j]) && (j < 4)) { c3 = 0; }
+            if ((cmd[j] != add_c[j]) && (j < 7)) { c4 = 0; }
+            if ((cmd[j] != hlp_c[j]) && (j < 4)) { c5 = 0; }
+        }
+        if (c1 + c2 + c3 + c4 + c5 != 1) {
+            printf("invalid command\n");
+        }
+        if (c1) {
+            printf("enc_f\n");
+        }
+        if (c2) {
+            printf("dec_f\n");
+        }
+        if (c3) {
+            break;
+        }
+        if (c4) {
+            int i1=-1,i2=-1;
+            for (int j = 0; j < strlen(cmd); j++) {
+                if ((cmd[j] == ' ') && (i1 == -1)) { i1 = j; }
+                if (cmd[j] == '\n') {
+                    i2 = j;
+                    break;
+                }
+            }
+            char*name=(char*)calloc(i1, sizeof(char));
+            strncpy(name,cmd+8,i2-i1-1);
+            printf("len:");
+            unsigned int len;
+            int t;
+            t=scanf("%ui",&len);
+            add_key(name,len);
+            free(name);
+        }
+        if (c5) {
+            hlp_f();
+        }
+    }
 }
