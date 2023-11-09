@@ -314,7 +314,50 @@ void console_app() {
             printf("invalid command\n");
         }
         if (c1) {
-            printf("enc_f\n");
+//            printf("enc_f\n");
+            int i1=-1,i2=-1,i3=-1;
+            for (int j = 0; j < strlen(cmd); j++) {
+                if ((cmd[j] == ' ') && (i1 == -1)) { i1 = j;continue; }
+                if ((cmd[j] == ' ') && (i1 != -1) && (i2==-1) ) { i2 = j; }
+                if (cmd[j] == '\n') {i3 = j;break;}
+            }
+            char*name=(char*)calloc(i2-i1-1, sizeof(char));
+            strncpy(name,cmd+7,i2-i1-1);
+            char*msg=(char*)calloc(i3-i2-1, sizeof(char));
+            strncpy(msg,cmd+i2+1,i3-i2-1);
+//            printf("name=%s\n",name);
+//            printf("msg=%s\n",msg);
+
+            rsa_key *key= RSA_key_get(15);
+            big_int_free(&(key->mod));
+            key->mod= get_public_key(name);
+            if(key->mod!=NULL){
+                key->length=key->mod->length;
+                big_int *msg2= char_to_big_int(msg);
+    //            printf("msg=");
+    //            big_int_print(msg2);
+                RSA_enc2(msg2,key);
+    //            printf("msg enc=");
+    //            big_int_print(msg2);
+                char*pth0="rsa/encrypted/";
+                char*pth=(char*)calloc(strlen(pth0)+ strlen(name)+4, sizeof(char));
+                strncpy(pth,pth0,strlen(pth0));
+                strncpy(pth+strlen(pth0),name,strlen(name));
+                strncpy(pth+strlen(pth0)+strlen(name),".txt",4);
+    //            printf("path=%s\n",pth);
+                FILE *f_out= fopen(pth,"a");
+                //write to file
+                for (int i = msg2->length - 1; i > -1; i--) {
+                    int x = msg2->number[i];
+                    int bit = 128;
+                    for (int j = 7; j > -1; j--) {
+                        fprintf(f_out,"%i", (x & bit) != 0);
+                        bit >>= 1;
+                    }
+                }
+                fprintf(f_out,"\n");
+                fclose(f_out);
+            }
         }
         if (c2) {
             printf("dec_f\n");
