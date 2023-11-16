@@ -12,7 +12,7 @@
 
 
 int tst_add() {
-    int sig = system("python3 add.py");
+//    int sig = system("python3 add.py");
     clock_t start_time, end_time;
     double total_time;
     start_time = clock();
@@ -63,7 +63,7 @@ int tst_add() {
 
 
 int tst_sub() {
-    int sig = system("python3 sub.py");
+//    int sig = system("python3 sub.py");
     clock_t start_time, end_time;
     double total_time;
     start_time = clock();
@@ -122,7 +122,7 @@ int tst_sub() {
 
 
 int tst_eu() {
-    int sig = system("python3 eu.py");
+//    int sig = system("python3 eu.py");
     clock_t start_time, end_time;
     double total_time;
     start_time = clock();
@@ -169,7 +169,7 @@ int tst_eu() {
 
 
 int tst_pow() {
-    int sig = system("python3 mod_pow.py");
+//    int sig = system("python3 mod_pow.py");
     clock_t start_time, end_time;
     double total_time;
     start_time = clock();
@@ -223,7 +223,7 @@ int tst_pow() {
 
 
 int tst_pow2() {
-    int sig = system("python3 mod_pow.py");
+//    int sig = system("python3 mod_pow.py");
     clock_t start_time, end_time;
     double total_time;
     start_time = clock();
@@ -277,7 +277,7 @@ int tst_pow2() {
 
 
 int tst_div() {
-    int sig = system("python3 div.py");
+//    int sig = system("python3 div.py");
     clock_t start_time, end_time;
     double total_time;
     start_time = clock();
@@ -332,7 +332,7 @@ int tst_div() {
 
 
 int tst_shft1() {
-    int sig = system("python3 shft1.py");
+//    int sig = system("python3 shft1.py");
     clock_t start_time, end_time;
     double total_time;
     start_time = clock();
@@ -382,7 +382,7 @@ int tst_shft1() {
 
 
 int tst_shft2() {
-    int sig = system("python3 shft2.py");
+//    int sig = system("python3 shft2.py");
     clock_t start_time, end_time;
     double total_time;
     start_time = clock();
@@ -493,7 +493,7 @@ int tst_shft3() {
 
 
 int tst_swap() {
-    int sig = system("python3 swap.py");
+//    int sig = system("python3 swap.py");
     clock_t start_time, end_time;
     double total_time;
     start_time = clock();
@@ -547,7 +547,7 @@ int tst_swap() {
 
 
 int tst_set_bit() {
-    int sig = system("python3 set_bit.py");
+//    int sig = system("python3 set_bit.py");
     clock_t start_time, end_time;
     double total_time;
     start_time = clock();
@@ -608,7 +608,7 @@ int tst_set_bit() {
 
 
 int tst_copy() {
-    int sig = system("python3 copy.py");
+//    int sig = system("python3 copy.py");
     clock_t start_time, end_time;
     double total_time;
     start_time = clock();
@@ -657,7 +657,7 @@ int tst_copy() {
 
 
 int tst_mult() {
-    int sig = system("python3 mult.py");
+//    int sig = system("python3 mult.py");
     clock_t start_time, end_time;
     double total_time;
     start_time = clock();
@@ -703,7 +703,7 @@ int tst_mult() {
 
 
 int tst_mult2() {
-    int sig = system("python3 mult.py");
+//    int sig = system("python3 mult.py");
     clock_t start_time, end_time;
     double total_time;
     start_time = clock();
@@ -748,7 +748,7 @@ int tst_mult2() {
 }
 
 int tst_prime() {
-    int sig = system("python3 prime.py");
+//    int sig = system("python3 prime.py");
     clock_t start_time, end_time;
     double total_time;
     start_time = clock();
@@ -787,7 +787,7 @@ int tst_prime() {
 }
 
 int tst_inv() {
-    int sig = system("python3 inv.py");
+//    int sig = system("python3 inv.py");
     clock_t start_time, end_time;
     double total_time;
     start_time = clock();

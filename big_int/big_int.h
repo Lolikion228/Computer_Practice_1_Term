@@ -14,7 +14,7 @@ typedef struct big_int {
 } big_int;
 
 big_int *big_int_get(const char *bin_number);
-
+//
 int big_int_equal(const big_int *n1, const big_int *n2);//ok
 
 int big_int_equal_sgn(const big_int *n1,const big_int *n2);//ok

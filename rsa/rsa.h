@@ -23,12 +23,12 @@ void RSA_key_free(rsa_key* public_key);
 big_int* char_to_big_int(const char* str);
 void big_int_txt_print(big_int *x);
 
-void console_app();
-
-big_int *get_secret_key(char *target);
-big_int *get_public_key(char *target);
-
-void add_key(char *name,unsigned int len);
+//void console_app();
+//
+//big_int *get_secret_key(char *target);
+//big_int *get_public_key(char *target);
+//
+//void add_key(char *name,unsigned int len);
 
 void RSA_enc2(big_int *message, rsa_key *key);
 
