@@ -21,43 +21,60 @@ int main() {
     srand(time(NULL));
 
 
-//    graph *g1= graph_init(5);
+    graph *g1= graph_init(6);
+
+    graph_add_arc(g1,1,2);
+//    graph_add_arc(g1,0,1);
+    graph_add_arc(g1,2,0);
+    graph_add_arc(g1,2,3);
+    graph_add_arc(g1,4,3);
+    graph_add_arc(g1,5,4);
+    graph_add_arc(g1,3,1);
 //    for(int i=0;i<g1->count;i++){
-//        g1->adj_list[i].head->val=i+1;
+//        for(int j=i+1;j<g1->count;j++)
+//        graph_add_arc(g1,i,j);
+//    }
+
+//
+//    for(int i=0;i<4+2*g1->count;i++){
+//        graph_add_arc(g1,rand()%(g1->count),rand()%(g1->count));
 //    }
 
 
+//    graph_add_arc(g1,0,0);
+//    del_arc(g1,0,1);
+//    printf("------------\n");
+
+
+
+
+
+    graph_print(g1);
+
+    int* ord= topsort(g1);
+//
+    printf("ordering = [ ");
+    for(int i=0;i<g1->count;i++){
+        printf("%d ",ord[i]);
+    }
+    printf("]\n");
+//    for(int i=0;i<g1->count;i++){
+//        int* visited=calloc((g1->count),sizeof(int));
+//        int* V=calloc((g1->count),sizeof(int));
+//        DFS(i,V,visited,g1);
+//        printf("i=%d  {",i);
+//        for(int j=0;j<g1->count;j++){printf("%d ",visited[j]);}
+//        printf("}\n");
+//        printf("{");
+//        for(int j=0;j<g1->count;j++){printf("%d ",V[j]);}
+//        printf("}\n");
+//        free(visited);
+//    }
 //    tst();
 
-    console_app();
-//    char* str1="test";
-//    char* str2="kontest336";
-//    printf("%s\n", strstr(str2,str1));
-//    big_int *n=get_secret_key("fin");
-//    big_int *n2= get_public_key("fin");
-//    if( (n!=NULL)&&(n2!=NULL) ){
-////    big_int_print(n);
-////    big_int_print(n2);
-//        rsa_key *key= RSA_key_get(15);
-//        big_int_free(&(key->mod));
-//        key->mod=n2;
-//        key->length=key->mod->length;
-////        big_int *msg= char_to_big_int("lolikion");
-////    printf("msg=");
-////    big_int_print(msg);
-////        RSA_enc2(msg,key);
-////    printf("enc msg=");
-////    big_int_print(msg);
-//    big_int *msg= big_int_get("000101100101111000111101010000111101100000001001011100000010111101001011001010011110110001111101000101100001000111101001011110101101111110111100001100101110010100010000100100111011101010101101000010100001001100010111111101000011001010111000");
-//        RSA_dec(msg,n,key);
-//        big_int_txt_print(msg);
-////
-//    }
-//    add_key("test2283",4);
-//    add_key("test2",3);
-//    add_key("test3",3);
-//    add_key("test0007",20);
-
+//    console_app();
+    visualize_graph(g1);
+    graph_free(g1);
     return 0;
 
 }

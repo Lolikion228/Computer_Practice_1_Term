@@ -2,30 +2,205 @@
 // Created by lolikion on 16.11.23.
 //
 #include <stdlib.h>
+#include <stdio.h>
 #include "graphs.h"
+#include <string.h>
 
 node *node_init(int val) {
-    node* nd= (node *) malloc(sizeof(node*));
+    node *nd = malloc(sizeof(node *));
     nd->val = val;
-    nd->next=NULL;
+    nd->next = NULL;
     return nd;
 }
 
-graph* graph_init(int n){
-    graph* res = (graph *)calloc(1,sizeof(graph*));
-    res->count=n;
-    res->adj_list=(list*)calloc(n,sizeof(list));
-    for(int i = 0; i < n; i++)
+graph *graph_init(int n) {
+    graph *res = malloc(sizeof(graph *) + 1);
+    res->count = n;
+    res->adj_list = malloc(n * sizeof(list));
+    for (int i = 0; i < n; i++)
         res->adj_list[i].head = NULL;
     return res;
 }
 
 void graph_add_arc(graph *g, int a, int b) {
     node *curr = g->adj_list[a].head;
-    if(curr) {
-        for(; curr->next; curr = curr->next)
-            if(curr->val == b) break;
+    if (curr != NULL) {
+
+        while (curr->next != NULL) {
+            if (curr->val == b) { return; }
+            curr = curr->next;
+        }
+        if (curr->val == b) { return; }
         curr->next = node_init(b);
+    } else g->adj_list[a].head = node_init(b);
+
+}
+
+
+//visualise with python
+void graph_print(graph *g) {
+    node *curr = NULL;
+    for (int i = 0; i < g->count; i++) {
+        printf("g[%d]{ ", i);
+        curr = g->adj_list[i].head;
+        if (curr != NULL) {
+            printf("%d; ", curr->val);
+            while (curr->next != NULL) {
+                curr = curr->next;
+                printf("%d; ", curr->val);
+            }
+        }
+        printf("}\n");
     }
-    else g->adj_list[a].head = node_init(b);
+
+}
+
+void node_free(node *nd) {
+    if (nd != NULL) {
+        node *tmp = nd;
+        if (nd->next == NULL) {
+            free(nd);
+            return;
+        }
+        while (nd->next != NULL) {
+            tmp = nd;
+            nd = nd->next;
+            free(tmp);
+        }
+        free(nd);
+    }
+}
+
+void graph_free(graph *g) {
+    for (int i = 0; i < g->count; i++) {
+        node_free(g->adj_list[i].head);
+
+    }
+    free(g->adj_list);
+    free(g);
+}
+
+void del_arc(graph *g, int a, int b) {
+
+    node *tmp = NULL;
+    node *curr = g->adj_list[a].head;
+    if (curr->val == b) {
+        if (curr->next == NULL) {
+            free(g->adj_list[a].head);
+            g->adj_list[a].head = NULL;
+            return;
+        }
+        list tmp2;
+//        printf("here\n");
+        tmp2.head = g->adj_list[a].head->next;
+//        printf("here\n");
+        free(g->adj_list[a].head);
+//        printf("here\n");
+        g->adj_list[a].head = tmp2.head;
+        return;
+    }
+    while (curr != NULL) {
+        if (curr->val == b) {
+            tmp->next = curr->next;
+            free(curr);
+            return;
+        }
+        tmp = curr;
+        curr = curr->next;
+    }
+}
+
+void visualize_graph(graph *g) {
+    save_graph_to_file(g);
+    int t = system("python3 /home/lolikion/CLionProjects/Titled1/graphs/gr.py > /dev/null 2>&1");
+}
+
+void save_graph_to_file(graph *g) {
+    node *curr = NULL;
+    FILE *f = fopen("graphs/gr.txt", "w");
+    for (int i = 0; i < g->count; i++) {
+        curr = g->adj_list[i].head;
+        if (curr != NULL) {
+            fprintf(f, "%d %d\n", i, curr->val);
+            while (curr->next != NULL) {
+                curr = curr->next;
+                fprintf(f, "%d %d\n", i, curr->val);
+            }
+        }
+
+    }
+    fclose(f);
+}
+
+void DFS(int start_point, int *V,int *visited_notes, graph *g) {
+    V[start_point] = 1;
+
+    node *curr = g->adj_list[start_point].head;
+    while (curr != NULL) {
+        if (V[curr->val] == 0) { DFS(curr->val, V,visited_notes, g); }
+        curr = curr->next;
+    }
+    for(int j=0;j<g->count;j++){
+        if(visited_notes[j]==-1){visited_notes[j]=start_point;return;}
+    }
+}
+
+
+enum {NOT_VISITED, VISITED, EXPLORING};
+int DFS2(int start_point, int* nodes_status, graph* g) {
+    if(nodes_status[start_point] == EXPLORING) return 0;
+    if(nodes_status[start_point] == VISITED) return 1;
+
+    nodes_status[start_point] = EXPLORING;
+
+    node* curr = g->adj_list[start_point].head;
+    while (curr != NULL) {
+        if(DFS2(curr->val, nodes_status, g)==0) return 0;
+        curr = curr->next;
+    }
+
+    nodes_status[start_point] = VISITED;
+
+    return 1;
+}
+
+int isAcyclic(graph *g) {
+
+    int N = g->count;
+    int *nodes_status = (int*)calloc(N, sizeof(int));
+
+    for(int at = 0; at < N; at++) {
+        if (!DFS2(at, nodes_status, g)) { // Cyclic
+            free(nodes_status);
+            return 0;
+        }
+    }
+
+    free(nodes_status);
+    return 1;
+}
+
+
+int *topsort(graph *g) {
+    if(!isAcyclic(g)){printf("CYCLIC!!!\n");}
+    int N = g->count;
+    int *V = (int*)calloc(N, sizeof(int));
+    int *ordering = (int*)calloc(N, sizeof(int));
+    int i = N-1;
+    for (int at = 0; at < N; at++) {
+        if(V[at]==0){
+            int *visited_notes = (int*)calloc(N, sizeof(int));
+            for(int j=0;j<N;j++){visited_notes[j]=-1;}
+            DFS(at,V,visited_notes,g);
+
+            for(int j=0;j<N;j++){
+                int nodeId=visited_notes[j];
+                if(nodeId==-1){break;}
+                ordering[i]=nodeId;
+                i--;
+            }
+            free(visited_notes);
+        }
+    }
+    return ordering;
 }

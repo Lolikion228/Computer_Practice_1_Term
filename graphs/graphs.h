@@ -20,14 +20,25 @@ typedef struct graph{
 } graph;
 
 
-graph* graph_init(int n);
+graph* graph_init(int n);//
 
-void add_arc(graph* g, int a, int b);
+void graph_add_arc(graph *g, int a, int b);//
 
 void del_arc(graph* g, int a, int b);
 
-void graph_print(graph* g);
+void graph_print(graph* g);//
 
-void graph_free(graph* g);
+void graph_free(graph* g);//
+
+void node_free(node* nd);//
+
+void save_graph_to_file(graph *g);//
+
+void visualize_graph(graph *g);//
+
+void DFS(int start_point, int *V,int *visited_notes, graph* g);
+
+
+int *topsort(graph *g);
 
 #endif //TITLED1_GRAPHS_H

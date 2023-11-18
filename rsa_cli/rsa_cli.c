@@ -14,12 +14,6 @@
 #define MAX_BINARY_LENGTH 400000
 
 
-
-
-
-
-
-
 void add_key(char *name, unsigned int len) {
     FILE *f_r = fopen("rsa_cli/public_keys.txt", "r");
     char *str = (char *) calloc(MAX_BINARY_LENGTH, sizeof(char));
