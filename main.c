@@ -22,65 +22,42 @@ int main() {
     srand(time(NULL));
 
 
-//    if(is_empty_S(*stack1)){printf("empty\n");}
-//    push_S(116,stack1);
-//    push_S(116,stack1);
-//    push_S(322,stack1);
-//    push_S(322,stack1);
-//    push_S(116,stack1);
-//    printf("top=%d\n", top_S(*stack1));
-//    if(is_empty_S(*stack1)){printf("empty\n");}
 
+    console_app();
 
-
-
-    graph *g1= graph_init(7);
+//    graph *g1= graph_init(7);
 //
-    graph_add_arc(g1,0,1);
-    graph_add_arc(g1,1,2);
-    graph_add_arc(g1,1,4);
-    graph_add_arc(g1,1,6);
-    graph_add_arc(g1,2,3);
-    graph_add_arc(g1,3,2);
-    graph_add_arc(g1,3,4);
-    graph_add_arc(g1,3,5);
-    graph_add_arc(g1,4,5);
-    graph_add_arc(g1,5,4);
-    graph_add_arc(g1,6,0);
-    graph_add_arc(g1,6,2);
-
-//  =
-
-
-//    for(int i=0;i<g1->count;i++){
-//        for(int j=i+1;j<g1->count;j++)
-//        graph_add_arc(g1,i,j);
-//    }
-
-//
-//    for(int i=0;i<4+2*g1->count;i++){
-//        graph_add_arc(g1,rand()%(g1->count),rand()%(g1->count));
-//    }
-
-
-    graph_print(g1);
-
+//    graph_add_arc(g1,0,1);
+//    graph_add_arc(g1,1,2);
+//    graph_add_arc(g1,1,4);
+//    graph_add_arc(g1,1,6);
+//    graph_add_arc(g1,2,3);
+//    graph_add_arc(g1,3,2);
+//    graph_add_arc(g1,3,4);
+//    graph_add_arc(g1,3,5);
+//    graph_add_arc(g1,4,5);
+//    graph_add_arc(g1,5,4);
+//    graph_add_arc(g1,6,0);
+//    graph_add_arc(g1,6,2);
 ////
-    int* ord= topsort(g1);
-
-    printf("ordering = [ ");
-    for(int i=0;i<g1->count;i++){
-        printf("%d ",ord[i]);
-    }
-    printf("]\n");
-
-    int *sccs= FindSccs(g1);
-
+////
+////    graph_print(g1);
+////
+////    int* ord= topsort(g1);
+////
+////    printf("ordering = [ ");
+////    for(int i=0;i<g1->count;i++){
+////        printf("%d ",ord[i]);
+////    }
+////    printf("]\n");
+////
+//    int *sccs= FindSccs(g1);
+////
 //    visualize_graph(g1);
-    graph_free(g1);
-    free(ord);
-
-
+//    graph_free(g1);
+////    free(ord);
+//
+//    free(sccs);
     return 0;
 
 }

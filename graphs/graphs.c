@@ -8,16 +8,16 @@
 #include "../stack/stack.h"
 #define unvisited -1
 node *node_init(int val) {
-    node *nd = malloc(sizeof(node *));
+    node *nd = (node *)malloc(sizeof(node));//not sizeof(node*)
     nd->val = val;
     nd->next = NULL;
     return nd;
 }
 
 graph *graph_init(int n) {
-    graph *res = malloc(sizeof(graph *)) ;
+    graph *res = (graph *)malloc(sizeof(graph));;//not sizeof(graph*)
     res->count = n;
-    res->adj_list = malloc(n * sizeof(list));
+    res->adj_list = (list *)malloc(n * sizeof(list));
     for (int i = 0; i < n; i++)
         res->adj_list[i].head = NULL;
     return res;

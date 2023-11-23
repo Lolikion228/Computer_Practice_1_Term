@@ -44,6 +44,7 @@ void add_key(char *name, unsigned int len) {
             fclose(f_r);
             return;
         }
+        free(name2);
     }
 
 
@@ -88,7 +89,7 @@ void add_key(char *name, unsigned int len) {
 
     big_int_free2(2, &msg, &secret_key);
     RSA_key_free(public_key);
-
+    free(str);
 
 }
 
@@ -235,7 +236,13 @@ void c2_func(char *name,big_int *secret_key,rsa_key *public_key){
             fprintf(f_out, "%c", msg2->number[i]);
         }
         fprintf(f_out, "\n");
+        free(msg);
+        big_int_free(&msg2);
     }
+//    free(pth0);
+//    free(pth1);
+    free(pth);
+    free(str);
     fclose(f_out);
     fclose(f_in);
 }
@@ -257,19 +264,21 @@ void c1_func(char* name,big_int *msg){
     fclose(f_out);
     big_int_free(&msg);
     free(pth);
+//    free(pth0);
 }
 
 
 //enum + switch_case
 void console_app() {
     typedef enum cli_state {encode, decode, exit, add__key, help, invalid_command} cli_state;
+    char *cmd;
 
     while (1 == 1) {
         int exit_flag=0;
         cli_state curr = invalid_command;
         printf(">>>");
-        char *cmd = (char *) calloc(4000, sizeof(char));//with \n on the end!!!
-        char *t = fgets(cmd, 4000, stdin);
+        cmd = (char *) calloc(4000, sizeof(char));//with \n on the end!!!
+        fgets(cmd, 3000, stdin);
 
         if(strstr(cmd,"encode")==cmd){curr=encode;}
         if(strstr(cmd,"decode")==cmd){curr=decode;}
@@ -342,6 +351,9 @@ void console_app() {
                     public_key->length = public_key->mod->length;
                     c2_func(name,secret_key,public_key);
                 }
+                big_int_free(&secret_key);
+                RSA_key_free(public_key);
+                free(name);
                 break;
             }
 
@@ -362,10 +374,12 @@ void console_app() {
                 strncpy(name, cmd + 8, i2 - i1 - 1);
                 printf("len:");
                 unsigned int len;
-                int t;
-                t = scanf("%ui", &len);
+                int t3;
+                t3 = scanf("%ui", &len);
                 add_key(name, len);
+                printf("here1\n");
                 free(name);
+                printf("here2\n");
                 break;
             }
 
@@ -376,6 +390,12 @@ void console_app() {
 
         }
         if(exit_flag){break;}
+        printf("here3\n");
         free(cmd);
+        printf("here4\n");
+
+
     }
+    printf("here6\n");
+    free(cmd);
 }
