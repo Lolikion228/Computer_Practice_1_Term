@@ -34,22 +34,22 @@ int main() {
 
 
 
-    graph *g1= graph_init(10);
+    graph *g1= graph_init(7);
 //
-    graph_add_arc(g1,1,2);
-    graph_add_arc(g1,4,6);
-    graph_add_arc(g1,5,3);
-    graph_add_arc(g1,5,3);
-//    graph_add_arc(g1,6,9);
-    graph_add_arc(g1,1,3);
-    graph_add_arc(g1,2,6);
-//    graph_add_arc(g1,3,0);
-    graph_add_arc(g1,9,2);
-    graph_add_arc(g1,2,6);
-    graph_add_arc(g1,0,5);
     graph_add_arc(g1,0,1);
-    graph_add_arc(g1,2,5);
+    graph_add_arc(g1,1,2);
+    graph_add_arc(g1,1,4);
+    graph_add_arc(g1,1,6);
+    graph_add_arc(g1,2,3);
+    graph_add_arc(g1,3,2);
     graph_add_arc(g1,3,4);
+    graph_add_arc(g1,3,5);
+    graph_add_arc(g1,4,5);
+    graph_add_arc(g1,5,4);
+    graph_add_arc(g1,6,0);
+    graph_add_arc(g1,6,2);
+
+//  =
 
 
 //    for(int i=0;i<g1->count;i++){
@@ -64,24 +64,17 @@ int main() {
 
 
     graph_print(g1);
-//    Stack *stack1= stack_init(g1->count);
-//    int *V = (int*)calloc(g1->count, sizeof(int));
-//    DFS_new(7,V,stack1,g1);
-//    while(!is_empty_S(*stack1)){
-//        printf("%d ", pop_S(stack1));
-//    }
-//    printf("\n");
 
 ////
     int* ord= topsort(g1);
-//
+
     printf("ordering = [ ");
     for(int i=0;i<g1->count;i++){
         printf("%d ",ord[i]);
     }
     printf("]\n");
-//
 
+    int *sccs= FindSccs(g1);
 
 //    visualize_graph(g1);
     graph_free(g1);

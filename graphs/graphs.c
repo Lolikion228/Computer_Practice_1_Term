@@ -6,7 +6,7 @@
 #include "graphs.h"
 #include <string.h>
 #include "../stack/stack.h"
-
+#define unvisited -1
 node *node_init(int val) {
     node *nd = malloc(sizeof(node *));
     nd->val = val;
@@ -182,8 +182,8 @@ int *topsort(graph *g) {
             stack1= stack_init(N);
             nodes_status = (int*)calloc(N, sizeof(int));
             DFS(at,V,stack1,g,nodes_status);
-            int i0=(i-=stack1->elements);
-            for(;stack1->elements!=0;i++)
+            int i0=(i-=1+stack1->top);
+            for(;1+stack1->top!=0;i++)
                 ordering[i] = pop_S(stack1);
             i=i0;
             destroy_S(stack1);
@@ -194,4 +194,62 @@ int *topsort(graph *g) {
     return ordering;
 }
 
-//dfs=dfs+dfs2
+
+void dfs_scc(int at,Stack *stack,int *onStack,int *ids,int *low,int *id,graph *g,int *cnt) {
+    push_S(at, stack);
+    onStack[at] = 1;
+    ids[at] = low[at] = (*id)++;//?????
+
+    node *curr = g->adj_list[at].head;
+    while(curr!=NULL){
+        if(ids[curr->val]==unvisited){ dfs_scc(curr->val,stack,onStack,ids,low,id,g,cnt);}
+        if(onStack[curr->val]){ low[at] = ( low[at] > low[curr->val] ) ? low[curr->val] : low[at];}
+        curr=curr->next;
+    }
+
+    if(ids[at]==low[at]){
+        for(int node= pop_S(stack); ; node= pop_S(stack)){
+            onStack[node]=0;
+            low[node]=ids[at];
+            if(node==at){break;}
+        }
+        (*cnt)++;
+    }
+
+}
+
+
+int *FindSccs(graph *g){
+
+
+    int n=g->count;
+
+    int id=0;
+    int sccCount=0;
+
+    int *ids=(int *)calloc(n,sizeof(int));
+    int *low=(int *)calloc(n,sizeof(int));
+    int *onStack=(int *)calloc(n,sizeof(int));
+    Stack *stack= stack_init(n);
+
+    for(int i=0; i<n ;i++){
+        ids[i]=unvisited;
+    }
+
+    for(int i=0; i<n;i++){
+        if(ids[i]==unvisited){
+            dfs_scc(i,stack,onStack,ids,low,&id,g,&sccCount);
+        }
+    }
+    printf("count of Sccs = %d\n",sccCount);
+    printf("heads of sccs: { ");
+    for(int i=0;i<n;i++){
+        if(low[i]==i){printf("%d ",i);}
+    }
+    printf("}\n");
+    free(ids);
+    free(onStack);
+    destroy_S(stack);
+    return low;
+
+}

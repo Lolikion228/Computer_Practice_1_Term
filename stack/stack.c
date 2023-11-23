@@ -10,7 +10,6 @@ Stack *stack_init(int m) {
     Stack *S = (Stack *)malloc(sizeof(struct Stack));
     S->max = m;
     S->top = -1;
-    S->elements=0;
     S->item = (int *)malloc(m * sizeof(int));
     for(int j=0;j<m;j++){
         S->item[j]=-1;
@@ -33,7 +32,6 @@ void push_S(int x, Stack *S) {
     }
     S->top++;
     S->item[S->top] = x;
-    S->elements++;
 }
 
 int pop_S(Stack *S) {
@@ -43,7 +41,6 @@ int pop_S(Stack *S) {
     }
     int x = S->item[S->top];
     S->top--;
-    S->elements--;
     return x;
 }
 
