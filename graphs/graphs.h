@@ -35,12 +35,8 @@ void save_graph_to_file(graph *g);//
 
 void visualize_graph(graph *g);//
 
-void DFS(int start_point, int *V,int *visited_notes, graph* g);
-
-void DFS_new(int start_point, int *V, Stack *stack, graph *g);
+void DFS(int start_point, int *V, Stack *stack, graph *g);
 
 int *topsort(graph *g);
-
-int *topsort2(graph *g);
 
 #endif //TITLED1_GRAPHS_H

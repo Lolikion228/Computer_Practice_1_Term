@@ -74,7 +74,7 @@ int main() {
 //    printf("\n");
 
 ////
-    int* ord= topsort2(g1);
+    int* ord= topsort(g1);
 //
     printf("ordering = [ ");
     for(int i=0;i<g1->count;i++){
@@ -84,7 +84,7 @@ int main() {
 //
 
 
-    visualize_graph(g1);
+//    visualize_graph(g1);
     graph_free(g1);
     free(ord);
 
