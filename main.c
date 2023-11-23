@@ -34,24 +34,17 @@ int main() {
 
 
 
-    graph *g1= graph_init(12);
+    graph *g1= graph_init(7);
 //
     graph_add_arc(g1,1,2);
-    graph_add_arc(g1,4,11);
-    graph_add_arc(g1,5,10);
-    graph_add_arc(g1,11,7);
-    graph_add_arc(g1,9,10);
+    graph_add_arc(g1,4,6);
+    graph_add_arc(g1,5,3);
+    graph_add_arc(g1,2,6);
+    graph_add_arc(g1,0,5);
     graph_add_arc(g1,0,1);
     graph_add_arc(g1,2,5);
-    graph_add_arc(g1,3,5);
-    graph_add_arc(g1,6,1);
-    graph_add_arc(g1,7,9);
-    graph_add_arc(g1,9,3);
-    graph_add_arc(g1,7,3);
-    graph_add_arc(g1,8,5);
-    graph_add_arc(g1,1,8);
-    graph_add_arc(g1,9,1);
-    graph_add_arc(g1,4,3);
+    graph_add_arc(g1,3,4);
+
 
 //    for(int i=0;i<g1->count;i++){
 //        for(int j=i+1;j<g1->count;j++)

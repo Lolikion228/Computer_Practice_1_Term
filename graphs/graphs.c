@@ -133,7 +133,7 @@ int isAcyclic(graph *g) {
     int *nodes_status = (int*)calloc(N, sizeof(int));
 
     for(int at = 0; at < N; at++) {
-        if (!DFS(at, nodes_status, g)) {
+        if (!DFS2(at, nodes_status, g)) {
             free(nodes_status);
             return 0;
         }
