@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include "graphs.h"
 #include <string.h>
+#include "../stack/stack.h"
 
 node *node_init(int val) {
     node *nd = malloc(sizeof(node *));
@@ -14,7 +15,7 @@ node *node_init(int val) {
 }
 
 graph *graph_init(int n) {
-    graph *res = malloc(sizeof(graph *) + 1);
+    graph *res = malloc(sizeof(graph *)) ;
     res->count = n;
     res->adj_list = malloc(n * sizeof(list));
     for (int i = 0; i < n; i++)
@@ -25,7 +26,6 @@ graph *graph_init(int n) {
 void graph_add_arc(graph *g, int a, int b) {
     node *curr = g->adj_list[a].head;
     if (curr != NULL) {
-
         while (curr->next != NULL) {
             if (curr->val == b) { return; }
             curr = curr->next;
@@ -33,11 +33,8 @@ void graph_add_arc(graph *g, int a, int b) {
         if (curr->val == b) { return; }
         curr->next = node_init(b);
     } else g->adj_list[a].head = node_init(b);
-
 }
 
-
-//visualise with python
 void graph_print(graph *g) {
     node *curr = NULL;
     for (int i = 0; i < g->count; i++) {
@@ -74,39 +71,30 @@ void node_free(node *nd) {
 void graph_free(graph *g) {
     for (int i = 0; i < g->count; i++) {
         node_free(g->adj_list[i].head);
-
     }
     free(g->adj_list);
     free(g);
 }
 
 void del_arc(graph *g, int a, int b) {
-
-    node *tmp = NULL;
-    node *curr = g->adj_list[a].head;
-    if (curr->val == b) {
-        if (curr->next == NULL) {
-            free(g->adj_list[a].head);
-            g->adj_list[a].head = NULL;
-            return;
-        }
-        list tmp2;
-//        printf("here\n");
-        tmp2.head = g->adj_list[a].head->next;
-//        printf("here\n");
-        free(g->adj_list[a].head);
-//        printf("here\n");
-        g->adj_list[a].head = tmp2.head;
-        return;
-    }
-    while (curr != NULL) {
-        if (curr->val == b) {
-            tmp->next = curr->next;
-            free(curr);
-            return;
-        }
-        tmp = curr;
-        curr = curr->next;
+    if(g) {
+        node *curr = g->adj_list[a].head;
+        node *tmp = NULL;
+        if(curr)
+            if (curr->val == b) {
+                node * tmp2 = curr->next;
+                free(curr);
+                g->adj_list[a].head = tmp2;
+                return;
+            }
+            for (; curr; curr = curr->next) {
+                if (curr->val == b) {
+                    tmp->next = curr->next;
+                    free(curr);
+                    return;
+                }
+                tmp = curr;
+            }
     }
 }
 
@@ -181,26 +169,65 @@ int isAcyclic(graph *g) {
 }
 
 
-int *topsort(graph *g) {
-    if(!isAcyclic(g)){printf("CYCLIC!!!\n");}
+//int *topsort(graph *g) {
+//    if(!isAcyclic(g)){printf("Cyclic!!!\n");}
+//    int N = g->count;
+//    int *V = (int*)calloc(N, sizeof(int));
+//    int *ordering = (int*)calloc(N, sizeof(int));
+//    int i = N-1;
+//    for (int at = 0; at < N; at++) {
+//        if(V[at]==0){
+//            int *visited_notes = (int*)calloc(N, sizeof(int));
+//            for(int j=0;j<N;j++){visited_notes[j]=-1;}
+//            DFS(at,V,visited_notes,g);
+//
+//            for(int j=0;j<N;j++){
+//                int nodeId=visited_notes[j];
+//                if(nodeId==-1){break;}
+//                ordering[i]=nodeId;
+//                i--;
+//            }
+//            free(visited_notes);
+//        }
+//    }
+//    free(V);
+//    return ordering;
+//}
+void DFS_new(int start_point, int *V, Stack *stack, graph *g) {
+    V[start_point] = 1;
+
+    node *curr = g->adj_list[start_point].head;
+    while (curr != NULL) {
+        if (V[curr->val] == 0) { DFS_new(curr->val, V,stack, g); }
+        curr = curr->next;
+    }
+//    for(int j=0;j<g->count;j++){
+//        if(visited_notes[j]==-1){visited_notes[j]=start_point;return;}
+//    }
+    push_S(start_point,stack);
+}
+
+int *topsort2(graph *g) {
+    if(!isAcyclic(g)){printf("Cyclic!!!\n");}
     int N = g->count;
     int *V = (int*)calloc(N, sizeof(int));
     int *ordering = (int*)calloc(N, sizeof(int));
-    int i = N-1;
+    for(int j=0;j<N;j++){ordering[j]=-1;}
+    int i=N;
     for (int at = 0; at < N; at++) {
         if(V[at]==0){
-            int *visited_notes = (int*)calloc(N, sizeof(int));
-            for(int j=0;j<N;j++){visited_notes[j]=-1;}
-            DFS(at,V,visited_notes,g);
-
-            for(int j=0;j<N;j++){
-                int nodeId=visited_notes[j];
-                if(nodeId==-1){break;}
-                ordering[i]=nodeId;
-                i--;
-            }
-            free(visited_notes);
+            Stack *stack1= stack_init(N);
+            DFS_new(at,V,stack1,g);
+            int i0=i-=stack1->exists;
+            for(;stack1->exists!=0;i++)
+                ordering[i] = pop_S(stack1);
+            i=i0;
+            destroy_S(stack1);
         }
     }
+    free(V);
     return ordering;
 }
+
+//dfs=dfs+dfs2
+//Stack struct

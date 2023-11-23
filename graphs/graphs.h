@@ -1,7 +1,7 @@
 //
 // Created by lolikion on 16.11.23.
 //
-
+#include "../stack/stack.h"
 #ifndef TITLED1_GRAPHS_H
 #define TITLED1_GRAPHS_H
 
@@ -18,7 +18,6 @@ typedef struct graph{
     int count;
     list* adj_list;
 } graph;
-
 
 graph* graph_init(int n);//
 
@@ -38,7 +37,10 @@ void visualize_graph(graph *g);//
 
 void DFS(int start_point, int *V,int *visited_notes, graph* g);
 
+void DFS_new(int start_point, int *V, Stack *stack, graph *g);
 
 int *topsort(graph *g);
+
+int *topsort2(graph *g);
 
 #endif //TITLED1_GRAPHS_H

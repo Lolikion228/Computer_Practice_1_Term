@@ -10,7 +10,7 @@
 #include <stdarg.h>
 
 #define MAX_BINARY_LENGTH 160000
-#define const1 100
+#define const1 4
 
 
 
@@ -83,7 +83,7 @@ void big_int_print(const big_int *n) {
             printf("%i", (x & bit) != 0);
             bit >>= 1;
         }
-//        if (i)printf(" ");
+        if (i)printf(" ");//REDO
     }
     printf("\n");
 }
@@ -805,9 +805,20 @@ big_int *big_int_karatsuba_mult2(const big_int *n1,const big_int *n2) {
         big_int_bin_shft_l2(pr, mx << 3);//A1<<n
         big_int_bin_shft_l2(a3, mx << 2);//A3=(A3-(A1+A2))<<n/2
 
-        big_int *res = big_int_add(pr, a3);
 
+        big_int *res = big_int_add(pr, a3);
+//        big_int_print(res);
+//        printf("228\n");
         big_int_add2(res, qs);//A1<<n + (A3-(A1+A2))<<n/2 + A2
+//        big_int_print(q);big_int_print(p);
+//        big_int_print(r);big_int_print(s);
+//        big_int_print(pr);big_int_print(qs);
+//        big_int_print(a3);big_int_print(sm1);
+//        big_int_print(sm2);big_int_print(sm3);
+//        big_int_print(res);
+//        big_int_print2(11, &q, &p, &r, &s, &pr, &qs, &a3, &sm1, &sm2, &sm3,&res);
+//        printf("---------------------\n");
+
 
         big_int_free2(10, &q, &p, &r, &s, &pr, &qs, &a3, &sm1, &sm2, &sm3);
         return res;
