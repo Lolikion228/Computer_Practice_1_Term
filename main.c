@@ -34,11 +34,16 @@ int main() {
 
 
 
-    graph *g1= graph_init(7);
+    graph *g1= graph_init(10);
 //
     graph_add_arc(g1,1,2);
     graph_add_arc(g1,4,6);
     graph_add_arc(g1,5,3);
+    graph_add_arc(g1,5,3);
+    graph_add_arc(g1,1,3);
+    graph_add_arc(g1,2,6);
+//    graph_add_arc(g1,3,0);
+    graph_add_arc(g1,9,2);
     graph_add_arc(g1,2,6);
     graph_add_arc(g1,0,5);
     graph_add_arc(g1,0,1);

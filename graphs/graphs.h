@@ -35,7 +35,7 @@ void save_graph_to_file(graph *g);//
 
 void visualize_graph(graph *g);//
 
-void DFS(int start_point, int *V, Stack *stack, graph *g);
+void DFS(int start_point, int *V, Stack *stack, graph *g,int* nodes_status);
 
 int DFS2(int start_point, int* nodes_status, graph* g);
 

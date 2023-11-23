@@ -121,12 +121,6 @@ void save_graph_to_file(graph *g) {
 }
 
 
-
-
-
-
-
-
 int isAcyclic(graph *g) {
 
     int N = g->count;
@@ -148,31 +142,31 @@ enum {NOT_VISITED, VISITED, EXPLORING};
 int DFS2(int start_point, int* nodes_status, graph* g) {
     if(nodes_status[start_point] == EXPLORING) return 0;
     if(nodes_status[start_point] == VISITED) return 1;
-
     nodes_status[start_point] = EXPLORING;
-
     node* curr = g->adj_list[start_point].head;
     while (curr != NULL) {
         if(DFS2(curr->val, nodes_status, g)==0) return 0;
         curr = curr->next;
     }
-
     nodes_status[start_point] = VISITED;
-
     return 1;
 }
 
 
-void DFS(int start_point, int *V, Stack *stack, graph *g) {
+void DFS(int start_point, int *V, Stack *stack, graph *g,int* nodes_status) {
+    if(nodes_status[start_point] == EXPLORING) {printf("Cyclic2\n"); }
     V[start_point] = 1;
-
+    nodes_status[start_point] = EXPLORING;
     node *curr = g->adj_list[start_point].head;
     while (curr != NULL) {
-        if (V[curr->val] == 0) { DFS(curr->val, V,stack, g); }
+        if(nodes_status[curr->val]==EXPLORING){printf("Cyclic2\n");}
+        if (V[curr->val] == 0) { DFS(curr->val, V,stack, g,nodes_status); }
         curr = curr->next;
     }
     push_S(start_point,stack);
+    nodes_status[start_point] = VISITED;
 }
+
 
 int *topsort(graph *g) {
     if(!isAcyclic(g)){printf("Cyclic!!!\n");}
@@ -185,8 +179,9 @@ int *topsort(graph *g) {
     for (int at = 0; at < N; at++) {
         if(V[at]==0){
             stack1= stack_init(N);
-            DFS(at,V,stack1,g);
-            int i0=i-=stack1->elements;
+            int *nodes_status = (int*)calloc(N, sizeof(int));
+            DFS(at,V,stack1,g,nodes_status);
+            int i0=(i-=stack1->elements);
             for(;stack1->elements!=0;i++)
                 ordering[i] = pop_S(stack1);
             i=i0;
@@ -198,4 +193,3 @@ int *topsort(graph *g) {
 }
 
 //dfs=dfs+dfs2
-//Stack struct
