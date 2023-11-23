@@ -40,6 +40,7 @@ int main() {
     graph_add_arc(g1,4,6);
     graph_add_arc(g1,5,3);
     graph_add_arc(g1,5,3);
+//    graph_add_arc(g1,6,9);
     graph_add_arc(g1,1,3);
     graph_add_arc(g1,2,6);
 //    graph_add_arc(g1,3,0);

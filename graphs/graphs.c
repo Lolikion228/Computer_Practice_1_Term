@@ -176,16 +176,18 @@ int *topsort(graph *g) {
     for(int j=0;j<N;j++){ordering[j]=-1;}
     int i=N;
     Stack *stack1;
+    int *nodes_status;
     for (int at = 0; at < N; at++) {
         if(V[at]==0){
             stack1= stack_init(N);
-            int *nodes_status = (int*)calloc(N, sizeof(int));
+            nodes_status = (int*)calloc(N, sizeof(int));
             DFS(at,V,stack1,g,nodes_status);
             int i0=(i-=stack1->elements);
             for(;stack1->elements!=0;i++)
                 ordering[i] = pop_S(stack1);
             i=i0;
             destroy_S(stack1);
+            free(nodes_status);
         }
     }
     free(V);
