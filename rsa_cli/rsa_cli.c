@@ -377,9 +377,7 @@ void console_app() {
                 int t3;
                 t3 = scanf("%ui", &len);
                 add_key(name, len);
-                printf("here1\n");
                 free(name);
-                printf("here2\n");
                 break;
             }
 
@@ -390,12 +388,8 @@ void console_app() {
 
         }
         if(exit_flag){break;}
-        printf("here3\n");
         free(cmd);
-        printf("here4\n");
-
-
     }
-    printf("here6\n");
+
     free(cmd);
 }
