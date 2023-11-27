@@ -41,5 +41,8 @@ int DFS2(int start_point, int* nodes_status, graph* g);
 
 int *topsort(graph *g);
 
-int *FindSccs(graph *g);
+int **FindSccs(graph *g);
+
+void print_sccs(int **sccs);
+
 #endif //TITLED1_GRAPHS_H

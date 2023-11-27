@@ -11,6 +11,7 @@
 #include  "lib/lib.h"
 #include "graphs/graphs.h"
 #include "stack/stack.h"
+#include "sat/two_sat.h"
 #define MAX_BINARY_LENGTH 40000
 
 
@@ -21,25 +22,58 @@
 int main() {
     srand(time(NULL));
 
+//    console_app();
+//    Stack **arr= malloc(3*sizeof(Stack *));
 
 
+    CNF2 *cnf= CNF2_get("(x1||x2)&&(!x2||x3)&&(!x1||!x2)&&(x3||x4)&&(!x3||x5)&&(!x4||!x5)&&(!x3||x4)");
+    for(int i=0;i<cnf->clauses;i++){
+        printf("[%d %d] ",cnf->arr[i][0],cnf->arr[i][1]);
+    }
+    printf("\n");
+    CNF2_print(cnf);
+    graph* g=get_implication_graph(cnf);
+    graph_print(g);
+    int *x=TWO_SAT(cnf);
+    if(x==NULL){printf("not SAT\n");}
+    else{
+        printf("SAT\n");
+        printf("[ ");
+        for(int i=1;i<1+cnf->max;i++){
+            printf("%d ",x[i]);
+        }
+        printf("]\n");
+    }
+    CNF2_free(cnf);
 
-    graph *g1= graph_init(7);
 
-    graph_add_arc(g1,0,1);
-    graph_add_arc(g1,1,2);
-    graph_add_arc(g1,1,4);
-    graph_add_arc(g1,1,6);
-    graph_add_arc(g1,2,3);
-    graph_add_arc(g1,3,2);
-    graph_add_arc(g1,3,4);
-    graph_add_arc(g1,3,5);
-    graph_add_arc(g1,4,5);
-    graph_add_arc(g1,5,4);
-    graph_add_arc(g1,6,0);
-    graph_add_arc(g1,6,2);
+//    graph *g1= graph_init(14);
 //
+//    graph_add_arc(g1,0,1);
+//    graph_add_arc(g1,0,5);
+//    graph_add_arc(g1,1,0);
+//    graph_add_arc(g1,1,12);
+//    graph_add_arc(g1,1,13);
+//    graph_add_arc(g1,12,13);
+//    graph_add_arc(g1,2,3);
+//    graph_add_arc(g1,13,2);
+//    graph_add_arc(g1,3,4);
+//    graph_add_arc(g1,4,2);
+//    graph_add_arc(g1,7,3);
 //
+//    graph_add_arc(g1,5,6);
+//    graph_add_arc(g1,6,5);
+//    graph_add_arc(g1,6,7);
+//    graph_add_arc(g1,7,8);
+//    graph_add_arc(g1,8,9);
+//    graph_add_arc(g1,9,7);
+//    graph_add_arc(g1,10,11);
+//    graph_add_arc(g1,11,10);
+//    graph_add_arc(g1,5,10);
+//    graph_add_arc(g1,8,11);
+
+////
+////
 //    graph_print(g1);
 //
 //    int* ord= topsort(g1);
@@ -50,13 +84,14 @@ int main() {
 //    }
 //    printf("]\n");
 //
-    int *sccs= FindSccs(g1);
-//
-    visualize_graph(g1);
-    graph_free(g1);
-//    free(ord);
 
-    free(sccs);
+//    int *sccs= FindSccs(g1);
+////
+//    visualize_graph(g1);
+//    graph_free(g1);
+////    free(ord);
+//
+//    free(sccs);
     return 0;
 
 }

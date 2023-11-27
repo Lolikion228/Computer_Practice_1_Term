@@ -98,7 +98,7 @@ big_int *get_secret_key(char *target) {
     char *str = (char *) calloc(MAX_BINARY_LENGTH, sizeof(char));
 
     int equal = 1;
-    while (fgets(str, MAX_BINARY_LENGTH, f_s) != NULL) {
+    while (fgets(str, MAX_BINARY_LENGTH-1, f_s) != NULL) {
 //        printf("%s",str);
         equal = 1;
         int i1 = -1, i2 = -1;
@@ -110,7 +110,7 @@ big_int *get_secret_key(char *target) {
             }
         }
 
-        char *name = (char *) calloc(i1, sizeof(char));
+        char *name = (char *) calloc(i1+1, sizeof(char));
         strncpy(name, str, i1);
         equal = 0;
         if (strlen(name) == strlen(target)) {
@@ -126,7 +126,7 @@ big_int *get_secret_key(char *target) {
         if (equal == 1) {
 
 //            printf("%d %d\n",i1,i2);
-            char *s_key = (char *) calloc(i2 - i1 - 1, sizeof(char));
+            char *s_key = (char *) calloc(i2 - i1 - 1+1, sizeof(char));
 
             strncpy(s_key, str + i1 + 1, i2 - i1 - 1);
             big_int *s_key2 = big_int_get(s_key);
@@ -140,7 +140,6 @@ big_int *get_secret_key(char *target) {
             free(name);
             free(s_key);
             return s_key2;
-            break;
         }
 //        printf("-------------------\n");
         free(name);
@@ -155,7 +154,6 @@ big_int *get_secret_key(char *target) {
 big_int *get_public_key(char *target) {
     FILE *f_p = fopen("rsa_cli/public_keys.txt", "r");
     char *str = (char *) calloc(MAX_BINARY_LENGTH, sizeof(char));
-
     int equal = 1;
     while (fgets(str, MAX_BINARY_LENGTH, f_p) != NULL) {
 //        printf("%s",str);
@@ -169,12 +167,11 @@ big_int *get_public_key(char *target) {
             }
         }
 
-        char *name = (char *) calloc(i1, sizeof(char));
+        char *name = (char *) calloc(i1+1, sizeof(char));
         strncpy(name, str, i1);
         equal = 0;
         if (strlen(name) == strlen(target)) {
             equal = 1;
-
             for (int i = 0; i < strlen(name); i++) {
                 if (name[i] != target[i]) {
                     equal = 0;
@@ -183,10 +180,8 @@ big_int *get_public_key(char *target) {
             }
         }
         if (equal == 1) {
-
 //            printf("%d %d\n",i1,i2);
-            char *p_key = (char *) calloc(i2 - i1 - 1, sizeof(char));
-
+            char *p_key = (char *) calloc(i2 - i1 - 1+1, sizeof(char));
             strncpy(p_key, str + i1 + 1, i2 - i1 - 1);
             big_int *p_key2 = big_int_get(p_key);
 //            printf("name=%s\n",name);
@@ -278,7 +273,7 @@ void console_app() {
         cli_state curr = invalid_command;
         printf(">>>");
         cmd = (char *) calloc(4000, sizeof(char));//with \n on the end!!!
-        fgets(cmd, 3000, stdin);
+        char *f=fgets(cmd, 3000, stdin);
 
         if(strstr(cmd,"encode")==cmd){curr=encode;}
         if(strstr(cmd,"decode")==cmd){curr=decode;}
