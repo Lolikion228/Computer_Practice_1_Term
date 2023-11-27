@@ -98,48 +98,11 @@ graph *get_implication_graph( CNF2 *cnf ){
 
 int *TWO_SAT(CNF2 *cnf){
     graph *g = get_implication_graph(cnf);
+
     int **sccs=FindSccs(g);
+
     print_sccs(sccs);
 
-    int i=0;
-    while(sccs[i]!=NULL){
-        int size=sccs[i][0];
-        for(int j=1;j<size+1;j++){
-            if(sccs[i][j]>cnf->max){sccs[i][j]=(-1)*(sccs[i][j]-cnf->max);}
-        }
-        ++i;
-    }
-    print_sccs(sccs);
-
-    i=0;
-    while(sccs[i]!=NULL) {
-        int size=sccs[i][0];
-        for(int j=1;j<size;j++){
-            for(int k=j+1;k<size+1;k++){
-                if(abs(sccs[i][j])==abs(sccs[i][k])){/*free*/return NULL;}
-            }
-        }
-        ++i;
-    }
-
-    int *res=(int*)malloc((1+cnf->max)* sizeof(int));
-    for(int j=0;j<1+cnf->max;j++){
-        res[j]=-1;
-    }
-    i=0;
-    int flag=1;
-    while(sccs[i]!=NULL) {
-        int size=sccs[i][0];
-        for(int j=1;j<size+1;j++){
-            flag=1;
-            res[abs(sccs[i][j])]=sccs[i][j]>=0 ? 1 : 0;
-            for(int h=1;h<1+cnf->max;h++){
-                if(res[h]==-1){flag=0;break;}
-            }
-            if(flag==1){return res;}
-        }
-        ++i;
-    }
     return res;
 
 }
