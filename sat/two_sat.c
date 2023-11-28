@@ -100,38 +100,7 @@ int *TWO_SAT(CNF2 *cnf){
     graph *g = get_implication_graph(cnf);
 
     int **sccs=FindSccs(g);
-    int size0=*(sccs[0]);
-    print_sccs(sccs);
-    for(int i=1;i<size0+1;i++) {
-        int size1=sccs[i][0];
-        for(int j=1;j<size1;j++) {
-            if(sccs[i][j]>cnf->max){
-                sccs[i][j]=(-1)*(sccs[i][j]-cnf->max);
-            }
 
-        }
-    }
     print_sccs(sccs);
-    printf("here1\n");
-    for(int i=1;i<size0+1;i++){
-        int size1=sccs[i][0];
-        for(int j=1;j<size1;j++){
-            for(int k=j+1;k<size1;k++){
-                if(abs(sccs[i][j])==abs(sccs[i][k])){return NULL;}
-            }
-        }
-    }
-    int *res=(int*)malloc((1+cnf->max)*sizeof(int));
-    for(int i=0;i<cnf->max;i++){res[i]=-1;}
-
-    int cnt=0;
-    for(int i=1;i<size0+1;i++) {
-        int size1=sccs[i][0];
-        for(int j=1;j<size1;j++){
-            res[abs(sccs[i][j])]= sccs[i][j]>=0 ? 1 : 0;
-            cnt++;
-            if(cnt==1+cnf->max){return res;}
-        }
-    }
 
 }
