@@ -95,12 +95,22 @@ graph *get_implication_graph( CNF2 *cnf ){
 }
 
 
+void get_vals(sccs_list *sccs,int *res){
+
+}
+
 
 int *TWO_SAT(CNF2 *cnf){
     graph *g = get_implication_graph(cnf);
-
-    int **sccs=FindSccs(g);
-
-    print_sccs(sccs);
-
+    sccs_list *sccs=FindSccs(g);
+    sccs_list_print(sccs);
+    sccs_list_transform(sccs,cnf->max);
+    sccs_list_print(sccs);
+    int matches=search_for_matches(sccs);
+    printf("matches=%d\n",matches );
+    if(matches){return NULL;}
+    int *res=(int*)malloc((1+cnf->max)* sizeof(int));
+    for(int i=0;i<1+cnf->max;i++){res[i]=-1;}
+    get_vals(sccs,res);
+    return res;
 }

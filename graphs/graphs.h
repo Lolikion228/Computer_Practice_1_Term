@@ -2,6 +2,7 @@
 // Created by lolikion on 16.11.23.
 //
 #include "../stack/stack.h"
+#include "sccs.h"
 #ifndef TITLED1_GRAPHS_H
 #define TITLED1_GRAPHS_H
 
@@ -41,8 +42,7 @@ int DFS2(int start_point, int* nodes_status, graph* g);
 
 int *topsort(graph *g);
 
-int **FindSccs(graph *g);
+sccs_list *FindSccs(graph *g);
 
-void print_sccs(int **sccs);
 
 #endif //TITLED1_GRAPHS_H

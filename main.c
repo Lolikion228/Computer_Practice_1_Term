@@ -37,6 +37,7 @@ int main() {
 
     int *x=TWO_SAT(cnf);
 
+
     if(x==NULL){printf("not SAT\n");}
     else{
         printf("SAT\n");
@@ -47,6 +48,8 @@ int main() {
         printf("]\n");
     }
     CNF2_free(cnf);
+
+
 
 
 //    graph *g1= graph_init(14);

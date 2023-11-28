@@ -6,6 +6,7 @@
 #include "graphs.h"
 #include <string.h>
 #include "../stack/stack.h"
+#include "sccs.h"
 #define unvisited -1
 node *node_init(int val) {
     node *nd = (node *)malloc(sizeof(node));//not sizeof(node*)
@@ -195,24 +196,25 @@ int *topsort(graph *g) {
 }
 
 
-void dfs_scc(int at,Stack *stack,int *onStack,int *ids,int *low,int *id,graph *g,int *cnt) {
+void dfs_scc(int at,Stack *stack,int *onStack,int *ids,int *low,int *id,graph *g,int *cnt,sccs_list *res) {
     push_S(at, stack);
     onStack[at] = 1;
     ids[at] = low[at] = (*id)++;//?????
 
     node *curr = g->adj_list[at].head;
     while (curr != NULL) {
-        if (ids[curr->val] == unvisited) { dfs_scc(curr->val, stack, onStack, ids, low, id, g, cnt); }
+        if (ids[curr->val] == unvisited) { dfs_scc(curr->val, stack, onStack, ids, low, id, g, cnt,res); }
         if (onStack[curr->val]) { low[at] = (low[at] > low[curr->val]) ? low[curr->val] : low[at]; }
         curr = curr->next;
     }
 
     if (ids[at] == low[at]) {
-
+        int j=stack->top;
+        int j0=j;
 
         printf("[ ");
         for (int node = pop_S(stack);; node = pop_S(stack)) {
-
+            j--;
             onStack[node] = 0;
             low[node] = ids[at];
             printf("%d ", node);
@@ -221,18 +223,22 @@ void dfs_scc(int at,Stack *stack,int *onStack,int *ids,int *low,int *id,graph *g
         printf("] ");
 
 
-
+        int *scc=(int *)malloc((j0-j) * sizeof(int));
+        int ind=0;
+        for(int i=j0;i>j;i--,ind++){
+            scc[ind]=stack->item[i];
+        }
+        sccs_list_append(scc,res,j0-j);
 
     }
 }
-//maybe stack of stacks?
-int **FindSccs(graph *g){
+
+sccs_list *FindSccs(graph *g){
 
 
     int n=g->count;
 
-
-
+    sccs_list *res=sccs_list_init();
 
     int id=0;
     int sccCount=0;
@@ -245,10 +251,11 @@ int **FindSccs(graph *g){
     for(int i=0; i<n ;i++){
         ids[i]=unvisited;
     }
+
     printf("sccs: { ");
     for(int i=0; i<n;i++){
         if(ids[i]==unvisited){
-            dfs_scc(i,stack,onStack,ids,low,&id,g,&sccCount);
+            dfs_scc(i,stack,onStack,ids,low,&id,g,&sccCount,res);
 
         }
     }
@@ -259,10 +266,7 @@ int **FindSccs(graph *g){
     free(onStack);
     destroy_S(stack);
 
-    return NULL;
+    return res;
 
 }
 
-void print_sccs(int **sccs) {
-
-}
