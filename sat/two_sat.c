@@ -95,7 +95,16 @@ graph *get_implication_graph( CNF2 *cnf ){
 }
 
 
-void get_vals(sccs_list *sccs,int *res){
+void get_vals(sccs_list *sccs,int *res,int cnt){
+    int flag;
+    for(int i=0;i<sccs->len;i++){
+        for(int j=0;j<sccs->lengths[i];j++){
+            res[abs(sccs->array[i][j])]= sccs->array[i][j]>=0 ? 1 : 0;
+            flag=1;
+            for(int k=1;k<cnt;k++){if(res[k]==-1){flag=0;break;}}
+            if(flag==1){return;}
+        }
+    }
 
 }
 
@@ -111,6 +120,10 @@ int *TWO_SAT(CNF2 *cnf){
     if(matches){return NULL;}
     int *res=(int*)malloc((1+cnf->max)* sizeof(int));
     for(int i=0;i<1+cnf->max;i++){res[i]=-1;}
-    get_vals(sccs,res);
+    get_vals(sccs,res,1+cnf->max);
     return res;
+}
+
+int test_two_sat(){
+
 }
