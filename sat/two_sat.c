@@ -111,6 +111,7 @@ void get_vals(sccs_list *sccs,int *res,int cnt){
 
 int *TWO_SAT(CNF2 *cnf){
     graph *g = get_implication_graph(cnf);
+    graph_print(g);
     sccs_list *sccs=FindSccs(g);
     sccs_list_print(sccs);
     sccs_list_transform(sccs,cnf->max);
@@ -124,6 +125,3 @@ int *TWO_SAT(CNF2 *cnf){
     return res;
 }
 
-int test_two_sat(){
-
-}
