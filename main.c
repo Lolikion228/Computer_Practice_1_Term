@@ -26,7 +26,7 @@ int main() {
 //    Stack **arr= malloc(3*sizeof(Stack *));
 
 
-    CNF2 *cnf= CNF2_get("(x1||x1)&&(!x2||!x2)&&(x3||x2)");
+    CNF2 *cnf= CNF2_get("(x1||x1)&&(!x2||!x2)");
     for(int i=0;i<cnf->clauses;i++){
         printf("[%d %d] ",cnf->arr[i][0],cnf->arr[i][1]);
     }
@@ -37,16 +37,16 @@ int main() {
     printf("here1\n");
     int *x=TWO_SAT(cnf);
 
-//    if(x==NULL){printf("not SAT\n");}
-//    else{
-//        printf("SAT\n");
-//        printf("[ ");
-//        for(int i=1;i<1+cnf->max;i++){
-//            printf("%d ",x[i]);
-//        }
-//        printf("]\n");
-//    }
-//    CNF2_free(cnf);
+    if(x==NULL){printf("not SAT\n");}
+    else{
+        printf("SAT\n");
+        printf("[ ");
+        for(int i=1;i<1+cnf->max;i++){
+            printf("%d ",x[i]);
+        }
+        printf("]\n");
+    }
+    CNF2_free(cnf);
 
 
 //    graph *g1= graph_init(14);

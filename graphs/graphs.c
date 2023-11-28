@@ -220,7 +220,6 @@ void dfs_scc(int at,Stack *stack,int *onStack,int *ids,int *low,int *id,graph *g
             if (node == at) { break; }
         }
         printf("] ");
-//        printf("(%d %d %d) ",j0,stack->item[j+1],j0-j+1);
 
         int *scc = (int *) malloc((j0 - j + 1));
         scc[0] = j0 - j + 1;
@@ -233,7 +232,6 @@ void dfs_scc(int at,Stack *stack,int *onStack,int *ids,int *low,int *id,graph *g
         while (res[j] != NULL) { j++; }
         res[j] = scc;
 
-        int size=res[j][0];
 
     }
 }
@@ -244,7 +242,8 @@ int **FindSccs(graph *g){
     int n=g->count;
 
     int**res=(int**)malloc((1+n)*(sizeof(int*)));
-    res[0]=&n;
+    res[0]=(int*)malloc(sizeof(int));
+    res[0][0]=n;
 
 
     int id=0;
@@ -268,8 +267,6 @@ int **FindSccs(graph *g){
     printf("}\n");
     printf("count of Sccs = %d\n",sccCount);
 
-    print_sccs(res);
-//    printf("%d %d\n",res[6][0],res[6][1]);
     free(ids);
     free(onStack);
     destroy_S(stack);
@@ -279,7 +276,7 @@ int **FindSccs(graph *g){
 
 void print_sccs(int **sccs) {
 
-    int size=*(sccs[0]);
+    int size=sccs[0][0];
 
     printf("sccs:{ ");
 
