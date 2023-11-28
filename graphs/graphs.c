@@ -263,6 +263,7 @@ sccs_list *FindSccs(graph *g){
     printf("count of Sccs = %d\n",sccCount);
 
     free(ids);
+    free(low);
     free(onStack);
     destroy_S(stack);
 

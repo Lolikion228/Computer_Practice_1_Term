@@ -41,6 +41,7 @@ int main() {
         printf("test=%d\n", test_two_sat(cnf,x));
     }
     CNF2_free(cnf);
+    free(x);
 
 
 
