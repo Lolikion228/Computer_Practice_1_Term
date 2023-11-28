@@ -211,7 +211,7 @@ void dfs_scc(int at,Stack *stack,int *onStack,int *ids,int *low,int *id,graph *g
     if (ids[at] == low[at]) {
         int j=stack->top;
         int j0=j;
-
+        *(cnt)+=1;
         printf("[ ");
         for (int node = pop_S(stack);; node = pop_S(stack)) {
             j--;
