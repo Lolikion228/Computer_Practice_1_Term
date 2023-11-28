@@ -37,16 +37,16 @@ int main() {
     printf("here1\n");
     int *x=TWO_SAT(cnf);
 
-    if(x==NULL){printf("not SAT\n");}
-    else{
-        printf("SAT\n");
-        printf("[ ");
-        for(int i=1;i<1+cnf->max;i++){
-            printf("%d ",x[i]);
-        }
-        printf("]\n");
-    }
-    CNF2_free(cnf);
+//    if(x==NULL){printf("not SAT\n");}
+//    else{
+//        printf("SAT\n");
+//        printf("[ ");
+//        for(int i=1;i<1+cnf->max;i++){
+//            printf("%d ",x[i]);
+//        }
+//        printf("]\n");
+//    }
+//    CNF2_free(cnf);
 
 
 //    graph *g1= graph_init(14);

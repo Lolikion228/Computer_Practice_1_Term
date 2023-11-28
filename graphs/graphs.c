@@ -195,44 +195,56 @@ int *topsort(graph *g) {
 }
 
 
-void dfs_scc(int at,Stack *stack,int *onStack,int *ids,int *low,int *id,graph *g,int *cnt) {
+void dfs_scc(int at,Stack *stack,int *onStack,int *ids,int *low,int *id,graph *g,int *cnt,int **res) {
     push_S(at, stack);
     onStack[at] = 1;
     ids[at] = low[at] = (*id)++;//?????
 
     node *curr = g->adj_list[at].head;
-    while(curr!=NULL){
-        if(ids[curr->val]==unvisited){ dfs_scc(curr->val,stack,onStack,ids,low,id,g,cnt);}
-        if(onStack[curr->val]){ low[at] = ( low[at] > low[curr->val] ) ? low[curr->val] : low[at];}
-        curr=curr->next;
+    while (curr != NULL) {
+        if (ids[curr->val] == unvisited) { dfs_scc(curr->val, stack, onStack, ids, low, id, g, cnt, res); }
+        if (onStack[curr->val]) { low[at] = (low[at] > low[curr->val]) ? low[curr->val] : low[at]; }
+        curr = curr->next;
     }
 
-    if(ids[at]==low[at]){
-        int j=stack->top;
-        int j0=j;
-
+    if (ids[at] == low[at]) {
+        int j0 = stack->top;
+        int j = j0;
 
         printf("[ ");
-        for(int node= pop_S(stack); ; node= pop_S(stack)){
+        for (int node = pop_S(stack);; node = pop_S(stack)) {
             j--;
-            onStack[node]=0;
-            low[node]=ids[at];
-            printf("%d ",node);
-            if(node==at){break;}
+            onStack[node] = 0;
+            low[node] = ids[at];
+            printf("%d ", node);
+            if (node == at) { break; }
+        }
+        printf("] ");
+//        printf("(%d %d %d) ",j0,stack->item[j+1],j0-j+1);
+
+        int *scc = (int *) malloc((j0 - j + 1));
+        scc[0] = j0 - j + 1;
+        int z = 1;
+        for (int i = j0; i > j; i--, z++) {
+            scc[z] = stack->item[i];
         }
 
+        j = 0;
+        while (res[j] != NULL) { j++; }
+        res[j] = scc;
+
+        int size=res[j][0];
+
     }
-
 }
-
 //maybe stack of stacks?
 int **FindSccs(graph *g){
 
 
     int n=g->count;
 
-    int **res=(int**)malloc(n*sizeof(int *));
-
+    int**res=(int**)malloc((1+n)*(sizeof(int*)));
+    res[0]=&n;
 
 
     int id=0;
@@ -250,13 +262,14 @@ int **FindSccs(graph *g){
     for(int i=0; i<n;i++){
         if(ids[i]==unvisited){
             dfs_scc(i,stack,onStack,ids,low,&id,g,&sccCount,res);
+
         }
     }
     printf("}\n");
     printf("count of Sccs = %d\n",sccCount);
 
-
-
+    print_sccs(res);
+//    printf("%d %d\n",res[6][0],res[6][1]);
     free(ids);
     free(onStack);
     destroy_S(stack);
@@ -266,4 +279,17 @@ int **FindSccs(graph *g){
 
 void print_sccs(int **sccs) {
 
+    int size=*(sccs[0]);
+
+    printf("sccs:{ ");
+
+    for(int j=1;j<size+1;j++ ){
+
+        int size=sccs[j][0];
+        printf("[ ");
+        for(int i=1;i<size;i++)
+            printf("%d ",sccs[j][i]);
+        printf("] ");
+    }
+    printf(" }\n");
 }

@@ -98,10 +98,10 @@ graph *get_implication_graph( CNF2 *cnf ){
 
 int *TWO_SAT(CNF2 *cnf){
     graph *g = get_implication_graph(cnf);
-
+    int *res;
     int **sccs=FindSccs(g);
 
-    print_sccs(sccs);
+//    print_sccs(sccs);
 
     return res;
 
