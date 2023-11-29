@@ -26,7 +26,7 @@ int main() {
 //    Stack **arr= malloc(3*sizeof(Stack *));
 
 
-    CNF2 *cnf= CNF2_get("(x1||x2)&&(!x2||x3)&&(!x1||!x2)&&(x3||x4)&&(!x3||x5)&&(!x4||!x5)&&(!x3||x4)&&(!x2||x6)&&(!x6||!x1)&&(x6||!x3)");
+    CNF2 *cnf= CNF2_get("(x1||x2)&&(!x2||x3)&&(!x1||!x2)&&(x3||x4)&&(!x3||x5)&&(!x4||!x5)&&(!x3||x4)&&(!x2||x6)&&(!x6||!x1)&&(!x6||!x3)");
     for(int i=0;i<cnf->clauses;i++){
         printf("[%d %d] ",cnf->arr[i][0],cnf->arr[i][1]);
     }

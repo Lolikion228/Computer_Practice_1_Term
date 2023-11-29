@@ -199,7 +199,7 @@ int *topsort(graph *g) {
 void dfs_scc(int at,Stack *stack,int *onStack,int *ids,int *low,int *id,graph *g,int *cnt,sccs_list *res) {
     push_S(at, stack);
     onStack[at] = 1;
-    ids[at] = low[at] = (*id)++;//?????
+    ids[at] = low[at] = (*id)++;
 
     node *curr = g->adj_list[at].head;
     while (curr != NULL) {
