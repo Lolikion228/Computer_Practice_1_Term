@@ -17,7 +17,7 @@
 /*
  * sccs struct
  * topsort indexes +-
- * in dfs_scc move extraction of scc to FindSccs +-
+ * in dfs_scc move extraction of scc to FindSccs <-bad
  * rename in many files  +-
  * remove dfs2 +-
  * return in dfs instead of printf +-
