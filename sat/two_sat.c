@@ -96,7 +96,7 @@ graph *get_implication_graph(CNF2 *cnf) {
 }
 
 
-//Redo
+
 void get_vals(scc_list *sccs, int *res, int cnt) {
     int flag;
     for (int i = 0; i < sccs->len; i++) {
