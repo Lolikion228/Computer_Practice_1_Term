@@ -49,7 +49,7 @@ int main() {
 //    scc_list_free(lst);
 
 
-    CNF2 *cnf= CNF2_get("(!x1||x2)&&(!x3||!x4)&&(!x1||x4)&&(!x3||x2)&&(x4||!x2)&&(x2||!x4)&&(x6||!x5)&&(!x5||x6)&&(!x6||!x2)");
+    CNF2 *cnf= CNF2_get("(!x1||!x2)&&(x1||x2)&&(!x3||!x4)&&(x3||x4)&&(x3||!x1)&&(x1||!x3)&&(x3||!x2)");
     for(int i=0;i<cnf->clauses;i++){
         printf("[%d %d] ",cnf->arr[i][0],cnf->arr[i][1]);
     }
@@ -75,8 +75,6 @@ int main() {
 //    graph_add_arc(g1,2,0);
 //    graph_add_arc(g1,3,4);
 //    graph_add_arc(g1,4,3);
-
-
 
 
 //    graph_print(g1);
