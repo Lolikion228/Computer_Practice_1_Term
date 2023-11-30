@@ -29,8 +29,6 @@
 int main() {
     srand(time(NULL));
 
-
-
     CNF2 *cnf= CNF2_get("(x1||x2)&&(!x1||x2)&&(x1||!x2)&&(!x1||!x3)&&(!x3||x2)");
     for(int i=0;i<cnf->clauses;i++){
         printf("[%d %d] ",cnf->arr[i][0],cnf->arr[i][1]);
