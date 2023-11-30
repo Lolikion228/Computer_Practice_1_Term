@@ -17,7 +17,7 @@
 /*
  * sccs struct
  * topsort indexes
- * in dfs_scc move extraction of scc to FindSccs
+ * in dfs_scc move extraction of scc to FindSccs +-
  * rename in many files +-
  * remove dfs2 +-
  * return in dfs instead of printf +-
@@ -31,7 +31,7 @@ int main() {
 
 
 
-//    CNF2 *cnf= CNF2_get("(x1||x2)&&(!x1||!x2)&&(x1||!x2)&&(!x1||x2)");
+//    CNF2 *cnf= CNF2_get("(x1||x2)&&(!x1||!x2)&&(x1||!x2)&&(!x1||!x2)&&(x3||x1)&&(!x3||x2)");
 //    for(int i=0;i<cnf->clauses;i++){
 //        printf("[%d %d] ",cnf->arr[i][0],cnf->arr[i][1]);
 //    }
@@ -52,7 +52,6 @@ int main() {
 
 
     graph *g1= graph_init(10);
-
     graph_add_arc(g1,0,1);
     graph_add_arc(g1,1,2);
     graph_add_arc(g1,0,1);
@@ -65,19 +64,16 @@ int main() {
     graph_add_arc(g1,5,9);
     graph_add_arc(g1,9,1);
 
-//////
-//////
+
     graph_print(g1);
-////
     int* ord= topsort(g1);
-////
+
     printf("ordering = [ ");
     for(int i=0;i<g1->count;i++){
         printf("%d ",ord[i]);
     }
     printf("]\n");
 //
-
 //    int *sccs= FindSccs(g1);
 ////
 //    visualize_graph(g1);

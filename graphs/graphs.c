@@ -186,33 +186,9 @@ void dfs_scc(int at,Stack *stack,int *onStack,int *ids,int *low,int *id,graph *g
         curr = curr->next;
     }
 
-//    if (ids[at] == low[at]) { ///move to findsccs
-//        int j=stack->top;
-//        int j0=j;
-//        *(cnt)+=1;
-//        printf("[ ");
-//        for (int node = stack_pop_S(stack);; node = stack_pop_S(stack)) {
-//            j--;
-//            onStack[node] = 0;
-//            low[node] = ids[at];
-//            printf("%d ", node);
-//            if (node == at) { break; }
-//        }
-//        printf("] ");
-//
-//
-//        int *scc=(int *)malloc((j0-j) * sizeof(int));
-//        int ind=0;
-//        for(int i=j0;i>j;i--,ind++){
-//            scc[ind]=stack->item[i];
-//        }
-//        scc_list_append(scc,res,j0-j);
-//
-//    }//// end
 }
 
 scc_list *FindSccs(graph *g){
-
 
     int n=g->count;
 
