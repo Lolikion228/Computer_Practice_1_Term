@@ -128,7 +128,7 @@ int *TWO_SAT(CNF2 *cnf) {
     scc_list_print(sccs);
     scc_list_transform(sccs, cnf->max);
     scc_list_print(sccs);
-    graph_visualize(g);
+//    graph_visualize(g);
     graph_free(g);
     int matches = scc_search_for_matches(sccs);
     printf("matches=%d\n", matches);
@@ -155,3 +155,4 @@ int test_two_sat(CNF2 *cnf, int *vals) {
     }
     return 1;
 }
+

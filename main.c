@@ -12,7 +12,7 @@
 #define MAX_BINARY_LENGTH 40000
 
 /*
- * sccs struct
+ * sccs struct +-
  * topsort indexes +-
  * in dfs_scc move extraction of scc to FindSccs <-bad
  * rename in many files  +-
@@ -49,7 +49,7 @@ int main() {
 //    scc_list_free(lst);
 
 
-    CNF2 *cnf= CNF2_get("(!x1||x2)&&(!x3||!x4)&&(!x1||x4)&&(!x3||x2)&&(x4||!x2)&&(x2||!x4)&&(x6||!x5)&&(!x5||x1)&&(!x6||!x2)");
+    CNF2 *cnf= CNF2_get("(!x1||x2)&&(!x3||!x4)&&(!x1||x4)&&(!x3||x2)&&(x4||!x2)&&(x2||!x4)&&(x6||!x5)&&(!x5||x6)&&(!x6||!x2)");
     for(int i=0;i<cnf->clauses;i++){
         printf("[%d %d] ",cnf->arr[i][0],cnf->arr[i][1]);
     }

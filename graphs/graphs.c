@@ -206,14 +206,6 @@ void dfs_scc(int at,Stack *stack,int *onStack,int *ids,int *low,int *id,graph *g
         }
         printf("] ");
 
-//        int *scc=(int *)malloc((j0-j) * sizeof(int));
-//        int ind=0;
-//        for(int i=j0;i>j;i--,ind++){
-//            scc[ind]=stack->item[i];
-//        }
-//        scc_list_append(scc,res,j0-j);
-
-
         node *root= node_init(stack->item[j0]);
         node *curr=root;
 
