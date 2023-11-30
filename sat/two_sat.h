@@ -6,6 +6,7 @@
 #define TITLED1_2_SAT_H
 #include "../stack/stack.h"
 #include "../graphs/graphs.h"
+
 typedef struct CNF2{
     int clauses;
     int **arr;

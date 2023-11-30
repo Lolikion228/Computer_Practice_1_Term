@@ -96,12 +96,14 @@ graph *get_implication_graph(CNF2 *cnf) {
 }
 
 
+//Redo
 void get_vals(scc_list *sccs, int *res, int cnt) {
     int flag;
     for (int i = 0; i < sccs->len; i++) {
-        for (int j = 0; j < sccs->lengths[i]; j++) {
-            if (res[abs(sccs->array[i][j])] == -1) {
-                res[abs(sccs->array[i][j])] = sccs->array[i][j] >= 0 ? 1 : 0;
+        node *curr=sccs->array[i].head;
+        while (curr) {
+            if (res[abs(curr->val)] == -1) {
+                res[abs(curr->val)] = curr->val >= 0 ? 1 : 0;
             }
             flag = 1;
             for (int k = 1; k < cnt; k++) {
@@ -111,6 +113,7 @@ void get_vals(scc_list *sccs, int *res, int cnt) {
                 }
             }
             if (flag == 1) { return; }
+            curr=curr->next;
         }
     }
 

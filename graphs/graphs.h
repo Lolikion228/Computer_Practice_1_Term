@@ -1,10 +1,12 @@
 //
 // Created by lolikion on 16.11.23.
 //
-#include "../stack/stack.h"
-#include "sccs.h"
+
 #ifndef TITLED1_GRAPHS_H
 #define TITLED1_GRAPHS_H
+
+#include "../stack/stack.h"
+#include "sccs.h"
 
 typedef struct node {
     int val;
@@ -31,7 +33,7 @@ void graph_print(graph* g);//
 void graph_free(graph* g);//
 
 void node_free(node* nd);//
-
+//
 void graph_save_to_file(graph *g);//
 
 void graph_visualize(graph *g);//
@@ -40,7 +42,7 @@ int DFS(int start_point, int *V, Stack *stack, graph *g,int* nodes_status);
 
 int *topsort(graph *g);
 
-scc_list *FindSccs(graph *g);
+struct scc_list *FindSccs(graph *g);
 
-
+node *node_init(int val);
 #endif //TITLED1_GRAPHS_H
