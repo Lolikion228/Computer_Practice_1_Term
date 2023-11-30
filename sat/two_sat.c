@@ -19,6 +19,7 @@ CNF2 *CNF2_init(int n) {
     return cnf;
 }
 
+
 CNF2 *CNF2_get(char *str) {
     int cnt = 0, mx = 0, j, curr, flag = 0, ord;
 
@@ -27,7 +28,6 @@ CNF2 *CNF2_get(char *str) {
     }
 
     CNF2 *cnf = CNF2_init(cnt);
-    cnt = cnf->clauses;
 
     for (int i = strlen(str) - 1; i >= 0; i--) {
         if (str[i] == ')') {
@@ -45,18 +45,14 @@ CNF2 *CNF2_get(char *str) {
             }
             mx = mx >= curr ? mx : curr;
             cnf->max = mx;
-            if (str[j - 1] == '!') {
-                cnf->arr[cnt][flag % 2] = (-1) * curr;
-                ++flag;
-            }
-            else {
-                cnf->arr[cnt][flag % 2] = curr;
-                ++flag;
-            }
+
+            cnf->arr[cnt][flag % 2] = ((str[j - 1] == '!') ? -1 : 1) * curr;
+            ++flag;
         }
     }
     return cnf;
 }
+
 
 void CNF2_print(CNF2 *cnf) {
     for (int i = 0; i < cnf->clauses; i++) {
@@ -70,6 +66,7 @@ void CNF2_print(CNF2 *cnf) {
     printf("\n");
 }
 
+
 void CNF2_free(CNF2 *cnf) {
     for (int i = 0; i < cnf->clauses; i++) {
         free(cnf->arr[i]);
@@ -77,6 +74,7 @@ void CNF2_free(CNF2 *cnf) {
     free(cnf->arr);
     free(cnf);
 }
+
 
 graph *get_implication_graph(CNF2 *cnf) {
     int M = cnf->clauses, N = cnf->max;
@@ -89,25 +87,8 @@ graph *get_implication_graph(CNF2 *cnf) {
         if (x1 < 0) { x1 = abs(x1) + N; }
         if (x2 < 0) { x2 = abs(x2) + N; }
 
-        if (x1 <= N) {
-            if (x2 <= N) {
-                graph_add_arc(g, x1 + N, x2);
-                graph_add_arc(g, x2 + N, x1);
-            }
-            else {
-                graph_add_arc(g, x1 + N, x2);
-                graph_add_arc(g, x2 - N, x1);
-            }
-        } else {
-            if (x2 <= N) {
-                graph_add_arc(g, x1 - N, x2);
-                graph_add_arc(g, x2 + N, x1);
-            }
-            else {
-                graph_add_arc(g, x1 - N, x2);
-                graph_add_arc(g, x2 - N, x1);
-            }
-        }
+        graph_add_arc(g, x1 + (x1 <= N ? N : -(1) * N), x2);
+        graph_add_arc(g, x2 + (x2 <= N ? N : -(1) * N), x1);
 
     }
 
@@ -119,8 +100,9 @@ void get_vals(scc_list *sccs, int *res, int cnt) {
     int flag;
     for (int i = 0; i < sccs->len; i++) {
         for (int j = 0; j < sccs->lengths[i]; j++) {
-            if(res[abs(sccs->array[i][j])]==-1){
-            res[abs(sccs->array[i][j])] = sccs->array[i][j] >= 0 ? 1 : 0;}
+            if (res[abs(sccs->array[i][j])] == -1) {
+                res[abs(sccs->array[i][j])] = sccs->array[i][j] >= 0 ? 1 : 0;
+            }
             flag = 1;
             for (int k = 1; k < cnt; k++) {
                 if (res[k] == -1) {
@@ -152,6 +134,7 @@ int *TWO_SAT(CNF2 *cnf) {
     return res;
 }
 
+
 int test_two_sat(CNF2 *cnf, int *vals) {
     int curr, x1, x2;
     for (int i = 0; i < cnf->clauses; i++) {
@@ -159,9 +142,9 @@ int test_two_sat(CNF2 *cnf, int *vals) {
         x1 = cnf->arr[i][0];
         x2 = cnf->arr[i][1];
         if (x1 > 0) { curr += vals[x1]; }
-        if (x1 < 0) { curr += vals[abs(x1)] == 1 ? 0: 1; }
+        if (x1 < 0) { curr += vals[abs(x1)] == 1 ? 0 : 1; }
         if (x2 > 0) { curr += vals[x2]; }
-        if (x2 < 0) { curr += vals[abs(x2)] == 1 ? 0: 1; }
+        if (x2 < 0) { curr += vals[abs(x2)] == 1 ? 0 : 1; }
         if (curr == 0) { return 0; }
     }
     return 1;
