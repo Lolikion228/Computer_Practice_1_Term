@@ -123,12 +123,10 @@ void get_vals(scc_list *sccs, int *res, int cnt) {
 int *TWO_SAT(CNF2 *cnf) {
     graph *g = get_implication_graph(cnf);
     graph_print(g);
-
     scc_list *sccs = FindSccs(g);
     scc_list_print(sccs);
     scc_list_transform(sccs, cnf->max);
     scc_list_print(sccs);
-//    graph_visualize(g);
     graph_free(g);
     int matches = scc_search_for_matches(sccs);
     printf("matches=%d\n", matches);
