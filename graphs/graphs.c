@@ -77,7 +77,7 @@ void graph_free(graph *g) {
     free(g);
 }
 
-void del_arc(graph *g, int a, int b) {
+void graph_del_arc(graph *g, int a, int b) {
     if(g) {
         node *curr = g->adj_list[a].head;
         node *tmp = NULL;
@@ -99,12 +99,12 @@ void del_arc(graph *g, int a, int b) {
     }
 }
 
-void visualize_graph(graph *g) {
-    save_graph_to_file(g);
+void graph_visualize(graph *g) {
+    graph_save_to_file(g);
     int t = system("python3 /home/lolikion/CLionProjects/Titled1/graphs/gr.py > /dev/null 2>&1");
 }
 
-void save_graph_to_file(graph *g) {
+void graph_save_to_file(graph *g) {
     node *curr = NULL;
     FILE *f = fopen("graphs/gr.txt", "w");
     for (int i = 0; i < g->count; i++) {
@@ -159,11 +159,16 @@ int *topsort(graph *g) {
                 return NULL;
             }
 
-            //Redo!!!
-            int i0=(i-= stack_size(stack1));
-            for(; stack_size(stack1)!=0;i++)
-                ordering[i] = stack_pop_S(stack1);
-            i=i0;
+            //Redo!?
+//            int i0=(i-= stack_size(stack1));
+//            for(; stack_size(stack1)!=0;i++)
+//                ordering[i] = stack_pop_S(stack1);
+//            i=i0;
+
+            i-= stack_size(stack1);
+            for(int j=0;j<stack_size(stack1);j++){
+                ordering[j+i]=stack1->item[stack1->top-j];
+            }
 
             stack_destroy_S(stack1);
             free(nodes_status);

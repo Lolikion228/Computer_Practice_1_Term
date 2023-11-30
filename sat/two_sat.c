@@ -142,7 +142,7 @@ int *TWO_SAT(CNF2 *cnf) {
     scc_list_print(sccs);
     scc_list_transform(sccs, cnf->max);
     scc_list_print(sccs);
-    int matches = search_for_matches(sccs);
+    int matches = scc_search_for_matches(sccs);
     printf("matches=%d\n", matches);
     if (matches) { return NULL; }
     int *res = (int *) malloc((1 + cnf->max) * sizeof(int));

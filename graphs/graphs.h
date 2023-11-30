@@ -24,7 +24,7 @@ graph* graph_init(int n);//
 
 void graph_add_arc(graph *g, int a, int b);//
 
-void del_arc(graph* g, int a, int b);
+void graph_del_arc(graph* g, int a, int b);
 
 void graph_print(graph* g);//
 
@@ -32,9 +32,9 @@ void graph_free(graph* g);//
 
 void node_free(node* nd);//
 
-void save_graph_to_file(graph *g);//
+void graph_save_to_file(graph *g);//
 
-void visualize_graph(graph *g);//
+void graph_visualize(graph *g);//
 
 int DFS(int start_point, int *V, Stack *stack, graph *g,int* nodes_status);
 
