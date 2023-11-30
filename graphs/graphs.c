@@ -195,6 +195,7 @@ void dfs_scc(int at,Stack *stack,int *onStack,int *ids,int *low,int *id,graph *g
         int j=stack->top;
         int j0=j;
         *(cnt)+=1;
+
         printf("[ ");
         for (int node = stack_pop_S(stack);; node = stack_pop_S(stack)) {
             j--;
@@ -204,7 +205,6 @@ void dfs_scc(int at,Stack *stack,int *onStack,int *ids,int *low,int *id,graph *g
             if (node == at) { break; }
         }
         printf("] ");
-
 
         int *scc=(int *)malloc((j0-j) * sizeof(int));
         int ind=0;
