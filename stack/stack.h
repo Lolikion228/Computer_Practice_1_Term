@@ -14,16 +14,18 @@ typedef struct Stack{
 
 Stack *stack_init(int m);
 
-int is_empty_S(Stack S);
+int stack_is_empty_S(Stack S);
 
-int is_full_S(Stack S);
+int stack_size(Stack *S);
 
-void push_S(int x, Stack *S);
+int stack_is_full_S(Stack S);
 
-int pop_S(Stack *S);
+void stack_push_S(int x, Stack *S);
 
-int top_S(Stack S);
+int stack_pop_S(Stack *S);
 
-void destroy_S(Stack *S);
+int stack_top_S(Stack S);
+
+void stack_destroy_S(Stack *S);
 
 #endif //TITLED1_STACK_H

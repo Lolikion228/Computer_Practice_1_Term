@@ -121,56 +121,25 @@ void save_graph_to_file(graph *g) {
     fclose(f);
 }
 
-
-int isAcyclic(graph *g) {
-
-    int N = g->count;
-    int *nodes_status = (int*)calloc(N, sizeof(int));
-
-    for(int at = 0; at < N; at++) {
-        if (!DFS2(at, nodes_status, g)) {
-            free(nodes_status);
-            return 0;
-        }
-    }
-
-    free(nodes_status);
-    return 1;
-}
-
-
 enum {NOT_VISITED, VISITED, EXPLORING};
-int DFS2(int start_point, int* nodes_status, graph* g) {
-    if(nodes_status[start_point] == EXPLORING) return 0;
-    if(nodes_status[start_point] == VISITED) return 1;
-    nodes_status[start_point] = EXPLORING;
-    node* curr = g->adj_list[start_point].head;
-    while (curr != NULL) {
-        if(DFS2(curr->val, nodes_status, g)==0) return 0;
-        curr = curr->next;
-    }
-    nodes_status[start_point] = VISITED;
-    return 1;
-}
 
-
-void DFS(int start_point, int *V, Stack *stack, graph *g,int* nodes_status) {
-    if(nodes_status[start_point] == EXPLORING) {printf("Cyclic2\n"); }
+int DFS(int start_point, int *V, Stack *stack, graph *g,int* nodes_status) {
+    if(nodes_status[start_point] == EXPLORING) {return EXIT_FAILURE; }
     V[start_point] = 1;
     nodes_status[start_point] = EXPLORING;
     node *curr = g->adj_list[start_point].head;
     while (curr != NULL) {
-        if(nodes_status[curr->val]==EXPLORING){printf("Cyclic2\n");}
+        if(nodes_status[curr->val]==EXPLORING){return EXIT_FAILURE;}
         if (V[curr->val] == 0) { DFS(curr->val, V,stack, g,nodes_status); }
         curr = curr->next;
     }
-    push_S(start_point,stack);
+    stack_push_S(start_point,stack);
     nodes_status[start_point] = VISITED;
+    return EXIT_SUCCESS;
 }
 
 
 int *topsort(graph *g) {
-    if(!isAcyclic(g)){printf("Cyclic!!!\n");}
     int N = g->count;
     int *V = (int*)calloc(N, sizeof(int));
     int *ordering = (int*)calloc(N, sizeof(int));
@@ -182,12 +151,21 @@ int *topsort(graph *g) {
         if(V[at]==0){
             stack1= stack_init(N);
             nodes_status = (int*)calloc(N, sizeof(int));
-            DFS(at,V,stack1,g,nodes_status);
-            int i0=(i-=1+stack1->top);
-            for(;1+stack1->top!=0;i++)
-                ordering[i] = pop_S(stack1);
+            if(DFS(at,V,stack1,g,nodes_status)) {
+                free(V);
+                free(ordering);
+                free(nodes_status);
+                stack_destroy_S(stack1);
+                return NULL;
+            }
+
+            //Redo!!!
+            int i0=(i-= stack_size(stack1));
+            for(; stack_size(stack1)!=0;i++)
+                ordering[i] = stack_pop_S(stack1);
             i=i0;
-            destroy_S(stack1);
+
+            stack_destroy_S(stack1);
             free(nodes_status);
         }
     }
@@ -196,8 +174,8 @@ int *topsort(graph *g) {
 }
 
 
-void dfs_scc(int at,Stack *stack,int *onStack,int *ids,int *low,int *id,graph *g,int *cnt,sccs_list *res) {
-    push_S(at, stack);
+void dfs_scc(int at,Stack *stack,int *onStack,int *ids,int *low,int *id,graph *g,int *cnt,scc_list *res) {
+    stack_push_S(at, stack);
     onStack[at] = 1;
     ids[at] = low[at] = (*id)++;
 
@@ -208,37 +186,37 @@ void dfs_scc(int at,Stack *stack,int *onStack,int *ids,int *low,int *id,graph *g
         curr = curr->next;
     }
 
-    if (ids[at] == low[at]) {
-        int j=stack->top;
-        int j0=j;
-        *(cnt)+=1;
-        printf("[ ");
-        for (int node = pop_S(stack);; node = pop_S(stack)) {
-            j--;
-            onStack[node] = 0;
-            low[node] = ids[at];
-            printf("%d ", node);
-            if (node == at) { break; }
-        }
-        printf("] ");
-
-
-        int *scc=(int *)malloc((j0-j) * sizeof(int));
-        int ind=0;
-        for(int i=j0;i>j;i--,ind++){
-            scc[ind]=stack->item[i];
-        }
-        sccs_list_append(scc,res,j0-j);
-
-    }
+//    if (ids[at] == low[at]) { ///move to findsccs
+//        int j=stack->top;
+//        int j0=j;
+//        *(cnt)+=1;
+//        printf("[ ");
+//        for (int node = stack_pop_S(stack);; node = stack_pop_S(stack)) {
+//            j--;
+//            onStack[node] = 0;
+//            low[node] = ids[at];
+//            printf("%d ", node);
+//            if (node == at) { break; }
+//        }
+//        printf("] ");
+//
+//
+//        int *scc=(int *)malloc((j0-j) * sizeof(int));
+//        int ind=0;
+//        for(int i=j0;i>j;i--,ind++){
+//            scc[ind]=stack->item[i];
+//        }
+//        scc_list_append(scc,res,j0-j);
+//
+//    }//// end
 }
 
-sccs_list *FindSccs(graph *g){
+scc_list *FindSccs(graph *g){
 
 
     int n=g->count;
 
-    sccs_list *res=sccs_list_init();
+    scc_list *res=scc_list_init();
 
     int id=0;
     int sccCount=0;
@@ -255,7 +233,32 @@ sccs_list *FindSccs(graph *g){
     printf("sccs: { ");
     for(int i=0; i<n;i++){
         if(ids[i]==unvisited){
+
             dfs_scc(i,stack,onStack,ids,low,&id,g,&sccCount,res);
+
+            if (ids[i] == low[i]) { ///move to findsccs
+                int j=stack->top;
+                int j0=j;
+                sccCount++;
+                printf("[ ");
+                for (int node = stack_pop_S(stack);; node = stack_pop_S(stack)) {
+                    j--;
+                    onStack[node] = 0;
+                    low[node] = ids[i];
+                    printf("%d ", node);
+                    if (node == i) { break; }
+                }
+                printf("] ");
+
+
+                int *scc=(int *)malloc((j0-j) * sizeof(int));
+                int ind=0;
+                for(int i=j0;i>j;i--,ind++){
+                    scc[ind]=stack->item[i];
+                }
+                scc_list_append(scc,res,j0-j);
+
+            }//// end
 
         }
     }
@@ -265,7 +268,7 @@ sccs_list *FindSccs(graph *g){
     free(ids);
     free(low);
     free(onStack);
-    destroy_S(stack);
+    stack_destroy_S(stack);
 
     return res;
 

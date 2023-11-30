@@ -115,7 +115,7 @@ graph *get_implication_graph(CNF2 *cnf) {
 }
 
 
-void get_vals(sccs_list *sccs, int *res, int cnt) {
+void get_vals(scc_list *sccs, int *res, int cnt) {
     int flag;
     for (int i = 0; i < sccs->len; i++) {
         for (int j = 0; j < sccs->lengths[i]; j++) {
@@ -138,18 +138,17 @@ void get_vals(sccs_list *sccs, int *res, int cnt) {
 int *TWO_SAT(CNF2 *cnf) {
     graph *g = get_implication_graph(cnf);
     graph_print(g);
-    sccs_list *sccs = FindSccs(g);
-    graph_free(g);
-    sccs_list_print(sccs);
-    sccs_list_transform(sccs, cnf->max);
-    sccs_list_print(sccs);
+    scc_list *sccs = FindSccs(g);
+    scc_list_print(sccs);
+    scc_list_transform(sccs, cnf->max);
+    scc_list_print(sccs);
     int matches = search_for_matches(sccs);
     printf("matches=%d\n", matches);
     if (matches) { return NULL; }
     int *res = (int *) malloc((1 + cnf->max) * sizeof(int));
     for (int i = 0; i < 1 + cnf->max; i++) { res[i] = -1; }
     get_vals(sccs, res, 1 + cnf->max);
-    sccs_list_free(sccs);
+    scc_list_free(sccs);
     return res;
 }
 

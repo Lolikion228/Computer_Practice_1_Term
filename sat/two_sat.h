@@ -23,6 +23,6 @@ graph *get_implication_graph(CNF2 *cnf);
 
 int *TWO_SAT(CNF2 *cnf);
 
-int test_two_sat(CNF2 *cnf,int *vals);
+int test_two_sat(CNF2 *cnf, int *vals);
 
 #endif //TITLED1_2_SAT_H
