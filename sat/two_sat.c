@@ -124,7 +124,9 @@ int *TWO_SAT(CNF2 *cnf) {
     graph *g = get_implication_graph(cnf);
     graph_print(g);
     scc_list *sccs = FindSccs(g);
+//    graph_visualize(g);
     scc_list_print(sccs);
+
     scc_list_transform(sccs, cnf->max);
     scc_list_print(sccs);
     graph_free(g);

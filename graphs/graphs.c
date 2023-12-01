@@ -166,8 +166,8 @@ int *topsort(graph *g) {
 //            i=i0;
 
             i-= stack_size(stack1);
-            for(int j=0;j<stack_size(stack1);j++){
-                ordering[j+i]=stack1->item[stack1->top-j];
+            for(int j=0;!stack_is_empty_S(stack1);j++){
+                ordering[j+i] = stack_pop_S(stack1);
             }
 
             stack_destroy_S(stack1);
@@ -193,7 +193,6 @@ void dfs_scc(int at,Stack *stack,int *onStack,int *ids,int *low,int *id,graph *g
 
     if (ids[at] == low[at]) {
         int j=stack->top;
-        int j0=j;
         *(cnt)+=1;
 
         printf("[ ");
@@ -206,10 +205,10 @@ void dfs_scc(int at,Stack *stack,int *onStack,int *ids,int *low,int *id,graph *g
         }
         printf("] ");
 
-        node *root= node_init(stack->item[j0]);
+        node *root= node_init(stack->item[stack->top]);
         node *curr=root;
 
-        for(int i=j0-1;i>j;i--){
+        for(int i=stack->top-1;i>j;i--){
             curr->next= node_init(stack->item[i]);
             curr=curr->next;
         }

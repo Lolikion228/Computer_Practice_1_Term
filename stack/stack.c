@@ -17,20 +17,20 @@ Stack *stack_init(int m) {
     return S;
 }
 
-int stack_is_empty_S(Stack S) {
-    return (S.top == -1);
+int stack_is_empty_S(Stack *S) {
+    return (S->top == -1);
 }
 
 int stack_size(Stack *S){
     return 1+S->top;
 }
 
-int stack_is_full_S(Stack S) {
-    return (S.top == S.max - 1);
+int stack_is_full_S(Stack *S) {
+    return (S->top == S->max - 1);
 }
 
 void stack_push_S(int x, Stack *S) {
-    if (stack_is_full_S(*S)) {
+    if (stack_is_full_S(S)) {
         printf("Stack full!\n");
         abort();
     }
@@ -39,7 +39,7 @@ void stack_push_S(int x, Stack *S) {
 }
 
 int stack_pop_S(Stack *S) {
-    if (stack_is_empty_S(*S)) {
+    if (stack_is_empty_S(S)) {
         printf("Stack empty!\n");
         abort();
     }
@@ -50,12 +50,12 @@ int stack_pop_S(Stack *S) {
 
 
 
-int stack_top_S(Stack S) {
+int stack_top_S(Stack *S) {
     if (stack_is_empty_S(S)) {
         printf("Stack empty!\n");
         abort();
     }
-    return S.item[S.top];
+    return S->item[S->top];
 }
 
 void stack_destroy_S(Stack *S) {
