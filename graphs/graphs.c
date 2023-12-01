@@ -192,26 +192,27 @@ void dfs_scc(int at,Stack *stack,int *onStack,int *ids,int *low,int *id,graph *g
     }
 
     if (ids[at] == low[at]) {
-        int j=stack->top;
         *(cnt)+=1;
 
         printf("[ ");
-        for (int node = stack_pop_S(stack);; node = stack_pop_S(stack)) {
-            j--;
-            onStack[node] = 0;
-            low[node] = ids[at];
-            printf("%d ", node);
-            if (node == at) { break; }
+        node *root= node_init(stack_pop_S(stack));
+        node *curr=root;
+        printf("%d ", root->val);
+        onStack[root->val] = 0;
+        low[root->val] = ids[at];
+
+        if( (root->val) != at ){
+            while (!stack_is_empty_S(stack)) {
+                int node = stack_pop_S(stack);
+                onStack[node] = 0;
+                low[node] = ids[at];
+                printf("%d ", node);
+                curr->next= node_init(node);
+                curr=curr->next;
+                if (node == at) { break; }
+            }
         }
         printf("] ");
-
-        node *root= node_init(stack->item[stack->top]);
-        node *curr=root;
-
-        for(int i=stack->top-1;i>j;i--){
-            curr->next= node_init(stack->item[i]);
-            curr=curr->next;
-        }
 
         list scc;
         scc.head=root;
