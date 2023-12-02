@@ -201,6 +201,7 @@ void dfs_scc(int at,Stack *stack,int *onStack,int *ids,int *low,int *id,graph *g
         onStack[root->val] = 0;
         low[root->val] = ids[at];
 
+
         if( (root->val) != at ){
             while (!stack_is_empty_S(stack)) {
                 int node = stack_pop_S(stack);
