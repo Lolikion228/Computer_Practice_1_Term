@@ -124,15 +124,18 @@ void graph_save_to_file(graph *g) {
 enum {NOT_VISITED, VISITED, EXPLORING};
 
 int DFS(int start_point, int *V, Stack *stack, graph *g,int* nodes_status) {
+
     if(nodes_status[start_point] == EXPLORING) {return EXIT_FAILURE; }
     V[start_point] = 1;
     nodes_status[start_point] = EXPLORING;
     node *curr = g->adj_list[start_point].head;
+
     while (curr != NULL) {
         if(nodes_status[curr->val]==EXPLORING){return EXIT_FAILURE;}
-        if (V[curr->val] == 0) { DFS(curr->val, V,stack, g,nodes_status); }
+        if (V[curr->val] == 0) { if(DFS(curr->val, V,stack, g,nodes_status)==EXIT_FAILURE){return EXIT_FAILURE;} }
         curr = curr->next;
     }
+
     stack_push_S(start_point,stack);
     nodes_status[start_point] = VISITED;
     return EXIT_SUCCESS;
@@ -151,7 +154,7 @@ int *topsort(graph *g) {
         if(V[at]==0){
             stack1= stack_init(N);
             nodes_status = (int*)calloc(N, sizeof(int));
-            if(DFS(at,V,stack1,g,nodes_status)) {
+            if(DFS(at,V,stack1,g,nodes_status)==EXIT_FAILURE) {
                 free(V);
                 free(ordering);
                 free(nodes_status);

@@ -49,55 +49,61 @@ int main() {
 //    scc_list_free(lst);
 
 
-    CNF2 *cnf= CNF2_get("(!x1||!x2)&&(x1||x2)&&(!x1||x2)&&(x1||x3)&&(x3||!x1)");
-    for(int i=0;i<cnf->clauses;i++){
-        printf("[%d %d] ",cnf->arr[i][0],cnf->arr[i][1]);
-    }
-    printf("\n");
-    CNF2_print(cnf);
-    int *x=TWO_SAT(cnf);
-    if(x==NULL){printf("not SAT\n");}
-    else{
-        printf("SAT\n[ ");
-        for(int i=1;i<1+cnf->max;i++){printf("%d ",x[i]);}
-        printf("]\n");
-        printf("test=%d\n", test_two_sat(cnf,x));
-    }
-    CNF2_free(cnf);
-    free(x);
-
-
-
-
-//    graph *g1= graph_init(5);
-//    graph_add_arc(g1,0,1);
-//    graph_add_arc(g1,1,2);
-//    graph_add_arc(g1,2,0);
-//    graph_add_arc(g1,3,4);
-//    graph_add_arc(g1,4,3);
-
-
-//    graph_print(g1);
-//    int* ord= topsort(g1);
-//
-//    printf("ordering = [ ");
-//    for(int i=0;i<g1->count;i++){
-//        printf("%d ",ord[i]);
+//    CNF2 *cnf= CNF2_get("(!x1||!x2)&&(x1||x2)&&(!x1||x2)&&(x1||x3)&&(x3||!x1)");
+//    for(int i=0;i<cnf->clauses;i++){
+//        printf("[%d %d] ",cnf->arr[i][0],cnf->arr[i][1]);
 //    }
-//    printf("]\n");
-////
-//    scc_list_print(sccs);
+//    printf("\n");
+//    CNF2_print(cnf);
+//    int *x=TWO_SAT(cnf);
+//    if(x==NULL){printf("not SAT\n");}
+//    else{
+//        printf("SAT\n[ ");
+//        for(int i=1;i<1+cnf->max;i++){printf("%d ",x[i]);}
+//        printf("]\n");
+//        printf("test=%d\n", test_two_sat(cnf,x));
+//    }
+//    CNF2_free(cnf);
+//    free(x);
+
+
+
+
+    graph *g1= graph_init(10);
+    graph_add_arc(g1,0,1);
+    graph_add_arc(g1,1,2);
+    graph_add_arc(g1,3,5);
+    graph_add_arc(g1,3,4);
+    graph_add_arc(g1,5,6);
+    graph_add_arc(g1,6,1);
+    graph_add_arc(g1,2,7);
+    graph_add_arc(g1,7,4);
+    graph_add_arc(g1,9,1);
+    graph_add_arc(g1,8,2);
+
+
+    graph_print(g1);
+    int* ord= topsort(g1);
+    printf("isNULL=%d\n",ord==NULL);
+    printf("ordering = [ ");
+    for(int i=0;i<g1->count;i++){
+        printf("%d ",ord[i]);
+    }
+    printf("]\n");
+//
+
 //    scc_list *sccs= FindSccs(g1);
+//    scc_list_print(sccs);
 
-//////
-//    visualize_graph(g1);
-
-
-
-//    free(ord);
 ////
+//    graph_visualize(g1);
+
+
+
+    free(ord);
+//
 //    free(sccs);
-//    graph_free(g1);
+    graph_free(g1);
     return 0;
 
 }
