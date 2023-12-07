@@ -1,7 +1,7 @@
 //
 // Created by lolikion on 16.11.23.
 //
-
+#include "../big_int/big_int.h"
 #ifndef TITLED1_RSA_CLI_H
 #define TITLED1_RSA_CLI_H
 void console_app();

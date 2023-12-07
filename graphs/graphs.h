@@ -42,7 +42,7 @@ int DFS(int start_point, int *V, Stack *stack, graph *g,int* nodes_status);
 
 int *topsort(graph *g);
 
-struct scc_list *FindSccs(graph *g);
+struct scc_list *scc(graph *g);
 
 node *node_init(int val);
 #endif //TITLED1_GRAPHS_H

@@ -7,7 +7,6 @@
 
 typedef struct Stack{
     int top;
-    int elements;
     int max;
     int *item;
 }Stack;

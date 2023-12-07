@@ -5,16 +5,18 @@
 #include <stdlib.h>
 #include <math.h>
 //#include "rsa/rsa.h"
+#include "rsa_cli/rsa_cli.h"
 #include "graphs/graphs.h"
+#include "big_int/big_int.h"
 #include "stack/stack.h"
 #include "sat/two_sat.h"
 #include "graphs/sccs.h"
 #define MAX_BINARY_LENGTH 40000
 
 /*
- * sccs struct +-
  * topsort indexes +-
- * in dfs_scc move extraction of scc to FindSccs <-bad
+ * sccs struct +-
+ * in dfs_scc move extraction of scc to FindSccs !!!!!!!
  * rename in many files  +-
  * remove dfs2 +-
  * return in dfs instead of printf +-
@@ -26,37 +28,47 @@
 int main() {
     srand(time(NULL));
 
+//    graph *g= graph_init(7);
+//    graph_add_arc(g, 0, 1);
+//    graph_add_arc(g, 1, 0);
+//    graph_add_arc(g, 2, 0);
+//    graph_add_arc(g, 2, 1);
+//    graph_add_arc(g, 2, 3);
+//    graph_add_arc(g, 3, 2);
+//    graph_add_arc(g, 4, 1);
+//    graph_add_arc(g, 4, 3);
+//    graph_add_arc(g, 4, 5);
+//    graph_add_arc(g, 5, 3);
+//    graph_add_arc(g, 5, 6);
+//    graph_add_arc(g, 6, 4);
+//    scc_list *res = scc(g);
+//    scc_list_print(res);
 
+
+    graph *g= graph_init(7);
+    graph_add_arc(g, 5, 3);
+    graph_add_arc(g, 3, 1);
+    graph_add_arc(g, 1, 5);
+    graph_add_arc(g, 4, 6);
+    graph_add_arc(g, 6, 2);
+    graph_add_arc(g, 2, 4);
+    graph_add_arc(g, 2, 0);
+    scc_list *res = scc(g);
+    scc_list_print(res);
 
 
 //
-//    scc_list *lst=scc_list_init();
 //
-//    node *scc1= node_init(7);
-//    scc1->next=node_init(3);
-//    list sc;
-//    sc.head=scc1;
-//    scc_list_append(sc,lst);
 //
-//    node *scc2= node_init(9);
-//    scc2->next=node_init(4);
-//    scc2->next->next=node_init(5);
-//    list sc2;
-//    sc2.head=scc2;
-//
-//    scc_list_append(sc2,lst);
-//    scc_list_print(lst);
-//    scc_list_free(lst);
-
-
-//    CNF2 *cnf= CNF2_get("(!x1||!x2)&&(x1||x2)&&(!x1||x2)&&(x1||x3)&&(x3||!x1)");
+//    CNF2 *cnf= CNF2_get("(!x1||!x2)&&(x1||x2)&&(!x1||x2)&&(x1||!x2)&(x2||x3)");
+////    CNF2 *cnf= CNF2_get("(x1||x3)&&(x1||!x4)&&(x2||!x4) && (x2||!x5) && (x3||!x5)&&(x1||!x6)&&(x2||!x6)&&(x3||!x6) &&(x4||x7)&&(x5||x7)&&(x6||x7)");
 //    for(int i=0;i<cnf->clauses;i++){
 //        printf("[%d %d] ",cnf->arr[i][0],cnf->arr[i][1]);
 //    }
 //    printf("\n");
 //    CNF2_print(cnf);
 //    int *x=TWO_SAT(cnf);
-//    if(x==NULL){printf("not SAT\n");}
+//    if(x==NULL){printf("unSAT\n");}
 //    else{
 //        printf("SAT\n[ ");
 //        for(int i=1;i<1+cnf->max;i++){printf("%d ",x[i]);}
@@ -65,45 +77,47 @@ int main() {
 //    }
 //    CNF2_free(cnf);
 //    free(x);
-
-
-
-
-    graph *g1= graph_init(10);
-    graph_add_arc(g1,0,1);
-    graph_add_arc(g1,1,2);
-    graph_add_arc(g1,3,5);
-    graph_add_arc(g1,3,4);
-    graph_add_arc(g1,5,6);
-    graph_add_arc(g1,6,1);
-    graph_add_arc(g1,2,7);
-    graph_add_arc(g1,7,4);
-    graph_add_arc(g1,9,1);
-    graph_add_arc(g1,8,2);
-
-
-    graph_print(g1);
-    int* ord= topsort(g1);
-    printf("isNULL=%d\n",ord==NULL);
-    printf("ordering = [ ");
-    for(int i=0;i<g1->count;i++){
-        printf("%d ",ord[i]);
-    }
-    printf("]\n");
 //
 
-//    scc_list *sccs= FindSccs(g1);
-//    scc_list_print(sccs);
 
+
+//    graph *g= graph_init(7);
+//    graph_add_arc(g, 0, 1);
+//    graph_add_arc(g, 1, 0);
+//    graph_add_arc(g, 2, 0);
+//    graph_add_arc(g, 2, 1);
+//    graph_add_arc(g, 2, 3);
+//    graph_add_arc(g, 3, 2);
+//    graph_add_arc(g, 4, 1);
+//    graph_add_arc(g, 4, 3);
+//    graph_add_arc(g, 4, 5);
+//    graph_add_arc(g, 5, 3);
+//    graph_add_arc(g, 5, 6);
+//    graph_add_arc(g, 6, 4);
+//
+//
+//    graph_print(g);
+////    int* ord= topsort(g1);
+////    printf("isNULL=%d\n",ord==NULL);
+////    printf("ordering = [ ");
+////    for(int i=0;i<g1->count;i++){
+////        printf("%d ",ord[i]);
+////    }
+////    printf("]\n");
 ////
-//    graph_visualize(g1);
-
-
-
-    free(ord);
 //
+//    scc_list *sccs= FindSccs(g);
+//    scc_list_print(sccs);
+//
+//////
+//    graph_visualize(g);
+//
+//
+//
+////    free(ord);
+////
 //    free(sccs);
-    graph_free(g1);
+//    graph_free(g);
     return 0;
 
 }
