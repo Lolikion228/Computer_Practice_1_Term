@@ -23,15 +23,10 @@ clause * clause_init(){
 }
 
 CNF2 *CNF2_get(char *str) {
-//    enum states {clause_start, var_start,int,neg };!!!!!!!!!!!!!!!!!!!!!!!
-//alphabet={...}
-    int curr, flag = 0,num1,num2;
-//    int state
+    int curr, flag = 0, num1, num2;
     CNF2 *cnf = CNF2_init();
     clause *curr_clause=clause_init();
-
     cnf->clauses=curr_clause;
-
     for (char *str_ptr = str; *(str_ptr)!='\0'; ++str_ptr) {
         if(*str_ptr=='x'){
             curr = strtol(str_ptr+1,NULL,10);
@@ -48,12 +43,8 @@ CNF2 *CNF2_get(char *str) {
                 curr_clause=curr_clause->next;
                 flag=0;
             }
-
         }
-
-
     }
-
     return cnf;
 }
 
@@ -93,20 +84,16 @@ graph *get_implication_graph(CNF2 *cnf) {
     int N = cnf->max;
     graph *g = graph_init(1 + 2 * N);
     clause *curr=cnf->clauses;
-//    printf("max=%d\n",N);
+
     while (curr!=NULL) {
 
         int x1 = curr->first, x2 = curr->second;
-//        printf("%d %d\n",x1,x2);
         if (x1 < 0) { x1 = abs(x1) + N; }
         if (x2 < 0) { x2 = abs(x2) + N; }
-//        printf("%d %d\n",x1,x2);
-//        printf("start\n");
-        graph_add_arc(g, x1 + (x1 <= N ? N : -(1) * N), x2);
-//        printf("end\n");
 
+        graph_add_arc(g, x1 + (x1 <= N ? N : -(1) * N), x2);
         graph_add_arc(g, x2 + (x2 <= N ? N : -(1) * N), x1);
-//        printf("end2\n");
+
         curr=curr->next;
     }
 

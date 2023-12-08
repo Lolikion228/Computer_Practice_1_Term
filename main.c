@@ -14,7 +14,6 @@
 #define MAX_BINARY_LENGTH 40000
 
 /*
- *change cnf struct
  *smth like automata
  *only lowlinks after dfs_scc???(по желанию)
 */
