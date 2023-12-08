@@ -20,14 +20,11 @@ clause * clause_init(){
     return res;
 }
 
-
 CNF2 *CNF2_get(char *str) {
 //    enum states {clause_start, var_start,int,neg };!!!!!!!!!!!!!!!!!!!!!!!
 //alphabet={...}
     int mx = 0, j, curr, flag = 0, ord;
 //    int state
-
-
     CNF2 *cnf = CNF2_init();
     clause *curr_clause=clause_init();
     curr_clause->next=NULL;
@@ -48,12 +45,9 @@ CNF2 *CNF2_get(char *str) {
             mx = mx >= curr ? mx : curr;
             cnf->max = mx;
 
-//            cnf->arr[cnt][flag % 2] = ((str[j - 1] == '!') ? -1 : 1) * curr;
-
             if(flag%2==1){ curr_clause->first=((str[j - 1] == '!') ? -1 : 1) * curr;}
             if(flag%2==0){
                 curr_clause->second=((str[j - 1] == '!') ? -1 : 1) * curr;
-//                printf("%d %d\n",curr_clause->first,curr_clause->second);
                 if(j>2){
                 curr_clause->next=clause_init();
                 curr_clause=curr_clause->next;
@@ -69,7 +63,6 @@ CNF2 *CNF2_get(char *str) {
 // CNF DNF /\ \/
 void CNF2_print(CNF2 *cnf) {
     clause *curr=cnf->clauses;
-//    printf("228\n");
     while (curr!=NULL) {
         printf("(");
         if (curr->first >= 0) { printf("x%d||", curr->first); }
@@ -145,16 +138,16 @@ void get_vals(scc_list *sccs, int *res, int cnt) {
 
 int *TWO_SAT(CNF2 *cnf) {
     graph *g = get_implication_graph(cnf);
-    graph_print(g);
-    scc_list *sccs = scc(g);
 
-    scc_list_print(sccs);
-    graph_visualize(g);
+    scc_list *sccs = scc(g);
+    graph_print(g);//
+    scc_list_print(sccs);//
+    graph_visualize(g);//
     scc_list_transform(sccs, cnf->max);
-    scc_list_print(sccs);
+    scc_list_print(sccs);//
     graph_free(g);
     int matches = scc_search_for_matches(sccs);
-    printf("matches=%d\n", matches);
+    printf("matches=%d\n", matches);//
     if (matches) { return NULL; }
     int *res = (int *) malloc((1 + cnf->max) * sizeof(int));
     for (int i = 0; i < 1 + cnf->max; i++) { res[i] = -1; }
