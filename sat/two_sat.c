@@ -12,51 +12,48 @@
 CNF2 *CNF2_init() {
     CNF2 *cnf = (CNF2 *) malloc(sizeof(struct CNF2));
     cnf->clauses = NULL;
+    cnf->max=0;
     return cnf;
 }
 
 clause * clause_init(){
     clause *res=(clause *) malloc(sizeof(struct clause));
+    res->next=NULL;
     return res;
 }
 
 CNF2 *CNF2_get(char *str) {
 //    enum states {clause_start, var_start,int,neg };!!!!!!!!!!!!!!!!!!!!!!!
 //alphabet={...}
-    int mx = 0, j, curr, flag = 0, ord;
+    int curr, flag = 0,num1,num2;
 //    int state
     CNF2 *cnf = CNF2_init();
     clause *curr_clause=clause_init();
-    curr_clause->next=NULL;
-    cnf->clauses=curr_clause;
-    for (int i = strlen(str) - 1; i >= 0; i--) { //make as pointer
-       if (str[i] == ')') {
-            flag = 1;
-        }
-        if ((str[i] == ')') || ((str[i] == '|') && (str[i + 1] == '|'))) {
-            j = i - 1;
-            curr = 0;
-            ord = 0;
-            while (str[j] != 'x') {
-                curr += (str[j] - '0') * (int) pow(10, ord);
-                j--;
-                ord++;
-            }
-            mx = mx >= curr ? mx : curr;
-            cnf->max = mx;
 
-            if(flag%2==1){ curr_clause->first=((str[j - 1] == '!') ? -1 : 1) * curr;}
-            if(flag%2==0){
-                curr_clause->second=((str[j - 1] == '!') ? -1 : 1) * curr;
-                if(j>2){
-                curr_clause->next=clause_init();
-                curr_clause=curr_clause->next;
-                curr_clause->next=NULL;
+    cnf->clauses=curr_clause;
+
+    for (char *str_ptr = str; *(str_ptr)!='\0'; ++str_ptr) {
+        if(*str_ptr=='x'){
+            curr = strtol(str_ptr+1,NULL,10);
+            cnf->max = curr > cnf->max ? curr : cnf->max;
+            if(*(str_ptr-1)=='!'){curr*=-1;}
+            if(flag==0){num1=curr;flag=1;}
+            else{
+                num2=curr;
+                curr_clause->first=num1;
+                curr_clause->second=num2;
+                if(strchr(str_ptr+1,'x')!=NULL){
+                    curr_clause->next=clause_init();
                 }
+                curr_clause=curr_clause->next;
+                flag=0;
             }
-            ++flag;
+
         }
+
+
     }
+
     return cnf;
 }
 
@@ -96,17 +93,20 @@ graph *get_implication_graph(CNF2 *cnf) {
     int N = cnf->max;
     graph *g = graph_init(1 + 2 * N);
     clause *curr=cnf->clauses;
-
+//    printf("max=%d\n",N);
     while (curr!=NULL) {
 
         int x1 = curr->first, x2 = curr->second;
-
+//        printf("%d %d\n",x1,x2);
         if (x1 < 0) { x1 = abs(x1) + N; }
         if (x2 < 0) { x2 = abs(x2) + N; }
-
+//        printf("%d %d\n",x1,x2);
+//        printf("start\n");
         graph_add_arc(g, x1 + (x1 <= N ? N : -(1) * N), x2);
-        graph_add_arc(g, x2 + (x2 <= N ? N : -(1) * N), x1);
+//        printf("end\n");
 
+        graph_add_arc(g, x2 + (x2 <= N ? N : -(1) * N), x1);
+//        printf("end2\n");
         curr=curr->next;
     }
 
