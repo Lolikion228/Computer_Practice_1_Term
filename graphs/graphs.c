@@ -175,25 +175,41 @@ int *topsort(graph *g) {
 }
 
 
-void dfs_scc(int at,Stack *stack,int *onStack,int *ids,int *low,int *id,graph *g) {
+void dfs_scc(int at,Stack *stack,int *onStack,int *ids,int *low,int *id,graph *g,scc_list *res) {
     stack_push_S(at, stack);
     onStack[at] = 1;
     ids[at] = low[at] = (*id)++;
 
     node *curr = g->adj_list[at].head;
     while (curr != NULL) {
-        if (ids[curr->val] == unvisited) { dfs_scc(curr->val, stack, onStack, ids, low, id, g); }
+        if (ids[curr->val] == unvisited) { dfs_scc(curr->val, stack, onStack, ids, low, id, g,res); }
         if (onStack[curr->val]) { low[at] = (low[at] > low[curr->val]) ? low[curr->val] : low[at]; }
         curr = curr->next;
     }
 
     if (ids[at] == low[at]) {
-        while (!stack_is_empty_S(stack)) {
-            int node = stack_pop_S(stack);
-            onStack[node] = 0;
-            low[node] = ids[at];
-            if (node == at) { break; }
+
+
+        node *root= node_init(stack_pop_S(stack));
+        node *curr=root;
+        onStack[root->val] = 0;
+        low[root->val] = ids[at];
+
+
+        if( (root->val) != at ){
+            while (!stack_is_empty_S(stack)) {
+                int node = stack_pop_S(stack);
+                onStack[node] = 0;
+                low[node] = ids[at];
+                curr->next= node_init(node);
+                curr=curr->next;
+                if (node == at) { break; }
+            }
         }
+
+        list scc;
+        scc.head=root;
+        scc_list_append(scc,res);
     }
 
 
@@ -218,32 +234,52 @@ scc_list *scc(graph *g){
 
     for(int i=0; i<n;i++){
         if(ids[i]==unvisited){
-            dfs_scc(i,stack,onStack,ids,low,&id,g);
+            dfs_scc(i,stack,onStack,ids,low,&id,g,res);
         }
     }
-    // transfor low into a pretty output
+    // transform low into a pretty output!!??
 
-    for(int i=0;i<n;++i){
-        if(i==low[i]){
-            node *root= node_init(i);
-            node *curr=root;
-            for(int j=0;j<n;++j){
-                if( (low[j]==i) && (j!=i) ){
-                    curr->next= node_init(j);
-                    curr=curr->next;
-                }
-            }
-            list scc0;
-            scc0.head=root;
-            scc_list_append(scc0,res);
-            }
-        }
+//    for(int i=n-1;i>=0;--i){
+//        if(i==low[i]){
+//            printf("index=%d\n",i);
+//            node *root= node_init(i);
+//            node *curr=root;
+//            for(int j=0;j<n;++j){
+//                if( (low[j]==i) && (j!=i) ){
+//                    curr->next= node_init(j);
+//                    curr=curr->next;
+//
+//                }
+//            }
+//            list scc0;
+//            scc0.head=root;
+//            scc_list_append(scc0,res);
+//            }
+//        }
+/*g[0]{ }
+g[1]{ 5; 2; }
+g[2]{ 4; }
+g[3]{ 1; }
+g[4]{ 2; 6; }
+g[5]{ 1; 4; 3; }
+g[6]{ 2; }
+index=1
+index=0
+0 -> comp# 0
+1 -> comp# 1
+2 -> comp# 3
+3 -> comp# 1
+4 -> comp# 3
+5 -> comp# 1
+6 -> comp# 3
+sccs:{ [ 1 3 5 ] [ 0 ] }
+*/
 
 
     free(ids);
     free(onStack);
     stack_destroy_S(stack);
-    for(int i = 0; i < g->count; i++) printf("%d -> comp# %d\n", i, low[i]);
+//    for(int i = 0; i < g->count; i++) printf("%d -> comp# %d\n", i, low[i]);
     free(low);
     return res;
 

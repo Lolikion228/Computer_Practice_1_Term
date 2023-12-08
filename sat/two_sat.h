@@ -7,9 +7,16 @@
 #include "../stack/stack.h"
 #include "../graphs/graphs.h"
 
+
+
+typedef struct clause {
+    int first;
+    int second;
+    struct clause *next;
+}clause;
+
 typedef struct CNF2{
-    int clauses;
-    int **arr;
+    clause *clauses;
     int max;
 }CNF2;
 

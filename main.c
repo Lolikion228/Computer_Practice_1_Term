@@ -14,12 +14,9 @@
 #define MAX_BINARY_LENGTH 40000
 
 /*
- * topsort indexes +-
- * sccs struct +-
- * in dfs_scc move extraction of scc to FindSccs !!!!!!!
- * rename in many files  +-
- * remove dfs2 +-
- * return in dfs instead of printf +-
+ change cnf struct
+smth like automata
+ only lowlinks after dfs_scc???(по желанию)
 */
 
 
@@ -27,6 +24,12 @@
 
 int main() {
     srand(time(NULL));
+
+    // (2^x-1)*(2^y-1) == 2^{x+y}-2^{y}-2^x+1
+//    big_int *n1= big_int_get("111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111");
+//    big_int *n2= big_int_get("1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111");
+//    big_int *n3= big_int_karatsuba_mult2(n1,n2);
+//    big_int_print(n3);
 
 //    graph *g= graph_init(7);
 //    graph_add_arc(g, 0, 1);
@@ -45,38 +48,48 @@ int main() {
 //    scc_list_print(res);
 
 
-    graph *g= graph_init(7);
-    graph_add_arc(g, 5, 3);
-    graph_add_arc(g, 3, 1);
-    graph_add_arc(g, 1, 5);
-    graph_add_arc(g, 4, 6);
-    graph_add_arc(g, 6, 2);
-    graph_add_arc(g, 2, 4);
-    graph_add_arc(g, 2, 0);
-    scc_list *res = scc(g);
-    scc_list_print(res);
+//    graph *g= graph_init(7);
+//    graph_add_arc(g, 5, 3);
+//    graph_add_arc(g, 3, 1);
+//    graph_add_arc(g, 1, 5);
+//    graph_add_arc(g, 4, 6);
+//    graph_add_arc(g, 6, 2);
+//    graph_add_arc(g, 2, 4);
+//    graph_add_arc(g, 2, 0);
+//    scc_list *res = scc(g);
+//    scc_list_print(res);
 
 
 //
 //
 //
-//    CNF2 *cnf= CNF2_get("(!x1||!x2)&&(x1||x2)&&(!x1||x2)&&(x1||!x2)&(x2||x3)");
-////    CNF2 *cnf= CNF2_get("(x1||x3)&&(x1||!x4)&&(x2||!x4) && (x2||!x5) && (x3||!x5)&&(x1||!x6)&&(x2||!x6)&&(x3||!x6) &&(x4||x7)&&(x5||x7)&&(x6||x7)");
-//    for(int i=0;i<cnf->clauses;i++){
-//        printf("[%d %d] ",cnf->arr[i][0],cnf->arr[i][1]);
-//    }
-//    printf("\n");
 //    CNF2_print(cnf);
-//    int *x=TWO_SAT(cnf);
-//    if(x==NULL){printf("unSAT\n");}
-//    else{
-//        printf("SAT\n[ ");
-//        for(int i=1;i<1+cnf->max;i++){printf("%d ",x[i]);}
-//        printf("]\n");
-//        printf("test=%d\n", test_two_sat(cnf,x));
-//    }
+//    graph *g= get_implication_graph(cnf);
+//    graph_print(g);
+//    graph_free(g);
 //    CNF2_free(cnf);
-//    free(x);
+
+    CNF2 *cnf= CNF2_get("(!x1||!x2)&&(x1||x2)&&(!x1||x2)&&(x1||!x3)&&(x2||x3)");
+//    CNF2 *cnf= CNF2_get("(x1||x2)&&(!x2||x3)&&(!x1||!x2) && (x3||x4) && (!x3||x5)&&(!x4||!x5)&&(!x3||x4)");
+
+    clause* curr=cnf->clauses;
+    while (curr!=NULL){
+        printf("[%d %d] ",curr->first,curr->second);
+        curr=curr->next;
+    }
+
+    printf("\n");
+    CNF2_print(cnf);
+    int *x=TWO_SAT(cnf);
+    if(x==NULL){printf("unSAT\n");}
+    else{
+        printf("SAT\n[ ");
+        for(int i=1;i<1+cnf->max;i++){printf("%d ",x[i]);}
+        printf("]\n");
+        printf("test=%d\n", test_two_sat(cnf,x));
+    }
+    CNF2_free(cnf);
+    free(x);
 //
 
 
