@@ -71,9 +71,9 @@ int main() {
 //    graph_free(g);
 //    CNF2_free(cnf);
 
-//    CNF2 *cnf= CNF2_get("(!x1||!x2)&&(x1||x2)&&(!x1||x2)&&(x1||!x3)&&(x2||x3)");
-    CNF2 *cnf= CNF2_get("(x1||x2)&&(!x2||x3)&&(!x1||!x2) && (x3||x4) && (!x3||x5)&&(!x4||!x5)&&(!x3||x4)");
-//
+    CNF2 *cnf= CNF2_get("(!x1||!x2)&&(x1||x2)&&(!x1||x2)&&(x1||!x2)&&(x2||x3)");
+//    CNF2 *cnf= CNF2_get("(x1||x2)&&(!x2||x3)&&(!x1||!x2) && (x3||x4) && (!x3||x5)&&(!x4||!x5)&&(!x3||x4)");
+
     clause* curr=cnf->clauses;
     while (curr!=NULL){
         printf("[%d %d] ",curr->first,curr->second);

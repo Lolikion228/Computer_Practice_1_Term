@@ -237,8 +237,8 @@ scc_list *scc(graph *g){
             dfs_scc(i,stack,onStack,ids,low,&id,g,res);
         }
     }
-    // transform low into a pretty output!!??
 
+    // transform low into a pretty output!!??
 //    for(int i=n-1;i>=0;--i){
 //        if(i==low[i]){
 //            printf("index=%d\n",i);
@@ -274,8 +274,6 @@ index=0
 6 -> comp# 3
 sccs:{ [ 1 3 5 ] [ 0 ] }
 */
-
-
     free(ids);
     free(onStack);
     stack_destroy_S(stack);
