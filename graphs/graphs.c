@@ -237,47 +237,9 @@ scc_list *scc(graph *g){
             dfs_scc(i,stack,onStack,ids,low,&id,g,res);
         }
     }
-
-    // transform low into a pretty output!!??
-//    for(int i=n-1;i>=0;--i){
-//        if(i==low[i]){
-//            printf("index=%d\n",i);
-//            node *root= node_init(i);
-//            node *curr=root;
-//            for(int j=0;j<n;++j){
-//                if( (low[j]==i) && (j!=i) ){
-//                    curr->next= node_init(j);
-//                    curr=curr->next;
-//
-//                }
-//            }
-//            list scc0;
-//            scc0.head=root;
-//            scc_list_append(scc0,res);
-//            }
-//        }
-/*g[0]{ }
-g[1]{ 5; 2; }
-g[2]{ 4; }
-g[3]{ 1; }
-g[4]{ 2; 6; }
-g[5]{ 1; 4; 3; }
-g[6]{ 2; }
-index=1
-index=0
-0 -> comp# 0
-1 -> comp# 1
-2 -> comp# 3
-3 -> comp# 1
-4 -> comp# 3
-5 -> comp# 1
-6 -> comp# 3
-sccs:{ [ 1 3 5 ] [ 0 ] }
-*/
     free(ids);
     free(onStack);
     stack_destroy_S(stack);
-//    for(int i = 0; i < g->count; i++) printf("%d -> comp# %d\n", i, low[i]);
     free(low);
     return res;
 

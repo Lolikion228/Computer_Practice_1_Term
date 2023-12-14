@@ -13,11 +13,6 @@
 #include "graphs/sccs.h"
 #define MAX_BINARY_LENGTH 40000
 
-/*
- *smth like automata
- *only lowlinks after dfs_scc???(по желанию)
-*/
-
 
 
 
@@ -63,7 +58,6 @@ int main() {
 //    printf("%d\n",num);
 
 //
-//
 //    CNF2 *cnf= CNF2_get("(!x1||!x2)&&(x1||x2)&&(!x1||x2)&&(x1||!x3)&&(x2||x3)");
 //    CNF2_print(cnf);
 //    graph *g= get_implication_graph(cnf);
@@ -71,8 +65,8 @@ int main() {
 //    graph_free(g);
 //    CNF2_free(cnf);
 
-    CNF2 *cnf= CNF2_get("(!x1||!x2)&&(x1||x2)&&(!x1||x2)&&(x1||!x2)&&(x2||x3)");
-//    CNF2 *cnf= CNF2_get("(x1||x2)&&(!x2||x3)&&(!x1||!x2) && (x3||x4) && (!x3||x5)&&(!x4||!x5)&&(!x3||x4)");
+//    CNF2 *cnf= CNF2_get("(!x1||!x2)&&(x1||x2)&&(!x1||x2)&&(x1||!x3)&&(x2||x3)");
+    CNF2 *cnf= CNF2_get("(x1||x2)&&(!x2||x3)&&(!x1||!x2) && (x3||x4) && (!x3||x5)&&(!x4||!x5)&&(!x3||x4)");
 
     clause* curr=cnf->clauses;
     while (curr!=NULL){

@@ -123,7 +123,6 @@ void CNF2_free(CNF2 *cnf) {
     }
 
     if( curr ) free(curr);
-
     free(cnf);
 }
 
